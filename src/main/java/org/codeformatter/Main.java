@@ -3,7 +3,7 @@ package org.codeformatter;
 import org.codeformatter.codesources.CodeSource;
 import org.codeformatter.codesources.CommandLineCodeSource;
 import org.codeformatter.codesources.FileCodeSource;
-import org.codeformatter.formatters.CodeFormatter;
+import org.codeformatter.formatters.LoopCodeFormatter;
 
 public class Main {
 
@@ -12,7 +12,8 @@ public class Main {
 
         CodeSource codeSource = getCodeSource(args);
 
-        CodeFormatter codeFormatter = new CodeFormatter();
+        //RecursiveCodeFormatter codeFormatter = new RecursiveCodeFormatter();
+        LoopCodeFormatter codeFormatter = new LoopCodeFormatter();
 
         String formattedCode = codeFormatter.formatCode(codeSource.getCode());
 

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CodeFormatter {
+public class RecursiveCodeFormatter {
 
     public String formatCode(String codeToFormat) {
 
@@ -31,25 +31,34 @@ public class CodeFormatter {
     private String formatStatement(String statementToFormat) {
 
         if (singleLineStatement(statementToFormat)) {
-            return statementToFormat + System.lineSeparator();
+
+            return statementToFormat;
+        } else {
+
+            return formatCodeBlock(statementToFormat);
         }
 
+    }
+
+    String formatCodeBlock(String codeBlock) {
         StringBuilder formattedStatementBuilder = new StringBuilder();
 
-        String openingPart = getOpeningPartOfBlockStatement(statementToFormat);
-        formattedStatementBuilder.append(openingPart);
-        formattedStatementBuilder.append(System.lineSeparator());
+        String openingPart = getOpeningPartOfBlockStatement(codeBlock);
+        appendNewLineToStringBuilder(formattedStatementBuilder, openingPart);
 
-        String innerCodePart = getInnerPartOfBlockStatement(statementToFormat);
-        formattedStatementBuilder.append(
-                formatCode(innerCodePart + System.lineSeparator()).indent(4)
-        );
+        String innerCodePart = getInnerPartOfBlockStatement(codeBlock);
+        String formattedInnerPart = formatCode(innerCodePart).indent(4);
+        formattedStatementBuilder.append(formattedInnerPart);
 
-        String enclosingPart = getEnclosingPartOfClockStatement(statementToFormat);
-        formattedStatementBuilder.append(enclosingPart);
-        formattedStatementBuilder.append(System.lineSeparator());
+        String enclosingPart = getEnclosingPartOfClockStatement(codeBlock);
+        appendNewLineToStringBuilder(formattedStatementBuilder, enclosingPart);
 
         return formattedStatementBuilder.toString();
+    }
+
+    void appendNewLineToStringBuilder(StringBuilder builder, String content) {
+        builder.append(content);
+        builder.append(System.lineSeparator());
     }
 
     String getOpeningPartOfBlockStatement(String statement) {
@@ -85,8 +94,6 @@ public class CodeFormatter {
         return formattedCodeBuilder.toString();
     }
 
-
-
     public boolean singleLineStatement(String part) {
 
         return !part.contains("{");
@@ -94,10 +101,7 @@ public class CodeFormatter {
 
     String[] splitStatements(String whole) {
 
-        //"ooo (ppp) { www; } zzz (xxx) { qqq; }"
-        //"ooo; zzz (xxx) { qqq; }
-
-        List<String> parts = new ArrayList<>();
+        List<String> splitParts = new ArrayList<>();
         int currentLevel = 0;
         String[] chars = whole.split("");
 
@@ -116,16 +120,16 @@ public class CodeFormatter {
             if (isTopLevelStatement(currentChar, currentLevel)) {
 
                 String topLevelStatement = whole.substring(lastTakenIndex, i + 1);
-                parts.add(topLevelStatement);
+                splitParts.add(topLevelStatement);
 
                 lastTakenIndex = i + 1;
             }
 
         }
 
-        parts = trimParts(parts);
+        splitParts = trimParts(splitParts);
 
-        return parts.toArray(new String[0]);
+        return splitParts.toArray(new String[0]);
     }
 
     private boolean isTopLevelStatement(String statement, int level) {

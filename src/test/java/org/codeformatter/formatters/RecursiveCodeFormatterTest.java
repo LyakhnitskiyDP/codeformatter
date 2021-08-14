@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class CodeFormatterTest {
+public class RecursiveCodeFormatterTest {
 
-    private static CodeFormatter formatter;
+    private static RecursiveCodeFormatter formatter;
 
     @BeforeAll
     public static void setUp() {
 
-        formatter = new CodeFormatter();
+        formatter = new RecursiveCodeFormatter();
     }
 
     @Test
