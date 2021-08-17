@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Deprecated
 public class RecursiveCodeFormatter {
 
     public String formatCode(String codeToFormat) {

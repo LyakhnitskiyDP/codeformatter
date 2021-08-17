@@ -1,5 +1,6 @@
 package org.codeformatter.formatters;
 
+@Deprecated
 public class LoopCodeFormatter {
 
     public String formatCode(String codeToFormat) {

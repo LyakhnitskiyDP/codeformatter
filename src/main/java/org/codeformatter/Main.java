@@ -1,29 +1,27 @@
 package org.codeformatter;
 
-import org.codeformatter.codesources.CodeSource;
-import org.codeformatter.codesources.CommandLineCodeSource;
-import org.codeformatter.codesources.FileCodeSource;
-import org.codeformatter.formatters.LoopCodeFormatter;
+import org.codeformatter.formatters.Formatter;
+import org.codeformatter.io.string.StringReader;
+import org.codeformatter.io.string.StringWriter;
+
 
 public class Main {
 
-    //To run formatting for testSourceCode.java add VM option: src\main\resources\testSourceCode.java
     public static void main(String[] args) {
 
-        CodeSource codeSource = getCodeSource(args);
+        Formatter formatter = new Formatter();
 
-        //RecursiveCodeFormatter codeFormatter = new RecursiveCodeFormatter();
-        LoopCodeFormatter codeFormatter = new LoopCodeFormatter();
+        StringBuilder formattedCode = new StringBuilder();
+        StringWriter stringWriter = new StringWriter(formattedCode);
 
-        String formattedCode = codeFormatter.formatCode(codeSource.getCode());
+        StringReader stringReader = new StringReader(
+                "public UserLoginResponse loginUser(UserLoginRequest request) throws BadRequestException { User user = userService.getUserByEmail(request.getEmail()); if (user == null) { throw new BadRequestException(ErrorCode.INCORRECT_LOGIN, \"login\"); } String token = tokenService.getToken(user); for (int i = 0; i < count; i++) counter++; response.addHeader(SET_AUTH_HEADER_STRING, token); UserLoginResponse loginDtoResponse = new UserLoginResponse(token); return loginDtoResponse; }"
+        );
 
-        System.out.println(formattedCode);
+        formatter.format(stringReader, stringWriter);
+
+        System.out.println(formattedCode.toString());
     }
 
-    private static CodeSource getCodeSource(String[] args) {
-
-        return args.length == 0 ? new CommandLineCodeSource()
-                                : new FileCodeSource(args[0]);
-    }
 
 }
