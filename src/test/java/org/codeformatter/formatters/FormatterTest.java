@@ -1,6 +1,9 @@
 package org.codeformatter.formatters;
 
-import org.assertj.core.api.Assertions;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringReader;
@@ -119,19 +122,19 @@ public class FormatterTest {
 
         formatter.format(reader, writer);
 
-        Assertions.assertThat(resultStringBuilder.toString())
+        assertThat(resultStringBuilder.toString())
                   .isEqualToNormalizingNewlines(expectedCode);
     }
 
     @Test
     public void should_throw_exception_on_negative_block_level() {
 
-        Assertions.assertThatIllegalArgumentException()
-                  .isThrownBy(() -> new Formatter.Context(null, -2));
+        assertThatIllegalArgumentException()
+                  .isThrownBy(() -> new Context(null, -2));
 
-        Assertions.assertThatIllegalStateException()
+        assertThatIllegalStateException()
                   .isThrownBy(() -> {
-                      Formatter.Context ctx = new Formatter.Context(null, 0);
+                      Context ctx = new Context(null, 0);
                       ctx.decreaseBlockLevel();
                   });
 

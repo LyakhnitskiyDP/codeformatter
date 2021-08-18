@@ -9,6 +9,7 @@ import org.codeformatter.io.Reader;
 
 public class FileReader implements Reader, AutoCloseable {
 
+    //TODO
     private final Scanner scanner;
 
     public FileReader(Path pathToFile) throws FileNotFoundException {

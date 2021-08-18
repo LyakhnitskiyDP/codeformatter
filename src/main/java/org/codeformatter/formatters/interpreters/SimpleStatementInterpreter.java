@@ -2,7 +2,8 @@ package org.codeformatter.formatters.interpreters;
 
 import java.util.Arrays;
 import java.util.Queue;
-import org.codeformatter.formatters.Formatter;
+
+import org.codeformatter.formatters.Context;
 
 public class SimpleStatementInterpreter extends Interpreter {
 
@@ -10,7 +11,7 @@ public class SimpleStatementInterpreter extends Interpreter {
 
     public SimpleStatementInterpreter(
             Queue<Character> characterQueue,
-            Formatter.Context context) {
+            Context context) {
 
         super(characterQueue, context);
     }

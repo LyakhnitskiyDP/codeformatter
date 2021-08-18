@@ -13,4 +13,9 @@ public class StringWriter implements Writer {
 
         stringBuilder.append(ch);
     }
+
+    public String getResult() {
+
+        return stringBuilder.toString();
+    }
 }

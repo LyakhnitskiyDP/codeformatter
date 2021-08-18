@@ -15,7 +15,7 @@ public class Main {
         StringWriter stringWriter = new StringWriter(formattedCode);
 
         StringReader stringReader = new StringReader(
-                "public UserLoginResponse loginUser(UserLoginRequest request) throws BadRequestException { User user = userService.getUserByEmail(request.getEmail()); if (user == null) { throw new BadRequestException(ErrorCode.INCORRECT_LOGIN, \"login\"); } String token = tokenService.getToken(user); for (int i = 0; i < count; i++) counter++; response.addHeader(SET_AUTH_HEADER_STRING, token); UserLoginResponse loginDtoResponse = new UserLoginResponse(token); return loginDtoResponse; }"
+                "public UserLoginResponse loginUser(UserLoginRequest request) throws BadRequestException { User user = userService.getUserByEmail(request.getEmail()); if (user == null) { throw new BadRequestException(ErrorCode.INCORRECT_LOGIN, \"login\"); } String token = tokenService.getToken(user); for (int i = 0; i < count; i++) { counter++; } response.addHeader(SET_AUTH_HEADER_STRING, token); UserLoginResponse loginDtoResponse = new UserLoginResponse(token); return loginDtoResponse; }"
         );
 
         formatter.format(stringReader, stringWriter);

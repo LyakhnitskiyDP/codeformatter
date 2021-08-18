@@ -1,6 +1,6 @@
 package org.codeformatter.io.string;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class StringWriterTest {
             stringWriter.writeChar(ch);
         }
 
-        Assertions.assertThat(accumulator.toString().toCharArray())
+        assertThat(accumulator.toString().toCharArray())
                   .contains(charsToWrite);
     }
 

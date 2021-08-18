@@ -1,14 +1,15 @@
 package org.codeformatter.formatters.interpreters;
 
 import java.util.Queue;
-import org.codeformatter.formatters.Formatter;
+import org.codeformatter.formatters.Context;
+
 
 public class IfStatementInterpreter extends Interpreter {
 
 
     public IfStatementInterpreter(
             Queue<Character> characterQueue,
-            Formatter.Context context) {
+            Context context) {
 
         super(characterQueue, context);
     }
@@ -16,10 +17,14 @@ public class IfStatementInterpreter extends Interpreter {
     @Override
     boolean patternIsFound(char ch) {
 
-        //for (a; b; c) {
+
+        return getContent().contains("f") && !getContent().contains("if");
+        /*
         boolean forLoopStarting = "for (".startsWith(getContent());
 
         return forLoopStarting;
+
+         */
     }
 
     @Override
@@ -27,22 +32,22 @@ public class IfStatementInterpreter extends Interpreter {
 
         String content = getContent();
 
-        boolean hasParenthesis = content.contains("(") && content.contains(")");
+        //boolean hasParenthesis = content.contains("(") && content.contains(")");
         boolean hasBracket = content.contains("{");
 
-        return hasParenthesis && hasBracket && hasTwoSemicolumns();
+        return hasBracket;
     }
 
-    private boolean hasTwoSemicolumns() {
+    private boolean hasTwoSemicolons() {
 
-        int numberOfSemicolumns = 0;
+        int numberOfSemicolons = 0;
 
         for (char ch : getContent().toCharArray()) {
             if (String.valueOf(ch).equals(";")) {
-                numberOfSemicolumns++;
+                numberOfSemicolons++;
             }
         }
 
-        return numberOfSemicolumns == 2;
+        return numberOfSemicolons == 2;
     }
 }

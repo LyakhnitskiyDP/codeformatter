@@ -1,6 +1,7 @@
 package org.codeformatter.io.string;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.codeformatter.exceptions.ReaderException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -30,13 +31,13 @@ public class StringReaderTest {
             stringBuilder.append(stringReader.readChar());
         }
 
-        Assertions.assertThat(stringBuilder.toString()).isEqualTo(content);
+        assertThat(stringBuilder.toString()).isEqualTo(content);
     }
 
     @Test
     public void should_throw_reader_exception_when_there_is_nothing_to_read() {
 
-        Assertions.assertThatExceptionOfType(ReaderException.class)
+        assertThatExceptionOfType(ReaderException.class)
                   .isThrownBy(() -> {
                       while (true) {
                           stringReader.readChar();

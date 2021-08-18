@@ -1,6 +1,7 @@
 package org.codeformatter.io.file;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import org.codeformatter.exceptions.ReaderException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -38,7 +39,7 @@ public class FileReaderTest {
             readContent.append(fileReader.readChar());
         }
 
-        Assertions.assertThat(readContent.toString())
+        assertThat(readContent.toString())
                   .isEqualToNormalizingNewlines(expectedContent);
 
     }
@@ -47,7 +48,7 @@ public class FileReaderTest {
     public void should_throw_reader_exception_when_there_is_no_chars_to_read() {
 
 
-        Assertions.assertThatExceptionOfType(ReaderException.class)
+        assertThatExceptionOfType(ReaderException.class)
                   .isThrownBy(() -> {
                       while (true) {
                           fileReader.readChar();
