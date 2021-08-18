@@ -6,7 +6,6 @@ import org.codeformatter.formatters.Context;
 
 public class IfStatementInterpreter extends Interpreter {
 
-
     public IfStatementInterpreter(
             Queue<Character> characterQueue,
             Context context) {
@@ -18,7 +17,7 @@ public class IfStatementInterpreter extends Interpreter {
     boolean patternIsFound(char ch) {
 
 
-        return getContent().contains("f") && !getContent().contains("if");
+        return getContent().contains("f") && !getContent().contains("f ");
         /*
         boolean forLoopStarting = "for (".startsWith(getContent());
 

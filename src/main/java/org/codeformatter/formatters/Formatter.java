@@ -5,6 +5,7 @@ import java.util.Queue;
 import lombok.Data;
 import org.codeformatter.formatters.interpreters.IfStatementInterpreter;
 import org.codeformatter.formatters.interpreters.Interpreter;
+import org.codeformatter.formatters.interpreters.MultilineCommentInterpreter;
 import org.codeformatter.formatters.interpreters.SimpleStatementInterpreter;
 import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
@@ -22,6 +23,9 @@ public class Formatter {
         Interpreter forLoopInterpreter =
                 new IfStatementInterpreter(charsToInterpret, context);
 
+        MultilineCommentInterpreter commentInterpreter =
+                new MultilineCommentInterpreter(charsToInterpret, context);
+
         while (reader.hasMoreChars()) {
 
             char ch = reader.readChar();
@@ -29,7 +33,9 @@ public class Formatter {
 
             forLoopInterpreter.consumeCharacterFromQueue();
 
-            simpleInterpreter.consumeCharacterFromQueue();
+            commentInterpreter.consumeCharacterFromQueue();
+
+            simpleInterpreter.consumeCharactersFromQueue();
 
         }
 

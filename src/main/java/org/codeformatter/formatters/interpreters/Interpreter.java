@@ -35,8 +35,6 @@ public abstract class Interpreter {
             return;
         }
 
-        System.out.println(content);
-
         if (this.getClass().equals(IfStatementInterpreter.class)) {
             System.out.println(patternIsFound(ch));
         }
@@ -53,6 +51,12 @@ public abstract class Interpreter {
             clearContent();
         }
 
+    }
+
+    public void consumeCharactersFromQueue() {
+        while (characterQueue.size() > 0) {
+            consumeCharacterFromQueue();
+        }
     }
 
     protected void passUnusedCharacters() {
