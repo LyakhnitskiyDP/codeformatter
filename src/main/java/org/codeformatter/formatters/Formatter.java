@@ -31,9 +31,12 @@ public class Formatter {
             char ch = reader.readChar();
             charsToInterpret.add(ch);
 
+            /*
             forLoopInterpreter.consumeCharacterFromQueue();
 
             commentInterpreter.consumeCharacterFromQueue();
+
+             */
 
             simpleInterpreter.consumeCharactersFromQueue();
 

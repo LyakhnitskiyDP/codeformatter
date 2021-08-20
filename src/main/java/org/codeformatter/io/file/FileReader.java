@@ -1,49 +1,86 @@
 package org.codeformatter.io.file;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.exceptions.CloseException;
 import org.codeformatter.exceptions.ReaderException;
+import org.codeformatter.io.Closable;
 import org.codeformatter.io.Reader;
 
-public class FileReader implements Reader, AutoCloseable {
+@Slf4j
+public class FileReader implements Reader, Closable {
 
-    //TODO
-    private final Scanner scanner;
+    private final InputStreamReader inputStreamReader;
 
-    public FileReader(Path pathToFile) throws FileNotFoundException {
+    private int currentIntChar;
 
-        this.scanner = new Scanner(pathToFile.toFile());
+    private boolean hasMoreChars;
 
-        //Make scanner read every character
-        this.scanner.useDelimiter("");
+    public FileReader(Path pathToFile) throws ReaderException {
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(pathToFile.toFile());
+            this.inputStreamReader = new InputStreamReader(fileInputStream);
+
+            readNextChar();
+
+        } catch (FileNotFoundException fileNotFoundException) {
+            log.error("File with path: {} not found", pathToFile.toString());
+            throw new ReaderException("File to format not found", fileNotFoundException);
+        } catch (IOException ioException) {
+            log.error("IOException while reading file: {}", pathToFile.toString());
+            throw new ReaderException("Unable to read from file", ioException);
+        }
+
     }
 
     @Override
-    public void close() {
+    public void close() throws CloseException {
 
-        scanner.close();
+        try {
+            inputStreamReader.close();
+        } catch (IOException ioException) {
+            throw new CloseException("Exception while file closing", ioException);
+        }
+
     }
-
 
     @Override
     public char readChar() {
 
-        char charToReturn;
-
-        try {
-            charToReturn = scanner.next().charAt(0);
-        } catch (NoSuchElementException elementException) {
-            throw new ReaderException("No chars to read left");
+        if (! hasMoreChars) {
+            throw new ReaderException("No characters to read are left");
         }
 
-        return charToReturn;
+        int previousIntChar = currentIntChar;
+
+        try {
+            readNextChar();
+        } catch (IOException ioException) {
+            log.error("IOException while reading file");
+            throw new ReaderException("Unable to read from file", ioException);
+        }
+
+        return (char) previousIntChar;
+    }
+
+    private void readNextChar() throws IOException {
+        currentIntChar = inputStreamReader.read();
+        hasMoreChars = ! isFileEnd(currentIntChar);
     }
 
     @Override
     public boolean hasMoreChars() {
 
-        return scanner.hasNext();
+        return hasMoreChars;
     }
+
+    private boolean isFileEnd(int intCh) {
+        return intCh == -1;
+    }
+
 }
