@@ -1,7 +1,10 @@
 package org.codeformatter.formatters.interpreters;
 
 import java.util.Queue;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.codeformatter.formatters.Context;
 import org.codeformatter.utils.StringUtil;
 
@@ -13,7 +16,8 @@ public abstract class Interpreter {
     private static final String OPENING_CURLY_BRACKET = "{";
     private static final String CLOSING_CURLY_BRACKET = "}";
 
-    private final StringBuilder content = new StringBuilder();
+    @Setter
+    private StringBuilder content = new StringBuilder();
 
     private final Queue<Character> characterQueue;
     private final Context context;
@@ -22,7 +26,8 @@ public abstract class Interpreter {
 
     abstract boolean patternIsComplete();
 
-    protected String getContent() {
+    public String getContent() {
+
         return content.toString();
     }
 
