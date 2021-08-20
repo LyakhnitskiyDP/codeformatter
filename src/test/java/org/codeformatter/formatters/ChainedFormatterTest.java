@@ -14,14 +14,14 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class FormatterTest {
+public class ChainedFormatterTest {
 
-    private Formatter formatter;
+    private ChainedFormatter chainedFormatter;
 
     @BeforeEach
     public void setUp() {
 
-        formatter = new Formatter();
+        chainedFormatter = new ChainedFormatter();
     }
 
     @Test
@@ -120,7 +120,7 @@ public class FormatterTest {
         StringBuilder resultStringBuilder = new StringBuilder();
         Writer writer = new StringWriter(resultStringBuilder);
 
-        formatter.format(reader, writer);
+        chainedFormatter.format(reader, writer);
 
         assertThat(resultStringBuilder.toString())
                   .isEqualToNormalizingNewlines(expectedCode);
