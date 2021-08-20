@@ -1,6 +1,5 @@
 package org.codeformatter.formatters.interpreters;
 
-import java.util.NoSuchElementException;
 import java.util.Queue;
 import lombok.RequiredArgsConstructor;
 import org.codeformatter.formatters.Context;
@@ -19,7 +18,7 @@ public abstract class Interpreter {
     private final Queue<Character> characterQueue;
     private final Context context;
 
-    abstract boolean patternIsFound(char ch);
+    abstract boolean patternIsFound();
 
     abstract boolean patternIsComplete();
 
@@ -35,13 +34,9 @@ public abstract class Interpreter {
             return;
         }
 
-        if (this.getClass().equals(IfStatementInterpreter.class)) {
-            System.out.println(patternIsFound(ch));
-        }
-
         content.append(ch);
 
-        if (!patternIsFound(ch)) {
+        if (!patternIsFound()) {
             passUnusedCharacters();
             clearContent();
         }

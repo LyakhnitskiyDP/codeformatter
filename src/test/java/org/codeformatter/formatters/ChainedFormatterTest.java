@@ -97,6 +97,7 @@ public class ChainedFormatterTest {
     }
 
 
+    @Test
     public void should_format_for_loop() {
 
         String codeToFormat = "a (b) { c; for (int i = 0; i < x; i++) { doSomethingCool(); } }";
@@ -107,6 +108,44 @@ public class ChainedFormatterTest {
                     for (int i = 0; i < x; i++) {
                         doSomethingCool();
                     } 
+                }
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
+    @Test
+    public void should_format_for_loop_and_if_statement_at_the_same_time() {
+        String codeToFormat = "a (b) { if (something) { theSomethingElse; } for (int i = 0; i < x; i++) { doSomethingCool(); } }";
+
+        String expectedCode = """
+                a (b) {
+                    if (something) { 
+                        theSomethingElse; 
+                    }
+                    for (int i = 0; i < x; i++) {
+                        doSomethingCool();
+                    } 
+                }
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
+    @Test
+    public void should_format_multiline_comments() {
+
+        String codeToFormat = "aaa bbb { ccc; /* MY COMMENT HERE */ ddd; eee; z (x) { y; } }";
+
+        String expectedCode = """
+                aaa bbb {
+                    ccc;
+                    /* MY COMMENT HERE */
+                    ddd;
+                    eee;
+                    z (x) {
+                        y;
+                    }
                 }
                 """;
 

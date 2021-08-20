@@ -1,27 +1,34 @@
 package org.codeformatter;
 
+import java.nio.file.Path;
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.exceptions.FormatterException;
+import org.codeformatter.exceptions.ReaderException;
+import org.codeformatter.exceptions.WriterException;
 import org.codeformatter.formatters.ChainedFormatter;
-import org.codeformatter.io.string.StringReader;
-import org.codeformatter.io.string.StringWriter;
+import org.codeformatter.io.file.FileReader;
+import org.codeformatter.io.file.FileWriter;
 
-
+@Slf4j
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FormatterException {
 
         ChainedFormatter chainedFormatter = new ChainedFormatter();
 
-        StringBuilder formattedCode = new StringBuilder();
-        StringWriter stringWriter = new StringWriter(formattedCode);
+        try (
+                FileReader fileReader = new FileReader(Path.of(args[0]));
+                FileWriter fileWriter = new FileWriter(Path.of(args[1]))
+        ) {
 
-        StringReader stringReader = new StringReader(
-                "public UserLoginResponse loginUser(UserLoginRequest request) throws BadRequestException { /* COMMENT HERE */User user = userService.getUserByEmail(request.getEmail()); if (user == null) { throw new BadRequestException(ErrorCode.INCORRECT_LOGIN, \"login\"); } String token = tokenService.getToken(user); for (int i = 0; i < count; i++) { counter++; } response.addHeader(SET_AUTH_HEADER_STRING, token); UserLoginResponse loginDtoResponse = new UserLoginResponse(token); return loginDtoResponse; }"
-        );
+            chainedFormatter.format(fileReader, fileWriter);
 
-        chainedFormatter.format(stringReader, stringWriter);
-
-        System.out.println(formattedCode.toString());
+        } catch (ReaderException readerException) {
+            log.error("Unable to create file reader", readerException);
+            throw new FormatterException("Unable to create file reader", readerException);
+        } catch (WriterException writerException) {
+            log.error("Unable to create file writer", writerException);
+            throw new FormatterException("Unable to create file writer", writerException);
+        }
     }
-
-
 }

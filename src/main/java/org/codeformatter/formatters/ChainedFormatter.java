@@ -2,7 +2,7 @@ package org.codeformatter.formatters;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import org.codeformatter.formatters.interpreters.IfStatementInterpreter;
+import org.codeformatter.formatters.interpreters.ForLoopInterpreter;
 import org.codeformatter.formatters.interpreters.Interpreter;
 import org.codeformatter.formatters.interpreters.MultilineCommentInterpreter;
 import org.codeformatter.formatters.interpreters.SimpleStatementInterpreter;
@@ -20,9 +20,9 @@ public class ChainedFormatter implements Formatter {
                 new SimpleStatementInterpreter(charsToInterpret, context);
 
         Interpreter forLoopInterpreter =
-                new IfStatementInterpreter(charsToInterpret, context);
+                new ForLoopInterpreter(charsToInterpret, context);
 
-        MultilineCommentInterpreter commentInterpreter =
+        Interpreter commentInterpreter =
                 new MultilineCommentInterpreter(charsToInterpret, context);
 
         while (reader.hasMoreChars()) {
@@ -30,15 +30,11 @@ public class ChainedFormatter implements Formatter {
             char ch = reader.readChar();
             charsToInterpret.add(ch);
 
-            /*
-            forLoopInterpreter.consumeCharacterFromQueue();
-
             commentInterpreter.consumeCharacterFromQueue();
 
-             */
+            forLoopInterpreter.consumeCharacterFromQueue();
 
             simpleInterpreter.consumeCharactersFromQueue();
-
         }
 
     }

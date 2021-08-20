@@ -1,8 +1,7 @@
 package org.codeformatter.formatters.interpreters;
 
-import org.codeformatter.formatters.Context;
-
 import java.util.Queue;
+import org.codeformatter.formatters.Context;
 
 public class MultilineCommentInterpreter extends Interpreter {
 
@@ -14,8 +13,8 @@ public class MultilineCommentInterpreter extends Interpreter {
     }
 
     @Override
-    boolean patternIsFound(char ch) {
-        return getContent().startsWith("/") || getContent().startsWith("/*");
+    boolean patternIsFound() {
+        return (getContent().length() > 1 ? getContent().startsWith("/*") : getContent().startsWith("/"));
     }
 
     @Override
