@@ -22,7 +22,7 @@ public class ChainedFormatter implements Formatter {
         Interpreter forLoopInterpreter =
                 new ForLoopInterpreter(charsToInterpret, context);
 
-        Interpreter commentInterpreter =
+        Interpreter multilineCommentInterpreter =
                 new MultilineCommentInterpreter(charsToInterpret, context);
 
         while (reader.hasMoreChars()) {
@@ -30,7 +30,7 @@ public class ChainedFormatter implements Formatter {
             char ch = reader.readChar();
             charsToInterpret.add(ch);
 
-            commentInterpreter.consumeCharacterFromQueue();
+            multilineCommentInterpreter.consumeCharacterFromQueue();
 
             forLoopInterpreter.consumeCharacterFromQueue();
 
