@@ -8,7 +8,7 @@ import org.codeformatter.lexers.Lexeme;
 
 public class SimpleStatementTokenizer extends Tokenizer {
 
-    private static final String LEXEME_TYPE = "Simple statement";
+    public static final String LEXEME_TYPE = "Simple statement";
 
     private static final String[] lineTerminatingChars = { ";", "{", "}" };
 

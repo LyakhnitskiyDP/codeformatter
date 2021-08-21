@@ -6,7 +6,7 @@ import org.codeformatter.lexers.Lexeme;
 
 public class MultilineCommentTokenizer extends Tokenizer {
 
-    private static final String LEXEME_TYPE = "Multiline comment";
+    public static final String LEXEME_TYPE = "Multiline comment";
 
     public MultilineCommentTokenizer(
             Deque<Character> characterQueue,

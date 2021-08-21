@@ -6,7 +6,7 @@ import org.codeformatter.lexers.Lexeme;
 
 public class SingleLineCommentTokenizer extends Tokenizer {
 
-    private static final String LEXEME_TYPE = "Single line comment";
+    public static final String LEXEME_TYPE = "Single line comment";
 
     public SingleLineCommentTokenizer(
             Deque<Character> characterQueue,

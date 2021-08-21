@@ -6,7 +6,7 @@ import org.codeformatter.lexers.Lexeme;
 
 public class ForLoopTokenizer extends Tokenizer {
 
-    private static final String LEXEME_TYPE = "For loop";
+    public static final String LEXEME_TYPE = "For loop";
 
     public ForLoopTokenizer(
             Deque<Character> characterQueue,
