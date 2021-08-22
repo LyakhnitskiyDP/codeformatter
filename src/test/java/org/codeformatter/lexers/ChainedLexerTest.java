@@ -42,6 +42,21 @@ public class ChainedLexerTest {
     }
 
     @Test
+    public void should_not_consume_variable_named_forks() {
+
+        Reader reader = new StringReader("""
+                doSomething();
+                int forks = 123;
+                """);
+
+        List<Lexeme> lexemes = chainedLexer.getLexemes(reader);
+
+        assertThat(lexemes).noneMatch(
+                lexeme -> lexeme.type().equals(ForLoopTokenizer.LEXEME_TYPE)
+        );
+    }
+
+    @Test
     public void should_distinguish_multiline_comments() {
 
         Reader reader = new StringReader("""
