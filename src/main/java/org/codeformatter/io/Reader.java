@@ -1,6 +1,8 @@
 package org.codeformatter.io;
 
-public interface Reader {
+import java.util.Iterator;
+
+public interface Reader extends Iterator<Character> {
 
     char readChar();
 

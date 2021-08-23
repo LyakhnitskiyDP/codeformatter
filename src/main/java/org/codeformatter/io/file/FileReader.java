@@ -18,8 +18,6 @@ public class FileReader implements Reader, Closable {
 
     private int currentIntChar;
 
-    private boolean hasMoreChars;
-
     public FileReader(Path pathToFile) throws ReaderException {
 
         try {
@@ -52,7 +50,7 @@ public class FileReader implements Reader, Closable {
     @Override
     public char readChar() {
 
-        if (! hasMoreChars) {
+        if (isFileEnd(currentIntChar)) {
             throw new ReaderException("No characters to read are left");
         }
 
@@ -70,17 +68,25 @@ public class FileReader implements Reader, Closable {
 
     private void readNextChar() throws IOException {
         currentIntChar = inputStreamReader.read();
-        hasMoreChars = ! isFileEnd(currentIntChar);
     }
 
     @Override
     public boolean hasMoreChars() {
 
-        return hasMoreChars;
+        return ! isFileEnd(currentIntChar);
     }
 
     private boolean isFileEnd(int intCh) {
         return intCh == -1;
     }
 
+    @Override
+    public boolean hasNext() {
+        return hasMoreChars();
+    }
+
+    @Override
+    public Character next() {
+        return readChar();
+    }
 }
