@@ -8,12 +8,13 @@ import static org.codeformatter.tokenizers.TokenizerType.SINGLE_LINE_COMMENT_TOK
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.io.Reader;
 import org.codeformatter.tokenizers.Tokenizer;
 import org.codeformatter.tokenizers.TokenizerFactory;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ChainedLexer implements Lexer {
 
@@ -35,6 +36,13 @@ public class ChainedLexer implements Lexer {
                 tokenizerFactory.getTokenizer(SINGLE_LINE_COMMENT_TOKENIZER),
                 tokenizerFactory.getTokenizer(SIMPLE_STATEMENT_TOKENIZER)
         };
+
+        for (int i = 0; i < tokenizers.length; i++) {
+            log.debug("Using tokenizer for tokens of type: {} with priority of {}",
+                      tokenizers[i].getLexemeName(),
+                      i + 1);
+        }
+
     }
 
     @Override
@@ -45,7 +53,6 @@ public class ChainedLexer implements Lexer {
     @Override
     public Token readToken() {
 
-        System.out.println("SIZE BEFORE: " + foundTokens.size());
         while (reader.hasMoreChars() && foundTokens.isEmpty()) {
 
             char ch = reader.readChar();

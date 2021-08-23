@@ -20,7 +20,7 @@ public class Main {
     }
 
     private static void runFormatter(String[] args) throws FormatterException {
-        DefaultFormatter chainedFormatter = new DefaultFormatter();
+        DefaultFormatter formatter = new DefaultFormatter();
 
         try (
                 FileReader fileReader = new FileReader(Path.of(args[0]));
@@ -29,7 +29,7 @@ public class Main {
 
             ChainedLexer lexer = new ChainedLexer(fileReader);
 
-            chainedFormatter.format(lexer, fileWriter);
+            formatter.format(lexer, fileWriter);
 
         } catch (ReaderException readerException) {
             log.error("Unable to create file reader", readerException);

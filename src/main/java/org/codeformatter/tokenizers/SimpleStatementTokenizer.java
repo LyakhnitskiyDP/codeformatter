@@ -26,7 +26,7 @@ public class SimpleStatementTokenizer extends Tokenizer {
     }
 
     @Override
-    String getLexemeName() {
+    public String getLexemeName() {
         return LEXEME_TYPE;
     }
 

@@ -26,7 +26,7 @@ public abstract class Tokenizer {
 
     abstract boolean patternIsComplete();
 
-    abstract String getLexemeName();
+    public abstract String getLexemeName();
 
 
     public String getCurrentLexeme() {
@@ -66,9 +66,11 @@ public abstract class Tokenizer {
 
     protected void appendCompletedToken() {
 
-        completedTokens.add(
-                new DefaultToken(getLexemeName(), getCurrentLexeme().trim())
-        );
+        Token foundToken = new DefaultToken(getLexemeName(), getCurrentLexeme().trim());
+
+        log.info("Token found: {}", foundToken);
+
+        completedTokens.add(foundToken);
     }
 
     private void completeCycle() {

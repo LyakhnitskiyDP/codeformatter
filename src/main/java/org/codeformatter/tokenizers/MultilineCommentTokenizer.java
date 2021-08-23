@@ -32,7 +32,7 @@ public class MultilineCommentTokenizer extends Tokenizer {
     }
 
     @Override
-    String getLexemeName() {
+    public String getLexemeName() {
         return LEXEME_TYPE;
     }
 
