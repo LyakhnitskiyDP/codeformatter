@@ -1,12 +1,13 @@
-package org.codeformatter.lexers.tokenizers;
+package org.codeformatter.tokenizers;
 
 import java.util.Deque;
-import java.util.List;
+import java.util.Queue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.codeformatter.lexers.Lexeme;
+import org.codeformatter.lexers.DefaultToken;
+import org.codeformatter.lexers.Token;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,43 +17,43 @@ public abstract class Tokenizer {
     private boolean cycleIsCompleted;
 
     @Getter
-    private final List<Lexeme> lexemes;
+    private final Queue<Token> completedTokens;
 
     @Setter
-    private StringBuilder currentToken = new StringBuilder();
+    private StringBuilder currentLexeme = new StringBuilder();
 
     abstract boolean patternIsFound();
 
     abstract boolean patternIsComplete();
 
-    abstract void appendFoundLexeme();
+    abstract String getLexemeName();
 
-    public String getCurrentToken() {
 
-        return currentToken.toString();
+    public String getCurrentLexeme() {
+
+        return currentLexeme.toString();
     }
 
     public void consumeCharacterFromQueue() {
 
         Character ch = characterDeque.removeFirst();
 
-        currentToken.append(ch);
+        currentLexeme.append(ch);
 
         if (!patternIsFound()) {
             passUnusedCharacters();
             completeCycle();
-            clearToken();
+            clearCurrentLexeme();
         } else {
             log.debug("{} has consumed char: {}", this.getClass().getSimpleName(), ch);
             log.debug("Char queue: size = {} {}", characterDeque.size(), characterDeque);
         }
 
         if (patternIsComplete()) {
-            appendFoundLexeme();
+            appendCompletedToken();
             completeCycle();
-            clearToken();
+            clearCurrentLexeme();
         }
-
     }
 
     public void consumeCharactersFromQueue() {
@@ -61,6 +62,13 @@ public abstract class Tokenizer {
             consumeCharacterFromQueue();
         }
         startNewCycle();
+    }
+
+    protected void appendCompletedToken() {
+
+        completedTokens.add(
+                new DefaultToken(getLexemeName(), getCurrentLexeme().trim())
+        );
     }
 
     private void completeCycle() {
@@ -75,8 +83,8 @@ public abstract class Tokenizer {
 
     protected void passUnusedCharacters() {
 
-        for (int i = currentToken.toString().toCharArray().length - 1; i >= 0; i--) {
-            char ch = currentToken.toString().toCharArray()[i];
+        for (int i = currentLexeme.toString().toCharArray().length - 1; i >= 0; i--) {
+            char ch = currentLexeme.toString().toCharArray()[i];
             characterDeque.addFirst(ch);
             log.debug("{} has passed unused char: {}", this.getClass().getSimpleName(), ch);
             log.debug("Char queue: size = {} {}", characterDeque.size(), characterDeque);
@@ -84,9 +92,9 @@ public abstract class Tokenizer {
 
     }
 
-    private void clearToken() {
+    private void clearCurrentLexeme() {
 
-        currentToken.delete(0, currentToken.length());
+        currentLexeme.delete(0, currentLexeme.length());
     }
 
 }

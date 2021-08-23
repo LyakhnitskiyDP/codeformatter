@@ -1,27 +1,27 @@
 package org.codeformatter.formatters;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import org.codeformatter.io.Reader;
+
+import org.codeformatter.formatters.impl.DefaultFormatter;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringReader;
 import org.codeformatter.io.string.StringWriter;
+import org.codeformatter.lexers.ChainedLexer;
+import org.codeformatter.lexers.Lexer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ChainedFormatterTest {
+public class DefaultFormatterTest {
 
-    private ChainedFormatter chainedFormatter;
+    private DefaultFormatter formatter;
 
     @BeforeEach
     public void setUp() {
 
-        chainedFormatter = new ChainedFormatter();
+        formatter = new DefaultFormatter();
     }
 
     @Test
@@ -132,51 +132,20 @@ public class ChainedFormatterTest {
         testFormatter(codeToFormat, expectedCode);
     }
 
-    @Test
-    public void should_format_multiline_comments() {
-
-        String codeToFormat = "aaa bbb { ccc; /* MY COMMENT HERE */ ddd; eee; z (x) { y; } }";
-
-        String expectedCode = """
-                aaa bbb {
-                    ccc;
-                    /* MY COMMENT HERE */
-                    ddd;
-                    eee;
-                    z (x) {
-                        y;
-                    }
-                }
-                """;
-
-        testFormatter(codeToFormat, expectedCode);
-    }
-
     private void testFormatter(String codeToFormat, String expectedCode) {
 
-        Reader reader = new StringReader(codeToFormat);
+        StringBuilder result = new StringBuilder();
+        Writer stringWriter = new StringWriter(result);
 
-        StringBuilder resultStringBuilder = new StringBuilder();
-        Writer writer = new StringWriter(resultStringBuilder);
+        Lexer lexer = new ChainedLexer(new StringReader(codeToFormat));
 
-        chainedFormatter.format(reader, writer);
+        formatter.format(lexer, stringWriter);
 
-        assertThat(resultStringBuilder.toString())
-                  .isEqualToNormalizingNewlines(expectedCode);
-    }
-
-    @Test
-    public void should_throw_exception_on_negative_block_level() {
-
-        assertThatIllegalArgumentException()
-                  .isThrownBy(() -> new Context(null, -2));
-
-        assertThatIllegalStateException()
-                  .isThrownBy(() -> {
-                      Context ctx = new Context(null, 0);
-                      ctx.decreaseBlockLevel();
-                  });
-
+        assertThat(
+                result.toString()
+        ).isEqualToNormalizingNewlines(
+                expectedCode
+        );
     }
 
 }

@@ -1,37 +1,52 @@
 package org.codeformatter.lexers;
 
-import static org.codeformatter.lexers.tokenizers.TokenizerFactory.TokenizerType.FOR_LOOP_TOKENIZER;
-import static org.codeformatter.lexers.tokenizers.TokenizerFactory.TokenizerType.MULTILINE_COMMENT_TOKENIZER;
-import static org.codeformatter.lexers.tokenizers.TokenizerFactory.TokenizerType.SIMPLE_STATEMENT_TOKENIZER;
-import static org.codeformatter.lexers.tokenizers.TokenizerFactory.TokenizerType.SINGLE_LINE_COMMENT_TOKENIZER;
+import static org.codeformatter.tokenizers.TokenizerType.FOR_LOOP_TOKENIZER;
+import static org.codeformatter.tokenizers.TokenizerType.MULTILINE_COMMENT_TOKENIZER;
+import static org.codeformatter.tokenizers.TokenizerType.SIMPLE_STATEMENT_TOKENIZER;
+import static org.codeformatter.tokenizers.TokenizerType.SINGLE_LINE_COMMENT_TOKENIZER;
 
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Queue;
+
+import lombok.RequiredArgsConstructor;
 import org.codeformatter.io.Reader;
-import org.codeformatter.lexers.tokenizers.Tokenizer;
-import org.codeformatter.lexers.tokenizers.TokenizerFactory;
+import org.codeformatter.tokenizers.Tokenizer;
+import org.codeformatter.tokenizers.TokenizerFactory;
 
-
+@RequiredArgsConstructor
 public class ChainedLexer implements Lexer {
 
-    @Override
-    public List<Lexeme> getLexemes(Reader reader) {
+    private final Reader reader;
+    private Tokenizer[] tokenizers;
 
-        Deque<Character> charsToInterpret = new LinkedList<>();
-        List<Lexeme> lexemes = new ArrayList<>();
+    private Deque<Character> charsToInterpret;
+    private Queue<Token> foundTokens;
 
-        TokenizerFactory tokenizerFactory = new TokenizerFactory(charsToInterpret, lexemes);
+    {
+        this.charsToInterpret = new LinkedList<>();
+        this.foundTokens = new LinkedList<>();
 
-        Tokenizer[] tokenizers = {
+        TokenizerFactory tokenizerFactory = new TokenizerFactory(charsToInterpret, foundTokens);
+
+        this.tokenizers = new Tokenizer[] {
                 tokenizerFactory.getTokenizer(FOR_LOOP_TOKENIZER),
                 tokenizerFactory.getTokenizer(MULTILINE_COMMENT_TOKENIZER),
                 tokenizerFactory.getTokenizer(SINGLE_LINE_COMMENT_TOKENIZER),
                 tokenizerFactory.getTokenizer(SIMPLE_STATEMENT_TOKENIZER)
         };
+    }
 
-        while (reader.hasMoreChars()) {
+    @Override
+    public boolean hasMoreTokens() {
+        return reader.hasMoreChars();
+    }
+
+    @Override
+    public Token readToken() {
+
+        System.out.println("SIZE BEFORE: " + foundTokens.size());
+        while (reader.hasMoreChars() && foundTokens.isEmpty()) {
 
             char ch = reader.readChar();
             charsToInterpret.addLast(ch);
@@ -41,6 +56,7 @@ public class ChainedLexer implements Lexer {
             }
         }
 
-        return lexemes;
+        return foundTokens.poll();
     }
+
 }

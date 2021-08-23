@@ -29,14 +29,4 @@ public class StringReader implements Reader {
     public boolean hasMoreChars() {
         return lastReadIndex < content.length();
     }
-
-    @Override
-    public boolean hasNext() {
-        return hasMoreChars();
-    }
-
-    @Override
-    public Character next() {
-        return readChar();
-    }
 }

@@ -1,6 +1,7 @@
-package org.codeformatter.lexers.tokenizers;
+package org.codeformatter.tokenizers;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -22,7 +23,7 @@ public class MultilineCommentTokenizerTest {
     @ValueSource(strings = {"/", "/*", "/* some text", "/* a complete comment */"})
     public void should_recognize_pattern(String pattern) {
 
-        multilineCommentTokenizer.setCurrentToken(new StringBuilder(pattern));
+        multilineCommentTokenizer.setCurrentLexeme(new StringBuilder(pattern));
 
         assertTrue(multilineCommentTokenizer.patternIsFound());
     }
@@ -31,7 +32,7 @@ public class MultilineCommentTokenizerTest {
     @ValueSource(strings = {"/* COMMENT */", "/**/", "/* */"})
     public void should_recognize_pattern_completion(String pattern) {
 
-        multilineCommentTokenizer.setCurrentToken(new StringBuilder(pattern));
+        multilineCommentTokenizer.setCurrentLexeme(new StringBuilder(pattern));
 
         assertTrue(multilineCommentTokenizer.patternIsComplete());
     }

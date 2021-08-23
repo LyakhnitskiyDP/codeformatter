@@ -1,9 +1,9 @@
-package org.codeformatter.lexers.tokenizers;
+package org.codeformatter.tokenizers;
 
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.List;
-import org.codeformatter.lexers.Lexeme;
+import java.util.Queue;
+import org.codeformatter.lexers.Token;
 
 
 public class SimpleStatementTokenizer extends Tokenizer {
@@ -14,9 +14,9 @@ public class SimpleStatementTokenizer extends Tokenizer {
 
     public SimpleStatementTokenizer(
             Deque<Character> characterQueue,
-            List<Lexeme> lexemes) {
+            Queue<Token> completedTokens) {
 
-        super(characterQueue, lexemes);
+        super(characterQueue, completedTokens);
     }
 
 
@@ -26,15 +26,15 @@ public class SimpleStatementTokenizer extends Tokenizer {
     }
 
     @Override
-    void appendFoundLexeme() {
-        getLexemes().add(new Lexeme(LEXEME_TYPE, getCurrentToken()));
+    String getLexemeName() {
+        return LEXEME_TYPE;
     }
 
     @Override
     boolean patternIsComplete() {
 
         return Arrays.stream(lineTerminatingChars)
-                     .anyMatch(terminatingChar -> getCurrentToken().endsWith(terminatingChar));
+                     .anyMatch(terminatingChar -> getCurrentLexeme().endsWith(terminatingChar));
 
     }
 }

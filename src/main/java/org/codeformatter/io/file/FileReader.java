@@ -33,7 +33,6 @@ public class FileReader implements Reader, Closable {
             log.error("IOException while reading file: {}", pathToFile.toString());
             throw new ReaderException("Unable to read from file", ioException);
         }
-
     }
 
     @Override
@@ -44,7 +43,6 @@ public class FileReader implements Reader, Closable {
         } catch (IOException ioException) {
             throw new CloseException("Exception while file closing", ioException);
         }
-
     }
 
     @Override
@@ -80,13 +78,4 @@ public class FileReader implements Reader, Closable {
         return intCh == -1;
     }
 
-    @Override
-    public boolean hasNext() {
-        return hasMoreChars();
-    }
-
-    @Override
-    public Character next() {
-        return readChar();
-    }
 }

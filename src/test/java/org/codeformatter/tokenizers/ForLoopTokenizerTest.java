@@ -1,10 +1,10 @@
-package org.codeformatter.lexers.tokenizers;
+package org.codeformatter.tokenizers;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -23,7 +23,7 @@ public class ForLoopTokenizerTest {
     @ValueSource(strings = {"f", "fo", "for", "for ", "for (", "for (i", "for (int i = 0;"})
     public void pattern_should_be_recognized(String pattern) {
 
-        forLoopTokenizer.setCurrentToken(new StringBuilder(pattern));
+        forLoopTokenizer.setCurrentLexeme(new StringBuilder(pattern));
 
         assertTrue(forLoopTokenizer.patternIsFound());
     }
@@ -36,7 +36,7 @@ public class ForLoopTokenizerTest {
     })
     public void should_recognize_pattern_completion(String pattern) {
 
-        forLoopTokenizer.setCurrentToken(new StringBuilder(pattern));
+        forLoopTokenizer.setCurrentLexeme(new StringBuilder(pattern));
 
         assertTrue(forLoopTokenizer.patternIsComplete());
     }
