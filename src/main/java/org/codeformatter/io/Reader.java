@@ -1,6 +1,6 @@
 package org.codeformatter.io;
 
-public interface Reader {
+public interface Reader extends Closable {
 
     char readChar();
 

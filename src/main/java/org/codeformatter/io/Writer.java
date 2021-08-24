@@ -1,6 +1,6 @@
 package org.codeformatter.io;
 
-public interface Writer {
+public interface Writer extends Closable {
 
     void writeChar(char ch);
 

@@ -6,6 +6,8 @@ import org.codeformatter.exceptions.FormatterException;
 import org.codeformatter.exceptions.ReaderException;
 import org.codeformatter.exceptions.WriterException;
 import org.codeformatter.formatters.impl.DefaultFormatter;
+import org.codeformatter.io.Reader;
+import org.codeformatter.io.Writer;
 import org.codeformatter.io.file.FileReader;
 import org.codeformatter.io.file.FileWriter;
 import org.codeformatter.lexers.ChainedLexer;
@@ -23,8 +25,8 @@ public class Main {
         DefaultFormatter formatter = new DefaultFormatter();
 
         try (
-                FileReader fileReader = new FileReader(Path.of(args[0]));
-                FileWriter fileWriter = new FileWriter(Path.of(args[1]))
+                Reader fileReader = new FileReader(Path.of(args[0]));
+                Writer fileWriter = new FileWriter(Path.of(args[1]))
         ) {
 
             ChainedLexer lexer = new ChainedLexer(fileReader);
