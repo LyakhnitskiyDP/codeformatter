@@ -16,11 +16,6 @@ import java.util.List;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class ChainedLexerTest {
 
-
-    public void setup() {
-
-    }
-
     @Test
     public void should_distinguish_for_loop_statement() {
 
