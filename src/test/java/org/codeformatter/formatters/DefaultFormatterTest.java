@@ -6,8 +6,8 @@ import org.codeformatter.formatters.impl.DefaultFormatter;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringReader;
 import org.codeformatter.io.string.StringWriter;
-import org.codeformatter.lexers.ChainedLexer;
 import org.codeformatter.lexers.Lexer;
+import org.codeformatter.lexers.impl.StateMachineLexer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -25,6 +25,34 @@ public class DefaultFormatterTest {
     }
 
     @Test
+    public void should_format_string_literals() {
+
+        String codeToFormat = "String myString = \"it's string { still string }\";";
+
+        String expectedCode =
+                """
+                String myString = "it's string { still string }";
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
+    @Test
+    public void should_format_multiline_comments() {
+
+        String codeToFormat = "methodCall(); /*Comment { } ;;;*/ anotherMethodCall();";
+
+        String expectedCode =
+                """
+                methodCall();
+                /*Comment { } ;;;*/
+                anotherMethodCall();
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
+    @Test
     public void should_format_complex_structure() {
 
         String codeToFormat = "if (blabla == null) { return 1; if (...) { if (...) { something; } } }";
@@ -32,7 +60,7 @@ public class DefaultFormatterTest {
         String expectedCode =
                 """
                 if (blabla == null) {
-                    return 1; 
+                    return 1;
                     if (...) {
                         if (...) {
                             something;
@@ -68,7 +96,7 @@ public class DefaultFormatterTest {
         String expectedCode = """
                 ooo (ppp) {
                     www;
-                } 
+                }
                 zzz (xxx) {
                     qqq;
                 }
@@ -120,7 +148,7 @@ public class DefaultFormatterTest {
 
         String expectedCode = """
                 a (b) {
-                    if (something) { 
+                    if (something) {
                         theSomethingElse; 
                     }
                     for (int i = 0; i < x; i++) {
@@ -137,7 +165,7 @@ public class DefaultFormatterTest {
         StringBuilder result = new StringBuilder();
         Writer stringWriter = new StringWriter(result);
 
-        Lexer lexer = new ChainedLexer(new StringReader(codeToFormat));
+        Lexer lexer = new StateMachineLexer(new StringReader(codeToFormat));
 
         formatter.format(lexer, stringWriter);
 

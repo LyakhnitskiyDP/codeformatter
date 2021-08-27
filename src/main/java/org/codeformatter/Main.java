@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.exceptions.FormatterException;
 import org.codeformatter.exceptions.ReaderException;
 import org.codeformatter.exceptions.WriterException;
+import org.codeformatter.formatters.Formatter;
 import org.codeformatter.formatters.impl.DefaultFormatter;
+import org.codeformatter.formatters.impl.StateMachineFormatter;
 import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.file.FileReader;
 import org.codeformatter.io.file.FileWriter;
-import org.codeformatter.lexers.ChainedLexer;
+import org.codeformatter.lexers.Lexer;
+import org.codeformatter.lexers.impl.StateMachineLexer;
 
 @Slf4j
 public class Main {
@@ -22,14 +25,14 @@ public class Main {
     }
 
     private static void runFormatter(String[] args) throws FormatterException {
-        DefaultFormatter formatter = new DefaultFormatter();
+        Formatter formatter = new DefaultFormatter();
 
         try (
-                Reader fileReader = new FileReader(Path.of(args[0]));
-                Writer fileWriter = new FileWriter(Path.of(args[1]))
+                Reader fileReader = new FileReader(args[0]);
+                Writer fileWriter = new FileWriter(args[1])
         ) {
 
-            ChainedLexer lexer = new ChainedLexer(fileReader);
+            Lexer lexer = new StateMachineLexer(fileReader);
 
             formatter.format(lexer, fileWriter);
 

@@ -18,10 +18,10 @@ public class FileReader implements Reader, Closable {
 
     private int currentIntChar;
 
-    public FileReader(Path pathToFile) throws ReaderException {
+    public FileReader(String pathToFile) throws ReaderException {
 
         try {
-            FileInputStream fileInputStream = new FileInputStream(pathToFile.toFile());
+            FileInputStream fileInputStream = new FileInputStream(Path.of(pathToFile).toFile());
             this.inputStreamReader = new InputStreamReader(fileInputStream);
 
             readNextChar();

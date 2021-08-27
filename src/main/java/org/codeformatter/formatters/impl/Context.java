@@ -1,4 +1,4 @@
-package org.codeformatter.formatters;
+package org.codeformatter.formatters.impl;
 
 import lombok.Getter;
 

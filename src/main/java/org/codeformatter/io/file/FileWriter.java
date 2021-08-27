@@ -14,10 +14,10 @@ public class FileWriter implements Writer, Closable {
     private final java.io.FileWriter fileWriter;
     private final BufferedWriter bufferedWriter;
 
-    public FileWriter(Path pathToFile) throws WriterException {
+    public FileWriter(String pathToFile) throws WriterException {
 
         try {
-            fileWriter = new java.io.FileWriter(pathToFile.toFile());
+            fileWriter = new java.io.FileWriter(Path.of(pathToFile).toFile());
         } catch (IOException ioException) {
             throw new WriterException("Unable to open file writer", ioException);
         }

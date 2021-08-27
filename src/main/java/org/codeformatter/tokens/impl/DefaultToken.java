@@ -1,16 +1,18 @@
-package org.codeformatter.lexers;
+package org.codeformatter.tokens.impl;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.codeformatter.tokens.Token;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class DefaultToken implements Token {
 
-    private final String name;
+    private String name;
 
-    private final String lexeme;
+    private String lexeme;
 
     @Override
     public String getName() {

@@ -1,4 +1,4 @@
-package org.codeformatter.lexers;
+package org.codeformatter.tokens;
 
 public interface Token {
 

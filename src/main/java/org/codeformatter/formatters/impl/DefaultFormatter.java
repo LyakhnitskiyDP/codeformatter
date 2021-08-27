@@ -1,10 +1,9 @@
 package org.codeformatter.formatters.impl;
 
-import org.codeformatter.formatters.Context;
 import org.codeformatter.formatters.Formatter;
 import org.codeformatter.io.Writer;
 import org.codeformatter.lexers.Lexer;
-import org.codeformatter.lexers.Token;
+import org.codeformatter.tokens.Token;
 import org.codeformatter.utils.StringUtil;
 
 public class DefaultFormatter implements Formatter {

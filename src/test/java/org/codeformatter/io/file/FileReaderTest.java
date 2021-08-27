@@ -21,7 +21,7 @@ public class FileReaderTest {
     @BeforeEach
     public void setup() throws FileNotFoundException {
 
-        this.fileReader = new FileReader(Path.of(relativePathToTestFile));
+        this.fileReader = new FileReader(relativePathToTestFile);
     }
 
     @Test
