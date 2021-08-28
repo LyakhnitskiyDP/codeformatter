@@ -29,7 +29,7 @@ public class StateMachineFormatter implements Formatter {
 
             char lastChar = token.getLexeme().charAt(token.getLexeme().length() - 1);
             contextTransitions.getOrDefault(lastChar, ctx -> {})
-                    .accept(context);
+                              .accept(context);
         }
 
     }

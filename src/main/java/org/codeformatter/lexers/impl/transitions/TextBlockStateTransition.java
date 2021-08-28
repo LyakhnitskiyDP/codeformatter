@@ -23,7 +23,7 @@ public class TextBlockStateTransition extends StateTransition {
         };
     }
 
-    private boolean textBlockIsEnded(Token token) {
+    boolean textBlockIsEnded(Token token) {
 
 
         return token.getLexeme().length() >= 6 && token.getLexeme().endsWith(TRIPLE_QUOTES);

@@ -6,5 +6,4 @@ public class StringUtil {
 
         return " ".repeat(indentation) + content.trim();
     }
-
 }

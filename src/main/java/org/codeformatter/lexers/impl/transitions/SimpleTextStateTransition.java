@@ -1,6 +1,5 @@
 package org.codeformatter.lexers.impl.transitions;
 
-
 import static java.util.Arrays.stream;
 import static org.codeformatter.lexers.impl.State.StateName.FOR_LOOP;
 import static org.codeformatter.lexers.impl.State.StateName.MULTILINE_COMMENT;
@@ -50,7 +49,7 @@ public class SimpleTextStateTransition extends StateTransition {
         };
     }
 
-    private static boolean endsWithLineTerminatingChar(Token token) {
+    static boolean endsWithLineTerminatingChar(Token token) {
 
         return stream(lineTerminatingChars)
                 .anyMatch(terminator -> token.getLexeme().endsWith(terminator));

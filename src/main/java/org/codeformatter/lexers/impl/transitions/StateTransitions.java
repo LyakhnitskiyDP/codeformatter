@@ -32,11 +32,6 @@ public class StateTransitions {
 
     public State nextState(State currentState, Token currentToken) {
 
-        System.out.println("^^^^^^^^^");
-        System.out.println(currentState.getName().toString());
-        System.out.println(currentToken.getLexeme());
-        System.out.println("_________");
-
         return transitions.get(currentState)
                           .apply(currentToken);
     }
