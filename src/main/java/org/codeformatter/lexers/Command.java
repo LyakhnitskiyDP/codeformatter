@@ -2,6 +2,6 @@ package org.codeformatter.lexers;
 
 public interface Command {
 
-    void execute();
+    void execute(Context context);
 
 }

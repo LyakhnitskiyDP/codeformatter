@@ -1,22 +1,13 @@
 package org.codeformatter.lexers.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor(staticName = "of")
+@Value(staticConstructor = "of")
 public class State {
 
-    private StateName name;
+    public static final String INITIAL = "initial";
+    public static final String TERMINATED = "terminated";
 
-    public enum StateName {
-        INITIAL,
-        SIMPLE_TEXT,
-        FOR_LOOP,
-        SINGLE_LINE_COMMENT,
-        MULTILINE_COMMENT,
-        STRING_LITERAL,
-        TEXT_BLOCK,
-        TERMINATED
-    }
+    String state;
+
 }

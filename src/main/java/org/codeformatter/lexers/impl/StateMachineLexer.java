@@ -1,51 +1,74 @@
 package org.codeformatter.lexers.impl;
 
-import static org.codeformatter.lexers.impl.State.StateName.INITIAL;
-import static org.codeformatter.lexers.impl.State.StateName.TERMINATED;
-
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.io.Reader;
+import org.codeformatter.io.Writer;
+import org.codeformatter.io.string.StringBuilderReader;
+import org.codeformatter.io.string.StringWriter;
+import org.codeformatter.lexers.Command;
+import org.codeformatter.lexers.CommandRepository;
+import org.codeformatter.lexers.Context;
 import org.codeformatter.lexers.Lexer;
+import org.codeformatter.lexers.StateTransitions;
+import org.codeformatter.lexers.TokenBuilder;
 import org.codeformatter.tokens.Token;
-import org.codeformatter.tokens.impl.DefaultToken;
 
-@RequiredArgsConstructor
 @Slf4j
 public class StateMachineLexer implements Lexer {
 
-    private final Reader reader;
+    private Writer postponeWriter;
+    private Reader postponeReader;
 
-    @Override
-    public Token readToken() {
+    private CommandRepository commandRepository = new DefaultCommandRepository();
+    private StateTransitions stateTransitions = new DefaultStateTransitions();
+    private Context lexerContext = new LexerContext();
 
-        final State state = State.of(INITIAL);
-        Token token = new DefaultToken(INITIAL.name(), "");
+    private Reader reader;
 
-        final CommandFactory commandFactory = new CommandFactory(state);
+    public StateMachineLexer(Reader reader) {
+        this.reader = reader;
 
-        while (reader.hasMoreChars() && ! stateIsTerminated(state)) {
+        StringBuilder postponeBuffer = new StringBuilder();
+        postponeWriter = new StringWriter(postponeBuffer);
+        postponeReader = new StringBuilderReader(postponeBuffer);
+    }
 
-            char ch = reader.readChar();
-            token = new DefaultToken(
-                    state.getName().toString(),
-                    token.getLexeme() + ch
-            );
+    public Token nextToken() {
 
-            log.debug("State before change is: {}", state.getName());
-            log.debug("Current token is: {}", token.getLexeme().replaceAll(System.lineSeparator(), "").trim());
+        State state = State.of(State.INITIAL);
 
-            commandFactory.getCommend(token).execute();
-
-            log.debug("State after change is: {}", state.getName());
-            log.debug("*********************************");
+        while (postponeReader.hasMoreChars() && !stateIsTerminated(state)) {
+            state = makeStep(state, postponeReader);
         }
 
-        return token;
+        while (reader.hasMoreChars() && !stateIsTerminated(state)) {
+            state = makeStep(state, reader);
+        }
+
+        return buildToken();
     }
 
     private boolean stateIsTerminated(State state) {
-        return state.getName().equals(TERMINATED);
+
+        return state.getState().equals(State.TERMINATED);
+    }
+
+    private State makeStep(State state, Reader reader) {
+        char ch = reader.readChar();
+
+        log.debug("Lexer state before: {} current char: {}", state, ch);
+        Command command = commandRepository.getCommand(state, ch);
+        command.execute(lexerContext);
+
+        State stateToReturn = stateTransitions.nextState(state, ch);
+
+        log.debug("Lexer state after: {}", stateToReturn);
+        return stateToReturn;
+    }
+
+    private Token buildToken() {
+
+        return lexerContext.completeToken();
     }
 
     @Override
@@ -53,4 +76,41 @@ public class StateMachineLexer implements Lexer {
         return reader.hasMoreChars();
     }
 
+    @Override
+    public Token readToken() {
+        return nextToken();
+    }
+
+    private class LexerContext implements Context {
+
+        private TokenBuilder tokenBuilder = new TokenBuilder();
+
+        @Override
+        public void appendLexeme(char ch) {
+
+            tokenBuilder.appendLexeme(ch);
+        }
+
+        @Override
+        public void appendLexemePostpone(char ch) {
+
+            postponeWriter.writeChar(ch);
+        }
+
+        @Override
+        public void setTokenName(String name) {
+
+            tokenBuilder.setName(name);
+        }
+
+        @Override
+        public Token completeToken() {
+
+            Token tokenToReturn = tokenBuilder.getToken();
+
+            this.tokenBuilder = new TokenBuilder();
+
+            return tokenToReturn;
+        }
+    }
 }

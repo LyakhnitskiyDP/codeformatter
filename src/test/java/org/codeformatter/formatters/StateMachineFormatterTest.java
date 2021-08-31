@@ -1,8 +1,6 @@
 package org.codeformatter.formatters;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.codeformatter.formatters.impl.DefaultFormatter;
+import org.codeformatter.formatters.impl.StateMachineFormatter;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringReader;
 import org.codeformatter.io.string.StringWriter;
@@ -13,15 +11,17 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class DefaultFormatterTest {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    private DefaultFormatter formatter;
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+public class StateMachineFormatterTest {
+
+    private Formatter formatter;
 
     @BeforeEach
     public void setUp() {
 
-        formatter = new DefaultFormatter();
+        formatter = new StateMachineFormatter();
     }
 
     @Test
@@ -135,7 +135,7 @@ public class DefaultFormatterTest {
                     c;
                     for (int i = 0; i < x; i++) {
                         doSomethingCool();
-                    } 
+                    }
                 }
                 """;
 

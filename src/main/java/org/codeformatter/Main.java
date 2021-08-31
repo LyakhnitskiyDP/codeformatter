@@ -1,12 +1,10 @@
 package org.codeformatter;
 
-import java.nio.file.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.exceptions.FormatterException;
 import org.codeformatter.exceptions.ReaderException;
 import org.codeformatter.exceptions.WriterException;
 import org.codeformatter.formatters.Formatter;
-import org.codeformatter.formatters.impl.DefaultFormatter;
 import org.codeformatter.formatters.impl.StateMachineFormatter;
 import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
@@ -25,7 +23,7 @@ public class Main {
     }
 
     private static void runFormatter(String[] args) throws FormatterException {
-        Formatter formatter = new DefaultFormatter();
+        Formatter formatter = new StateMachineFormatter();
 
         try (
                 Reader fileReader = new FileReader(args[0]);
@@ -35,6 +33,8 @@ public class Main {
             Lexer lexer = new StateMachineLexer(fileReader);
 
             formatter.format(lexer, fileWriter);
+
+
 
         } catch (ReaderException readerException) {
             log.error("Unable to create file reader", readerException);
