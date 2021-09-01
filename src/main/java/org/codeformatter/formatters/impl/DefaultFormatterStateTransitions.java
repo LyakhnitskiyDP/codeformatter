@@ -1,12 +1,12 @@
 package org.codeformatter.formatters.impl;
 
+import static org.codeformatter.tokens.LexicalConstants.*;
 import static org.codeformatter.formatters.impl.FormatterState.*;
 
 import org.codeformatter.formatters.FormatterStateTransitions;
 import org.codeformatter.tokens.Token;
 
 import java.util.Map;
-
 
 public class DefaultFormatterStateTransitions implements FormatterStateTransitions {
 
@@ -26,26 +26,26 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
         );
 
         initialStateTransitions = Map.of(
-                "Char", FormatterState.of(WRITING_LINE),
-                "Whitespace", FormatterState.of(INITIAL),
-                "Line separator", FormatterState.of(INITIAL),
-                "Semicolon", FormatterState.of(INITIAL),
-                "Opening Curly Bracket", FormatterState.of(INITIAL),
-                "Closing Curly Bracket", FormatterState.of(INITIAL),
-                "Quotes", FormatterState.of(WRITING_STRING_LITERAL),
-                "Slash", FormatterState.of(MULTILINE_COMMENT_START_1)
+                CHAR, FormatterState.of(WRITING_LINE),
+                WHITE_SPACE, FormatterState.of(INITIAL),
+                LINE_SEPARATOR, FormatterState.of(INITIAL),
+                SEMICOLON, FormatterState.of(INITIAL),
+                OPENING_CURLY_BRACKET, FormatterState.of(INITIAL),
+                CLOSING_CURLY_BRACKET, FormatterState.of(INITIAL),
+                QUOTES, FormatterState.of(WRITING_STRING_LITERAL),
+                SLASH, FormatterState.of(MULTILINE_COMMENT_START_1)
         );
 
         writingLineStateTransitions = Map.of(
-                "Semicolon", FormatterState.of(INITIAL),
-                "Opening Curly Bracket", FormatterState.of(INITIAL),
-                "Closing Curly Bracket", FormatterState.of(INITIAL),
-                "Quotes", FormatterState.of(WRITING_STRING_LITERAL),
-                "Slash", FormatterState.of(MULTILINE_COMMENT_START_1)
+                SEMICOLON, FormatterState.of(INITIAL),
+                OPENING_CURLY_BRACKET, FormatterState.of(INITIAL),
+                CLOSING_CURLY_BRACKET, FormatterState.of(INITIAL),
+                QUOTES, FormatterState.of(WRITING_STRING_LITERAL),
+                SLASH, FormatterState.of(MULTILINE_COMMENT_START_1)
         );
 
         writingStringLiteralStateTransitions = Map.of(
-                "Quotes", FormatterState.of(WRITING_LINE)
+                QUOTES, FormatterState.of(WRITING_LINE)
         );
 
         transitionMaps = Map.of(
@@ -71,7 +71,6 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
 
         return getTransitionsForState(state)
                 .getOrDefault(token.getName(), getDefaultStateTransitionFor(state));
-
     }
 
 }

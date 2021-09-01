@@ -1,20 +1,16 @@
 package org.codeformatter.lexers.impl;
 
-import org.codeformatter.collections.Pair;
-import org.codeformatter.lexers.Lexer;
+import static org.codeformatter.tokens.LexicalConstants.*;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
-import org.codeformatter.lexers.LexerContext;
 
-import java.util.HashMap;
+import java.awt.desktop.QuitEvent;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
-    private static final String defaultTokenName = "Char";
-
+    private static final String defaultTokenName = CHAR;
 
     private static final Map<LexerState, Map<Character, LexerCommand>> commandMaps;
 
@@ -30,43 +26,45 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
         defaultCommands = Map.of(
                 LexerState.of(LexerState.INITIAL), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(defaultTokenName); },
-                LexerState.of(LexerState.FOR), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("for"); },
-                LexerState.of(LexerState.FOR_1), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); },
-                LexerState.of(LexerState.FOR_2), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); },
-                LexerState.of(LexerState.FOR_3), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); }
+                LexerState.of(LexerState.FOR), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(FOR_LOOP); },
+                LexerState.of(LexerState.FOR_1), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); },
+                LexerState.of(LexerState.FOR_2), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); },
+                LexerState.of(LexerState.FOR_3), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); }
                 );
 
-        char specialChar = (char) 13;
+        //CARRIAGE RETURN (CR) (U+000D)
+        char carriageReturnChar = (char) 13;
+
         initialStateCommands = Map.of(
-            ' ', (context) -> { context.appendLexeme(' '); context.setTokenName("Whitespace"); },
-            ';', (context) -> { context.appendLexeme(';'); context.setTokenName("Semicolon"); },
-            '{', (context) -> { context.appendLexeme('{'); context.setTokenName("Opening Curly Bracket"); },
-            '}', (context) -> { context.appendLexeme('}'); context.setTokenName("Closing Curly Bracket"); },
-            '/', (context) -> { context.appendLexeme('/'); context.setTokenName("Slash"); },
-            '\n', (context) -> { context.appendLexeme('\n'); context.setTokenName("Line separator"); },
-            specialChar, (context) -> { context.appendLexeme('\n'); context.setTokenName("Line separator"); },
-            'f', (context) -> { context.appendLexeme('f'); context.setTokenName("for"); },
-            '*', (context) -> { context.appendLexeme('*'); context.setTokenName("Star"); },
-            '\"', (context) -> { context.appendLexeme('\"'); context.setTokenName("Quotes"); }
+            ' ', (context) -> { context.appendLexeme(' '); context.setTokenName(WHITE_SPACE); },
+            ';', (context) -> { context.appendLexeme(';'); context.setTokenName(SEMICOLON); },
+            '{', (context) -> { context.appendLexeme('{'); context.setTokenName(OPENING_CURLY_BRACKET); },
+            '}', (context) -> { context.appendLexeme('}'); context.setTokenName(CLOSING_CURLY_BRACKET); },
+            '/', (context) -> { context.appendLexeme('/'); context.setTokenName(SLASH); },
+            '\n', (context) -> { context.appendLexeme('\n'); context.setTokenName(LINE_SEPARATOR); },
+            carriageReturnChar, (context) -> { context.appendLexeme('\n'); context.setTokenName(LINE_SEPARATOR); },
+            'f', (context) -> { context.appendLexeme('f'); context.setTokenName(FOR_LOOP); },
+            '*', (context) -> { context.appendLexeme('*'); context.setTokenName(STAR); },
+            '\"', (context) -> { context.appendLexeme('\"'); context.setTokenName(QUOTES); }
         );
 
         for1StateCommands = Map.of(
-            'o', (context) -> { context.appendLexeme('o'); context.setTokenName("for"); },
-                ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
+            'o', (context) -> { context.appendLexeme('o'); context.setTokenName(FOR_LOOP); },
+                ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName(CHAR); }
         );
 
         for2StateCommands = Map.of(
-            'r', (context) -> { context.appendLexeme('r'); context.setTokenName("for"); },
-            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
+            'r', (context) -> { context.appendLexeme('r'); context.setTokenName(FOR_LOOP); },
+            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName(CHAR); }
         );
 
         for3StateCommands = Map.of(
-            ' ', (context) -> { context.appendLexeme(' '); context.setTokenName("for"); },
-            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
+            ' ', (context) -> { context.appendLexeme(' '); context.setTokenName(FOR_LOOP); },
+            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName(CHAR); }
         );
 
         forStateCommands = Map.of(
-            ')', (context) -> { context.appendLexeme(')'); context.setTokenName("for"); }
+            ')', (context) -> { context.appendLexeme(')'); context.setTokenName(FOR_LOOP); }
         );
 
         commandMaps = Map.of(

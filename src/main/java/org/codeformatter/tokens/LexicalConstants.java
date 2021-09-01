@@ -7,6 +7,8 @@ public class LexicalConstants {
     public static final String LINE_SEPARATOR = "Line separator";
     public static final String CHAR = "Char";
     public static final String QUOTES = "Quotes";
+    public static final String STAR = "Star";
+    public static final String SLASH = "Slash";
     public static final String TRIPLE_QUOTES = "Triple quotes";
     public static final String MULTILINE_COMMENT_START = "Multiline comment start (/*)";
     public static final String MULTILINE_COMMENT_END = "Multiline comment end (*/)";
