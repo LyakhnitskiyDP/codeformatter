@@ -6,7 +6,9 @@ public UserLoginResponse loginUser(UserLoginRequest request) throws BadRequestEx
     }
     String codeBlockThatShouldNotBeFormatted = "a (b) { c; d; e; }";
     String token = tokenService.getToken(user);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0;
+    i < count;
+    i++) {
         counter++;
     }
     response.addHeader(SET_AUTH_HEADER_STRING, token);
