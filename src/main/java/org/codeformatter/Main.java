@@ -42,8 +42,6 @@ public class Main {
 
             formatter.format(lexer, fileWriter);
 
-
-
         } catch (ReaderException readerException) {
             log.error("Unable to create file reader", readerException);
             throw new FormatterException("Unable to create file reader", readerException);

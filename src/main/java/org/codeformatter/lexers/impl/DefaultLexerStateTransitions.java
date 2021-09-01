@@ -23,11 +23,11 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
         initialStateTransitions = Map.of(
             ' ', LexerState.of(TERMINATED),
             ';', LexerState.of(TERMINATED),
-            'f', LexerState.of("for_1")
+            'f', LexerState.of(FOR_1)
         );
 
-        forLoop1StateTransitions = Map.of('o', LexerState.of(FOR_1));
-        forLoop2StateTransitions = Map.of('r', LexerState.of(FOR_2));
+        forLoop1StateTransitions = Map.of('o', LexerState.of(FOR_2));
+        forLoop2StateTransitions = Map.of('r', LexerState.of(FOR_3));
         forLoop3StateTransitions = Map.of(' ', LexerState.of(FOR));
         forLoopStateTransitions = Map.of(')', LexerState.of(TERMINATED));
 
