@@ -5,9 +5,9 @@ import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringBuilderReader;
 import org.codeformatter.io.string.StringWriter;
+import org.codeformatter.lexers.Lexer;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
-import org.codeformatter.lexers.Lexer;
 import org.codeformatter.lexers.LexerStateTransitions;
 import org.codeformatter.lexers.TokenBuilder;
 import org.codeformatter.tokens.Token;
@@ -36,20 +36,20 @@ public class StateMachineLexer implements Lexer {
 
         LexerState lexerState = LexerState.of(LexerState.INITIAL);
 
-        while (postponeReader.hasMoreChars() && !stateIsTerminated(lexerState)) {
+        while (postponeReader.hasMoreChars() && stateIsNotTerminated(lexerState)) {
             lexerState = makeStep(lexerState, postponeReader);
         }
 
-        while (reader.hasMoreChars() && !stateIsTerminated(lexerState)) {
+        while (reader.hasMoreChars() && stateIsNotTerminated(lexerState)) {
             lexerState = makeStep(lexerState, reader);
         }
 
         return buildToken();
     }
 
-    private boolean stateIsTerminated(LexerState lexerState) {
+    private boolean stateIsNotTerminated(LexerState lexerState) {
 
-        return lexerState.getState().equals(LexerState.TERMINATED);
+        return ! lexerState.getState().equals(LexerState.TERMINATED);
     }
 
     private LexerState makeStep(LexerState lexerState, Reader reader) {

@@ -1,12 +1,23 @@
 package org.codeformatter.formatters.impl;
 
-import static org.codeformatter.tokens.LexicalConstants.*;
-import static org.codeformatter.formatters.impl.FormatterState.*;
-
-import org.codeformatter.formatters.FormatterStateTransitions;
-import org.codeformatter.tokens.Token;
+import static org.codeformatter.formatters.impl.FormatterState.INITIAL;
+import static org.codeformatter.formatters.impl.FormatterState.MULTILINE_COMMENT_START_1;
+import static org.codeformatter.formatters.impl.FormatterState.WRITING_LINE;
+import static org.codeformatter.formatters.impl.FormatterState.WRITING_MULTILINE_COMMENT;
+import static org.codeformatter.formatters.impl.FormatterState.WRITING_STRING_LITERAL;
+import static org.codeformatter.tokens.LexicalConstants.CHAR;
+import static org.codeformatter.tokens.LexicalConstants.CLOSING_CURLY_BRACKET;
+import static org.codeformatter.tokens.LexicalConstants.LINE_SEPARATOR;
+import static org.codeformatter.tokens.LexicalConstants.MULTILINE_COMMENT;
+import static org.codeformatter.tokens.LexicalConstants.OPENING_CURLY_BRACKET;
+import static org.codeformatter.tokens.LexicalConstants.QUOTES;
+import static org.codeformatter.tokens.LexicalConstants.SEMICOLON;
+import static org.codeformatter.tokens.LexicalConstants.SLASH;
+import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 
 import java.util.Map;
+import org.codeformatter.formatters.FormatterStateTransitions;
+import org.codeformatter.tokens.Token;
 
 public class DefaultFormatterStateTransitions implements FormatterStateTransitions {
 

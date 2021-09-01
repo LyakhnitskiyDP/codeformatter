@@ -10,7 +10,7 @@ public class LexicalConstants {
     public static final String STAR = "Star";
     public static final String SLASH = "Slash";
     public static final String TRIPLE_QUOTES = "Triple quotes";
-    public static final String MULTILINE_COMMENT = "Multiline comment";
+    public static final String MULTILINE_COMMENT = "multiline comment";
     public static final String FOR_LOOP = "for";
     public static final String WHITE_SPACE = "Whitespace";
 

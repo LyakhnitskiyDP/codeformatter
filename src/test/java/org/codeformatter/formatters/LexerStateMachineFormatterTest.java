@@ -38,6 +38,28 @@ public class LexerStateMachineFormatterTest {
     }
 
     @Test
+    public void should_not_add_extra_line_separation() {
+
+        String codeToFormat = """
+                a;
+                
+                
+                
+                b;
+                """;
+
+        String expectedCode =
+                """
+                a;
+                b;
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
+
+
+    @Test
     public void should_format_multiline_comments() {
 
         String codeToFormat = "methodCall(); /*Comment { } ;;;*/ anotherMethodCall();";
@@ -128,13 +150,14 @@ public class LexerStateMachineFormatterTest {
     @Test
     public void should_format_for_loop() {
 
-        String codeToFormat = "a (b) { c; for (int i = 0; i < x; i++) { doSomethingCool(); } }";
+        String codeToFormat = "a (b) { int forx = 13; for (int i = 0; i < x; i++) { doSomethingCool(); return forx;} }";
 
         String expectedCode = """
                 a (b) {
-                    c;
+                    int forx = 13;
                     for (int i = 0; i < x; i++) {
                         doSomethingCool();
+                        return forx;
                     }
                 }
                 """;
@@ -149,11 +172,11 @@ public class LexerStateMachineFormatterTest {
         String expectedCode = """
                 a (b) {
                     if (something) {
-                        theSomethingElse; 
+                        theSomethingElse;
                     }
                     for (int i = 0; i < x; i++) {
                         doSomethingCool();
-                    } 
+                    }
                 }
                 """;
 

@@ -1,9 +1,17 @@
 package org.codeformatter.lexers.impl;
 
-import static org.codeformatter.lexers.impl.LexerState.*;
-import org.codeformatter.lexers.LexerStateTransitions;
+import static org.codeformatter.lexers.impl.LexerState.FOR;
+import static org.codeformatter.lexers.impl.LexerState.FOR_1;
+import static org.codeformatter.lexers.impl.LexerState.FOR_2;
+import static org.codeformatter.lexers.impl.LexerState.FOR_3;
+import static org.codeformatter.lexers.impl.LexerState.INITIAL;
+import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
+import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
+import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
+import static org.codeformatter.lexers.impl.LexerState.TERMINATED;
 
 import java.util.Map;
+import org.codeformatter.lexers.LexerStateTransitions;
 
 public class DefaultLexerStateTransitions implements LexerStateTransitions {
 

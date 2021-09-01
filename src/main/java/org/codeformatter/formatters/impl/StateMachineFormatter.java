@@ -44,7 +44,7 @@ public class StateMachineFormatter implements Formatter {
 
     @RequiredArgsConstructor
     private class StateMachineFormatterContext implements FormatterContext {
-        private final int NUMBER_OF_SPACES_PER_TAB = 4;
+        private final int numberOfSpacesPerTab = 4;
 
         private int currentBlockLevel = 0;
 
@@ -71,7 +71,7 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void writeIndent() {
 
-            for (int i = 0; i < currentBlockLevel * NUMBER_OF_SPACES_PER_TAB; i++) {
+            for (int i = 0; i < currentBlockLevel * numberOfSpacesPerTab; i++) {
                 writer.writeChar(' ');
             }
         }
