@@ -18,31 +18,41 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
 
     private static final Map<FormatterState, FormatterCommand> defaultFormatterCommands;
 
+    private static final FormatterCommand indentAndWriteCommand =
+            (token, context) -> {
+                context.writeIndent();
+                context.writeToken(token);
+            };
+
+    private static final FormatterCommand writeTokenCommand =
+            (token, context) -> {
+                context.writeToken(token);
+            };
+
+    private static final FormatterCommand writeTokenAndNewLineCommand =
+            (token, context) -> {
+                context.writeToken(token);
+                context.writeNewLine();
+            };
+
+    private static final FormatterCommand noOpCommand =
+            (token, context) -> {
+
+            };
+
     static {
 
         defaultFormatterCommands = Map.of(
-            FormatterState.of(WRITING_STRING_LITERAL), (commandToken, context) -> { context.writeToken(commandToken); }
+            FormatterState.of(WRITING_STRING_LITERAL), writeTokenCommand
         );
 
         initialStateCommands = Map.of(
-                CHAR, (token, context) -> {
-                    context.writeIndent();
-                    context.writeToken(token);
-                },
-                FOR_LOOP, (token, context) -> {
-                    context.writeIndent();
-                    context.writeToken(token);
-                },
-                WHITE_SPACE, (token, context) -> {
-                    //Intentionally left empty
-                },
-                LINE_SEPARATOR, (token, context) -> {
-                    //Intentionally left empty
-                },
-                SEMICOLON, (token, context) -> {
-                    context.writeToken(token);
-                    context.writeNewLine();
-                },
+                CHAR, indentAndWriteCommand,
+                FOR_LOOP, indentAndWriteCommand,
+                WHITE_SPACE, noOpCommand,
+                LINE_SEPARATOR, noOpCommand,
+                SEMICOLON, writeTokenAndNewLineCommand,
+
                 OPENING_CURLY_BRACKET, (token, context) -> {
                     context.writeToken(token);
                     context.writeNewLine();
@@ -60,22 +70,17 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
         writingStringLiteralStateCommands = Map.of();
 
         writingLineStateCommands = Map.of(
-                CHAR, (token, context) -> { context.writeToken(token); },
+                CHAR, writeTokenCommand,
 
-                QUOTES, (token, context) -> { context.writeToken(token); },
+                QUOTES, writeTokenCommand,
 
-                FOR_LOOP, (token, context) -> { context.writeToken(token); },
+                FOR_LOOP, writeTokenCommand,
 
-                WHITE_SPACE, (token, context) -> { context.writeToken(token); },
+                WHITE_SPACE, writeTokenCommand,
 
-                LINE_SEPARATOR, (token, context) -> {
-                    //Intentionally left empty
-                },
+                LINE_SEPARATOR, noOpCommand,
 
-                SEMICOLON, (token, context) -> {
-                     context.writeToken(token);
-                     context.writeNewLine();
-                },
+                SEMICOLON, writeTokenAndNewLineCommand,
 
                 OPENING_CURLY_BRACKET, (token, context) -> {
                     context.writeToken(token);

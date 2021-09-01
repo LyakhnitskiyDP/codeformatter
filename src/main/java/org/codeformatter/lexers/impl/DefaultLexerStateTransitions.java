@@ -14,7 +14,8 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
             Pair.of(LexerState.of(LexerState.INITIAL), ';'), LexerState.of(LexerState.TERMINATED),
             Pair.of(LexerState.of(LexerState.INITIAL), 'f'), LexerState.of("for_1"),
             Pair.of(LexerState.of("for_1"), 'o'), LexerState.of("for_2"),
-            Pair.of(LexerState.of("for_2"), 'r'), LexerState.of("for"),
+            Pair.of(LexerState.of("for_2"), 'r'), LexerState.of("for_3"),
+            Pair.of(LexerState.of("for_3"), ' '), LexerState.of("for"),
             Pair.of(LexerState.of("for"), ')'), LexerState.of(LexerState.TERMINATED)
     );
 

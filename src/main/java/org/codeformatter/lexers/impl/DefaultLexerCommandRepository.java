@@ -21,6 +21,7 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
     private static final Map<Character, LexerCommand> initialStateCommands;
     private static final Map<Character, LexerCommand> for1StateCommands;
     private static final Map<Character, LexerCommand> for2StateCommands;
+    private static final Map<Character, LexerCommand> for3StateCommands;
     private static final Map<Character, LexerCommand> forStateCommands;
 
     private static final Map<LexerState, Function<Character, LexerCommand>> defaultCommands;
@@ -31,7 +32,8 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
                 LexerState.of(LexerState.INITIAL), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(defaultTokenName); },
                 LexerState.of(LexerState.FOR), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("for"); },
                 LexerState.of(LexerState.FOR_1), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); },
-                LexerState.of(LexerState.FOR_2), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); }
+                LexerState.of(LexerState.FOR_2), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); },
+                LexerState.of(LexerState.FOR_3), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName("Char"); }
                 );
 
         char specialChar = (char) 13;
@@ -50,11 +52,17 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
         for1StateCommands = Map.of(
             'o', (context) -> { context.appendLexeme('o'); context.setTokenName("for"); },
-            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
+                ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
         );
 
         for2StateCommands = Map.of(
-            'r', (context) -> { context.appendLexeme('r'); context.setTokenName("for"); }
+            'r', (context) -> { context.appendLexeme('r'); context.setTokenName("for"); },
+            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
+        );
+
+        for3StateCommands = Map.of(
+            ' ', (context) -> { context.appendLexeme(' '); context.setTokenName("for"); },
+            ';', (context) -> { context.appendLexemePostpone(';'); context.setTokenName("Char"); }
         );
 
         forStateCommands = Map.of(
@@ -65,18 +73,17 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
                 LexerState.of(LexerState.INITIAL), initialStateCommands,
                 LexerState.of(LexerState.FOR_1), for1StateCommands,
                 LexerState.of(LexerState.FOR_2), for2StateCommands,
+                LexerState.of(LexerState.FOR_3), for3StateCommands,
                 LexerState.of(LexerState.FOR), forStateCommands
         );
-
-
     }
-
 
     @Override
     public LexerCommand getCommand(LexerState lexerState, char ch) {
 
 
-        return commandMaps.get(lexerState).getOrDefault(ch, defaultCommands.get(lexerState).apply(ch));
+        return commandMaps.get(lexerState)
+                .getOrDefault(ch, defaultCommands.get(lexerState).apply(ch));
     }
 
 }

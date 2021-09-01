@@ -55,7 +55,7 @@ public class StateMachineLexer implements Lexer {
     private LexerState makeStep(LexerState lexerState, Reader reader) {
         char ch = reader.readChar();
 
-        log.debug("Lexer state before: {} current char: {}", lexerState, (int) ch);
+        log.debug("Lexer state before: {} current char: {}", lexerState, ch);
         LexerCommand lexerCommand = lexerCommandRepository.getCommand(lexerState, ch);
         lexerCommand.execute(lexerContext);
 
