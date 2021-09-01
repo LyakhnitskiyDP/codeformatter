@@ -29,6 +29,7 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
                 CHAR, FormatterState.of(WRITING_LINE),
                 WHITE_SPACE, FormatterState.of(INITIAL),
                 LINE_SEPARATOR, FormatterState.of(INITIAL),
+                MULTILINE_COMMENT, FormatterState.of(INITIAL),
                 SEMICOLON, FormatterState.of(INITIAL),
                 OPENING_CURLY_BRACKET, FormatterState.of(INITIAL),
                 CLOSING_CURLY_BRACKET, FormatterState.of(INITIAL),

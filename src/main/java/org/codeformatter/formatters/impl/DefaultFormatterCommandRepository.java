@@ -49,6 +49,7 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
         initialStateCommands = Map.of(
                 CHAR, indentAndWriteCommand,
                 FOR_LOOP, indentAndWriteCommand,
+                MULTILINE_COMMENT, writeTokenAndNewLineCommand,
                 WHITE_SPACE, noOpCommand,
                 LINE_SEPARATOR, noOpCommand,
                 SEMICOLON, writeTokenAndNewLineCommand,
@@ -75,6 +76,8 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
                 QUOTES, writeTokenCommand,
 
                 FOR_LOOP, writeTokenCommand,
+
+                MULTILINE_COMMENT, writeTokenAndNewLineCommand,
 
                 WHITE_SPACE, writeTokenCommand,
 

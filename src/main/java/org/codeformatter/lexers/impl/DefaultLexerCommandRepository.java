@@ -15,10 +15,15 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
     private static final Map<LexerState, Map<Character, LexerCommand>> commandMaps;
 
     private static final Map<Character, LexerCommand> initialStateCommands;
+
+    private static final Map<Character, LexerCommand> forStateCommands;
     private static final Map<Character, LexerCommand> for1StateCommands;
     private static final Map<Character, LexerCommand> for2StateCommands;
     private static final Map<Character, LexerCommand> for3StateCommands;
-    private static final Map<Character, LexerCommand> forStateCommands;
+
+    private static final Map<Character, LexerCommand> multilineCommentCommands;
+    private static final Map<Character, LexerCommand> multilineCommentStartCommands;
+    private static final Map<Character, LexerCommand> multilineCommentEndCommands;
 
     private static final Map<LexerState, Function<Character, LexerCommand>> defaultCommands;
 
@@ -29,7 +34,10 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
                 LexerState.of(LexerState.FOR), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(FOR_LOOP); },
                 LexerState.of(LexerState.FOR_1), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); },
                 LexerState.of(LexerState.FOR_2), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); },
-                LexerState.of(LexerState.FOR_3), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); }
+                LexerState.of(LexerState.FOR_3), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(CHAR); },
+                LexerState.of(LexerState.MULTILINE_COMMENT), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(MULTILINE_COMMENT); },
+                LexerState.of(LexerState.MULTILINE_COMMENT_END1), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(MULTILINE_COMMENT); },
+                LexerState.of(LexerState.MULTILINE_COMMENT_START1), (ch) -> (lexerContext) -> { lexerContext.appendLexeme(ch); lexerContext.setTokenName(MULTILINE_COMMENT); }
                 );
 
         //CARRIAGE RETURN (CR) (U+000D)
@@ -47,6 +55,10 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
             '*', (context) -> { context.appendLexeme('*'); context.setTokenName(STAR); },
             '\"', (context) -> { context.appendLexeme('\"'); context.setTokenName(QUOTES); }
         );
+
+        multilineCommentCommands = Map.of();
+        multilineCommentEndCommands = Map.of();
+        multilineCommentStartCommands = Map.of();
 
         for1StateCommands = Map.of(
             'o', (context) -> { context.appendLexeme('o'); context.setTokenName(FOR_LOOP); },
@@ -72,7 +84,10 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
                 LexerState.of(LexerState.FOR_1), for1StateCommands,
                 LexerState.of(LexerState.FOR_2), for2StateCommands,
                 LexerState.of(LexerState.FOR_3), for3StateCommands,
-                LexerState.of(LexerState.FOR), forStateCommands
+                LexerState.of(LexerState.FOR), forStateCommands,
+                LexerState.of(LexerState.MULTILINE_COMMENT), multilineCommentCommands,
+                LexerState.of(LexerState.MULTILINE_COMMENT_START1), multilineCommentStartCommands,
+                LexerState.of(LexerState.MULTILINE_COMMENT_END1), multilineCommentEndCommands
         );
     }
 

@@ -12,6 +12,12 @@ public class LexerState {
     public static final String FOR_3 = "for_3";
     public static final String FOR = "for";
 
+    public static final String MULTILINE_COMMENT_START1 = "multiline comment start (/)";
+    public static final String MULTILINE_COMMENT_START2 = "multiline comment start (/*)";
+    public static final String MULTILINE_COMMENT = "multiline comment";
+    public static final String MULTILINE_COMMENT_END1 = "multiline comment end (*)";
+    public static final String MULTILINE_COMMENT_END2 = "multiline comment end (*/)";
+
     String state;
 
 }

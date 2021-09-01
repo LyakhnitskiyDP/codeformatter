@@ -11,10 +11,15 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
 
     private static final Map<LexerState, Map<Character, LexerState>> transitionMaps;
     private static final Map<Character, LexerState> initialStateTransitions;
+
     private static final Map<Character, LexerState> forLoop1StateTransitions;
     private static final Map<Character, LexerState> forLoop2StateTransitions;
     private static final Map<Character, LexerState> forLoop3StateTransitions;
     private static final Map<Character, LexerState> forLoopStateTransitions;
+
+    private static final Map<Character, LexerState> multilineCommentStart1Transitions;
+    private static final Map<Character, LexerState> multilineCommentTransitions;
+    private static final Map<Character, LexerState> multilineCommentEnd1Transitions;
 
     private static final Map<LexerState, LexerState> defaultStateTransitions;
 
@@ -23,6 +28,7 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
         initialStateTransitions = Map.of(
             ' ', LexerState.of(TERMINATED),
             ';', LexerState.of(TERMINATED),
+            '/', LexerState.of(MULTILINE_COMMENT_START1),
             'f', LexerState.of(FOR_1)
         );
 
@@ -31,12 +37,19 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
         forLoop3StateTransitions = Map.of(' ', LexerState.of(FOR));
         forLoopStateTransitions = Map.of(')', LexerState.of(TERMINATED));
 
+        multilineCommentStart1Transitions = Map.of('*', LexerState.of(MULTILINE_COMMENT));
+        multilineCommentTransitions = Map.of('*', LexerState.of(MULTILINE_COMMENT_END1));
+        multilineCommentEnd1Transitions = Map.of('/', LexerState.of(TERMINATED));
+
         transitionMaps = Map.of(
                 LexerState.of(INITIAL), initialStateTransitions,
                 LexerState.of(FOR_1), forLoop1StateTransitions,
                 LexerState.of(FOR_2), forLoop2StateTransitions,
                 LexerState.of(FOR_3), forLoop3StateTransitions,
-                LexerState.of(FOR), forLoopStateTransitions
+                LexerState.of(FOR), forLoopStateTransitions,
+                LexerState.of(MULTILINE_COMMENT), multilineCommentTransitions,
+                LexerState.of(MULTILINE_COMMENT_START1), multilineCommentStart1Transitions,
+                LexerState.of(MULTILINE_COMMENT_END1), multilineCommentEnd1Transitions
         );
 
         defaultStateTransitions = Map.of(
@@ -44,7 +57,10 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
                 LexerState.of(FOR), LexerState.of(FOR),
                 LexerState.of(FOR_1), LexerState.of(TERMINATED),
                 LexerState.of(FOR_2), LexerState.of(TERMINATED),
-                LexerState.of(FOR_3), LexerState.of(TERMINATED)
+                LexerState.of(FOR_3), LexerState.of(TERMINATED),
+                LexerState.of(MULTILINE_COMMENT), LexerState.of(MULTILINE_COMMENT),
+                LexerState.of(MULTILINE_COMMENT_START1), LexerState.of(INITIAL),
+                LexerState.of(MULTILINE_COMMENT_END1), LexerState.of(MULTILINE_COMMENT)
         );
 
     }
