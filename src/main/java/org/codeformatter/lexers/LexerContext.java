@@ -2,7 +2,7 @@ package org.codeformatter.lexers;
 
 import org.codeformatter.tokens.Token;
 
-public interface Context {
+public interface LexerContext {
 
     void appendLexeme(char ch);
 

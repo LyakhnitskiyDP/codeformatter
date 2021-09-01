@@ -5,11 +5,10 @@ import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringBuilderReader;
 import org.codeformatter.io.string.StringWriter;
-import org.codeformatter.lexers.Command;
-import org.codeformatter.lexers.CommandRepository;
-import org.codeformatter.lexers.Context;
+import org.codeformatter.lexers.LexerCommand;
+import org.codeformatter.lexers.LexerCommandRepository;
 import org.codeformatter.lexers.Lexer;
-import org.codeformatter.lexers.StateTransitions;
+import org.codeformatter.lexers.LexerStateTransitions;
 import org.codeformatter.lexers.TokenBuilder;
 import org.codeformatter.tokens.Token;
 
@@ -19,9 +18,9 @@ public class StateMachineLexer implements Lexer {
     private Writer postponeWriter;
     private Reader postponeReader;
 
-    private CommandRepository commandRepository = new DefaultCommandRepository();
-    private StateTransitions stateTransitions = new DefaultStateTransitions();
-    private Context lexerContext = new LexerContext();
+    private LexerCommandRepository lexerCommandRepository = new DefaultLexerCommandRepository();
+    private LexerStateTransitions lexerStateTransitions = new DefaultLexerStateTransitions();
+    private org.codeformatter.lexers.LexerContext lexerContext = new LexerLexerContext();
 
     private Reader reader;
 
@@ -35,35 +34,35 @@ public class StateMachineLexer implements Lexer {
 
     public Token nextToken() {
 
-        State state = State.of(State.INITIAL);
+        LexerState lexerState = LexerState.of(LexerState.INITIAL);
 
-        while (postponeReader.hasMoreChars() && !stateIsTerminated(state)) {
-            state = makeStep(state, postponeReader);
+        while (postponeReader.hasMoreChars() && !stateIsTerminated(lexerState)) {
+            lexerState = makeStep(lexerState, postponeReader);
         }
 
-        while (reader.hasMoreChars() && !stateIsTerminated(state)) {
-            state = makeStep(state, reader);
+        while (reader.hasMoreChars() && !stateIsTerminated(lexerState)) {
+            lexerState = makeStep(lexerState, reader);
         }
 
         return buildToken();
     }
 
-    private boolean stateIsTerminated(State state) {
+    private boolean stateIsTerminated(LexerState lexerState) {
 
-        return state.getState().equals(State.TERMINATED);
+        return lexerState.getState().equals(LexerState.TERMINATED);
     }
 
-    private State makeStep(State state, Reader reader) {
+    private LexerState makeStep(LexerState lexerState, Reader reader) {
         char ch = reader.readChar();
 
-        log.debug("Lexer state before: {} current char: {}", state, ch);
-        Command command = commandRepository.getCommand(state, ch);
-        command.execute(lexerContext);
+        log.debug("Lexer state before: {} current char: {}", lexerState, (int) ch);
+        LexerCommand lexerCommand = lexerCommandRepository.getCommand(lexerState, ch);
+        lexerCommand.execute(lexerContext);
 
-        State stateToReturn = stateTransitions.nextState(state, ch);
+        LexerState lexerStateToReturn = lexerStateTransitions.nextState(lexerState, ch);
 
-        log.debug("Lexer state after: {}", stateToReturn);
-        return stateToReturn;
+        log.debug("Lexer state after: {}", lexerStateToReturn);
+        return lexerStateToReturn;
     }
 
     private Token buildToken() {
@@ -81,7 +80,7 @@ public class StateMachineLexer implements Lexer {
         return nextToken();
     }
 
-    private class LexerContext implements Context {
+    private class LexerLexerContext implements org.codeformatter.lexers.LexerContext {
 
         private TokenBuilder tokenBuilder = new TokenBuilder();
 

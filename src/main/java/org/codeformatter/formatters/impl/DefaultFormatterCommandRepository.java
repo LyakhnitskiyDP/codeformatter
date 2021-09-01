@@ -1,16 +1,15 @@
 package org.codeformatter.formatters.impl;
 
-import org.codeformatter.collections.Pair;
+
+import static org.codeformatter.tokens.LexicalConstants.*;
+import static org.codeformatter.formatters.impl.FormatterState.*;
 import org.codeformatter.formatters.FormatterCommand;
 import org.codeformatter.formatters.FormatterCommandRepository;
 import org.codeformatter.tokens.Token;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultFormatterCommandRepository implements FormatterCommandRepository {
-
-    private static final Map<Pair<FormatterState, String>, FormatterCommand> commands = new HashMap<>();
 
     private static final Map<FormatterState, Map<String, FormatterCommand>> commandMaps;
     private static final Map<String, FormatterCommand> initialStateCommands;
@@ -22,32 +21,35 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
     static {
 
         defaultFormatterCommands = Map.of(
-            FormatterState.of(FormatterState.WRITING_STRING_LITERAL), (commandToken, context) -> { context.writeToken(commandToken); }
+            FormatterState.of(WRITING_STRING_LITERAL), (commandToken, context) -> { context.writeToken(commandToken); }
         );
 
         initialStateCommands = Map.of(
-                "Char", (token, context) -> {
+                CHAR, (token, context) -> {
                     context.writeIndent();
                     context.writeToken(token);
                 },
-                 "for", (token, context) -> {
+                FOR_LOOP, (token, context) -> {
                     context.writeIndent();
                     context.writeToken(token);
                 },
-                "Whitespace", (token, context) -> {
-
+                WHITE_SPACE, (token, context) -> {
+                    //Intentionally left empty
                 },
-                "Semicolon", (token, context) -> {
+                LINE_SEPARATOR, (token, context) -> {
+                    //Intentionally left empty
+                },
+                SEMICOLON, (token, context) -> {
                     context.writeToken(token);
                     context.writeNewLine();
                 },
-                "Opening Curly Bracket", (token, context) -> {
+                OPENING_CURLY_BRACKET, (token, context) -> {
                     context.writeToken(token);
                     context.writeNewLine();
                     context.increaseIndentation();
                     context.writeIndent();
                 },
-                "Closing Curly Bracket", (token, context) -> {
+                CLOSING_CURLY_BRACKET, (token, context) -> {
                     context.decreaseIndentation();
                     context.writeIndent();
                     context.writeToken(token);
@@ -58,26 +60,30 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
         writingStringLiteralStateCommands = Map.of();
 
         writingLineStateCommands = Map.of(
-                 "Char", (token, context) -> { context.writeToken(token); },
+                CHAR, (token, context) -> { context.writeToken(token); },
 
-                "Quotes", (token, context) -> { context.writeToken(token); },
+                QUOTES, (token, context) -> { context.writeToken(token); },
 
-                "for", (token, context) -> { context.writeToken(token); },
+                FOR_LOOP, (token, context) -> { context.writeToken(token); },
 
-                "Whitespace", (token, context) -> { context.writeToken(token); },
+                WHITE_SPACE, (token, context) -> { context.writeToken(token); },
 
-                "Semicolon", (token, context) -> {
+                LINE_SEPARATOR, (token, context) -> {
+                    //Intentionally left empty
+                },
+
+                SEMICOLON, (token, context) -> {
                      context.writeToken(token);
                      context.writeNewLine();
                 },
 
-                "Opening Curly Bracket", (token, context) -> {
+                OPENING_CURLY_BRACKET, (token, context) -> {
                     context.writeToken(token);
                     context.writeNewLine();
                     context.increaseIndentation();
                 },
 
-                "Closing Curly Bracket", (token, context) -> {
+                CLOSING_CURLY_BRACKET, (token, context) -> {
                     context.decreaseIndentation();
                     context.writeIndent();
                     context.writeToken(token);
@@ -85,9 +91,9 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
         );
 
         commandMaps = Map.of(
-                FormatterState.of(FormatterState.INITIAL), initialStateCommands,
-                FormatterState.of(FormatterState.WRITING_LINE), writingLineStateCommands,
-                FormatterState.of(FormatterState.WRITING_STRING_LITERAL), writingStringLiteralStateCommands
+                FormatterState.of(INITIAL), initialStateCommands,
+                FormatterState.of(WRITING_LINE), writingLineStateCommands,
+                FormatterState.of(WRITING_STRING_LITERAL), writingStringLiteralStateCommands
         );
 
     }
@@ -106,6 +112,7 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
     public FormatterCommand getCommand(
             FormatterState formatterState,
             Token token) {
+
 
         return getCommandMapForState(formatterState)
                 .getOrDefault(token.getName(), getDefaultCommandForState(formatterState));

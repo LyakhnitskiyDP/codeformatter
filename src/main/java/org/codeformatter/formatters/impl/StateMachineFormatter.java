@@ -53,6 +53,7 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void writeToken(Token token) {
 
+            System.out.println("Writing token: " + token);
             for (char ch : token.getLexeme().toCharArray()) {
                 writer.writeChar(ch);
             }
@@ -61,6 +62,7 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void writeNewLine() {
 
+            System.out.println("Writing new line");
             for (char ch : System.lineSeparator().toCharArray()) {
                 writer.writeChar(ch);
             }

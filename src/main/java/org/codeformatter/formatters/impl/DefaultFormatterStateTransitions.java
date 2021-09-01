@@ -28,6 +28,7 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
         initialStateTransitions = Map.of(
                 "Char", FormatterState.of(WRITING_LINE),
                 "Whitespace", FormatterState.of(INITIAL),
+                "Line separator", FormatterState.of(INITIAL),
                 "Semicolon", FormatterState.of(INITIAL),
                 "Opening Curly Bracket", FormatterState.of(INITIAL),
                 "Closing Curly Bracket", FormatterState.of(INITIAL),
