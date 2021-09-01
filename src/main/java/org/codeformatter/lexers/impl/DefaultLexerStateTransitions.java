@@ -1,8 +1,6 @@
 package org.codeformatter.lexers.impl;
 
 import static org.codeformatter.lexers.impl.LexerState.*;
-import org.codeformatter.collections.Pair;
-import org.codeformatter.formatters.impl.FormatterState;
 import org.codeformatter.lexers.LexerStateTransitions;
 
 import java.util.Map;
@@ -64,16 +62,6 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
         );
 
     }
-
-    private static final Map<Pair<LexerState, Character>, LexerState> stateChangesMap = Map.of(
-            Pair.of(LexerState.of(INITIAL), ' '), LexerState.of(TERMINATED),
-            Pair.of(LexerState.of(INITIAL), ';'), LexerState.of(TERMINATED),
-            Pair.of(LexerState.of(INITIAL), 'f'), LexerState.of(FOR_1),
-            Pair.of(LexerState.of(FOR_1), 'o'), LexerState.of(FOR_2),
-            Pair.of(LexerState.of(FOR_2), 'r'), LexerState.of(FOR_3),
-            Pair.of(LexerState.of(FOR_3), ' '), LexerState.of(FOR),
-            Pair.of(LexerState.of(FOR), ')'), LexerState.of(LexerState.TERMINATED)
-    );
 
     private Map<Character, LexerState> getTransitionsForState(LexerState state) {
 

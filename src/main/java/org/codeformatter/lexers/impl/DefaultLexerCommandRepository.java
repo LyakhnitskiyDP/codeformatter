@@ -4,7 +4,6 @@ import static org.codeformatter.tokens.LexicalConstants.*;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
 
-import java.awt.desktop.QuitEvent;
 import java.util.Map;
 import java.util.function.Function;
 
