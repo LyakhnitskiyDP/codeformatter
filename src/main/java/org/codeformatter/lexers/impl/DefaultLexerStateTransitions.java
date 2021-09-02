@@ -1,5 +1,6 @@
 package org.codeformatter.lexers.impl;
 
+import static org.codeformatter.utils.LoggingUtil.printChar;
 import static org.codeformatter.lexers.impl.LexerState.FOR;
 import static org.codeformatter.lexers.impl.LexerState.FOR_1;
 import static org.codeformatter.lexers.impl.LexerState.FOR_2;
@@ -13,9 +14,11 @@ import static org.codeformatter.lexers.impl.LexerState.TERMINATED;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerStateTransitions;
 
+@Slf4j
 public class DefaultLexerStateTransitions implements LexerStateTransitions {
 
     private final Map<Pair<String, Character>, String> transitions;
@@ -56,6 +59,7 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
 
     @Override
     public LexerState nextState(LexerState lexerState, char ch) {
+        log.debug("Getting new lexer state, current lexer state: {}, char: {}", lexerState.getState(), printChar(ch));
 
         String lexerStateName = transitions.get(Pair.of(lexerState.getState(), ch));
 
@@ -63,6 +67,7 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
             lexerStateName = transitions.get(Pair.of(lexerState.getState(), null));
         }
 
+        log.debug("Returning new lexer state: {}", lexerStateName);
         return LexerState.of(lexerStateName);
     }
 

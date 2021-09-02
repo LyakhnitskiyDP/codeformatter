@@ -12,7 +12,6 @@ import org.codeformatter.lexers.LexerStateTransitions;
 import org.codeformatter.lexers.TokenBuilder;
 import org.codeformatter.tokens.Token;
 
-@Slf4j
 public class StateMachineLexer implements Lexer {
 
     private Writer postponeWriter;
@@ -55,14 +54,11 @@ public class StateMachineLexer implements Lexer {
     private LexerState makeStep(LexerState lexerState, Reader reader) {
         char ch = reader.readChar();
 
-        log.debug("Lexer state before: {} current char: {}", lexerState, ch);
+
         LexerCommand lexerCommand = lexerCommandRepository.getCommand(lexerState, ch);
         lexerCommand.execute(ch, lexerContext);
 
-        LexerState lexerStateToReturn = lexerStateTransitions.nextState(lexerState, ch);
-
-        log.debug("Lexer state after: {}", lexerStateToReturn);
-        return lexerStateToReturn;
+        return lexerStateTransitions.nextState(lexerState, ch);
     }
 
     private Token buildToken() {

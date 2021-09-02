@@ -1,5 +1,6 @@
 package org.codeformatter.lexers.impl;
 
+import static org.codeformatter.utils.LoggingUtil.printChar;
 import static org.codeformatter.lexers.impl.LexerState.FOR;
 import static org.codeformatter.lexers.impl.LexerState.FOR_1;
 import static org.codeformatter.lexers.impl.LexerState.FOR_2;
@@ -22,11 +23,14 @@ import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
 
 
+@Slf4j
 public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
     private static final String defaultTokenName = CHAR;
@@ -126,12 +130,14 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
     @Override
     public LexerCommand getCommand(LexerState lexerState, char ch) {
+        log.debug("Getting lexer command for state: {} and char: {}", lexerState.getState(), printChar(ch));
 
         String lexerStateName = lexerState.getState();
 
         LexerCommand lexerCommandToReturn = commands.get(Pair.of(lexerStateName, ch));
 
         if (lexerCommandToReturn == null) {
+            log.debug("No special lexer command found, returning default one");
             lexerCommandToReturn = commands.get(Pair.of(lexerStateName, null));
         }
 
