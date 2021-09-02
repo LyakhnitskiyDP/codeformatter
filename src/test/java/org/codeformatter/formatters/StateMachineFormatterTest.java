@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class LexerStateMachineFormatterTest {
+public class StateMachineFormatterTest {
 
     private Formatter formatter;
 
@@ -31,8 +31,7 @@ public class LexerStateMachineFormatterTest {
 
         String expectedCode =
                 """
-                String myString = "it's string { still string }";
-                """;
+                String myString = "it's string { still string }";""";
 
         testFormatter(codeToFormat, expectedCode);
     }

@@ -15,74 +15,64 @@ import static org.codeformatter.tokens.LexicalConstants.SEMICOLON;
 import static org.codeformatter.tokens.LexicalConstants.SLASH;
 import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.codeformatter.collections.Pair;
 import org.codeformatter.formatters.FormatterStateTransitions;
 import org.codeformatter.tokens.Token;
 
 public class DefaultFormatterStateTransitions implements FormatterStateTransitions {
 
-    private static final Map<FormatterState, Map<String, FormatterState>> transitionMaps;
-    private static final Map<FormatterState, FormatterState> defaultStateTransitions;
+    private final Map<Pair<String, String>, String> transitions;
 
-    private static final Map<String, FormatterState> initialStateTransitions;
-    private static final Map<String, FormatterState> writingLineStateTransitions;
-    private static final Map<String, FormatterState> writingStringLiteralStateTransitions;
+    public DefaultFormatterStateTransitions() {
 
-    static {
-        defaultStateTransitions = Map.of(
-                FormatterState.of(WRITING_STRING_LITERAL), FormatterState.of(WRITING_STRING_LITERAL),
-                FormatterState.of(INITIAL), FormatterState.of(WRITING_LINE),
-                FormatterState.of(WRITING_LINE), FormatterState.of(WRITING_LINE),
-                FormatterState.of(WRITING_MULTILINE_COMMENT), FormatterState.of(WRITING_MULTILINE_COMMENT)
-        );
+        transitions = new HashMap<>();
 
-        initialStateTransitions = Map.of(
-                CHAR, FormatterState.of(WRITING_LINE),
-                WHITE_SPACE, FormatterState.of(INITIAL),
-                LINE_SEPARATOR, FormatterState.of(INITIAL),
-                MULTILINE_COMMENT, FormatterState.of(INITIAL),
-                SEMICOLON, FormatterState.of(INITIAL),
-                OPENING_CURLY_BRACKET, FormatterState.of(INITIAL),
-                CLOSING_CURLY_BRACKET, FormatterState.of(INITIAL),
-                QUOTES, FormatterState.of(WRITING_STRING_LITERAL),
-                SLASH, FormatterState.of(MULTILINE_COMMENT_START_1)
-        );
+        transitions.putAll(Map.of(
+                Pair.of(INITIAL, null), WRITING_LINE,
+                Pair.of(INITIAL, CHAR), WRITING_LINE,
+                Pair.of(INITIAL, WHITE_SPACE), INITIAL,
+                Pair.of(INITIAL, LINE_SEPARATOR), INITIAL,
+                Pair.of(INITIAL, MULTILINE_COMMENT), INITIAL,
+                Pair.of(INITIAL, SEMICOLON), INITIAL,
+                Pair.of(INITIAL, OPENING_CURLY_BRACKET), INITIAL,
+                Pair.of(INITIAL, CLOSING_CURLY_BRACKET), INITIAL,
+                Pair.of(INITIAL, QUOTES), WRITING_STRING_LITERAL,
+                Pair.of(INITIAL,SLASH), MULTILINE_COMMENT_START_1
+        ));
 
-        writingLineStateTransitions = Map.of(
-                SEMICOLON, FormatterState.of(INITIAL),
-                OPENING_CURLY_BRACKET, FormatterState.of(INITIAL),
-                CLOSING_CURLY_BRACKET, FormatterState.of(INITIAL),
-                QUOTES, FormatterState.of(WRITING_STRING_LITERAL),
-                SLASH, FormatterState.of(MULTILINE_COMMENT_START_1)
-        );
+        transitions.putAll(Map.of(
+                Pair.of(WRITING_STRING_LITERAL, null), WRITING_STRING_LITERAL
+        ));
 
-        writingStringLiteralStateTransitions = Map.of(
-                QUOTES, FormatterState.of(WRITING_LINE)
-        );
+        transitions.putAll(Map.of(
+                Pair.of(WRITING_LINE, null), WRITING_LINE,
+                Pair.of(WRITING_LINE, SEMICOLON), INITIAL,
+                Pair.of(WRITING_LINE, OPENING_CURLY_BRACKET), INITIAL,
+                Pair.of(WRITING_LINE, CLOSING_CURLY_BRACKET), INITIAL,
+                Pair.of(WRITING_LINE, QUOTES), WRITING_STRING_LITERAL,
+                Pair.of(WRITING_LINE, SLASH), MULTILINE_COMMENT_START_1
+        ));
 
-        transitionMaps = Map.of(
-                FormatterState.of(INITIAL), initialStateTransitions,
-                FormatterState.of(WRITING_LINE), writingLineStateTransitions,
-                FormatterState.of(WRITING_STRING_LITERAL), writingStringLiteralStateTransitions
-        );
-
-    }
-
-    private Map<String, FormatterState> getTransitionsForState(FormatterState state) {
-
-        return transitionMaps.get(state);
-    }
-
-    private FormatterState getDefaultStateTransitionFor(FormatterState state) {
-
-        return defaultStateTransitions.get(state);
+        transitions.putAll(Map.of(
+                Pair.of(WRITING_MULTILINE_COMMENT, null), WRITING_MULTILINE_COMMENT,
+                Pair.of(WRITING_MULTILINE_COMMENT, QUOTES), WRITING_LINE
+        ));
     }
 
     @Override
     public FormatterState nextState(FormatterState state, Token token) {
 
-        return getTransitionsForState(state)
-                .getOrDefault(token.getName(), getDefaultStateTransitionFor(state));
-    }
+        String formatterStateName = transitions.get(
+                Pair.of(state.getState(), token.getName())
+        );
 
+        if (formatterStateName == null) {
+            formatterStateName = transitions.get(Pair.of(state.getState(), null));
+        }
+
+        return FormatterState.of(formatterStateName);
+    }
 }

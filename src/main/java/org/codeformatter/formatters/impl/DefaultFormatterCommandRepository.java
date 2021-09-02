@@ -4,6 +4,7 @@ package org.codeformatter.formatters.impl;
 import static org.codeformatter.formatters.impl.FormatterState.INITIAL;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_LINE;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_STRING_LITERAL;
+import static org.codeformatter.tokens.LexicalConstants.CARRIAGE_RETURN;
 import static org.codeformatter.tokens.LexicalConstants.CHAR;
 import static org.codeformatter.tokens.LexicalConstants.CLOSING_CURLY_BRACKET;
 import static org.codeformatter.tokens.LexicalConstants.FOR_LOOP;
@@ -14,7 +15,10 @@ import static org.codeformatter.tokens.LexicalConstants.QUOTES;
 import static org.codeformatter.tokens.LexicalConstants.SEMICOLON;
 import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.codeformatter.collections.Pair;
 import org.codeformatter.formatters.FormatterCommand;
 import org.codeformatter.formatters.FormatterCommandRepository;
 import org.codeformatter.tokens.Token;
@@ -22,109 +26,90 @@ import org.codeformatter.tokens.Token;
 
 public class DefaultFormatterCommandRepository implements FormatterCommandRepository {
 
-    private static final Map<FormatterState, Map<String, FormatterCommand>> commandMaps;
-    private static final Map<String, FormatterCommand> initialStateCommands;
-    private static final Map<String, FormatterCommand> writingLineStateCommands;
-    private static final Map<String, FormatterCommand> writingStringLiteralStateCommands;
+    //First String Type parameter - current state name
+    //Second String Type parameter - token name
+    //Third parameter - command to execute
+    private Map<Pair<String, String>, FormatterCommand> commands;
 
-    private static final Map<FormatterState, FormatterCommand> defaultFormatterCommands;
-
-    private static final FormatterCommand indentAndWriteCommand =
+    FormatterCommand indentAndWriteCommand =
             (token, context) -> {
                 context.writeIndent();
                 context.writeToken(token);
             };
 
-    private static final FormatterCommand writeTokenCommand =
+    FormatterCommand writeTokenCommand =
             (token, context) -> {
                 context.writeToken(token);
             };
 
-    private static final FormatterCommand writeTokenAndNewLineCommand =
+    FormatterCommand writeTokenAndNewLineCommand =
             (token, context) -> {
                 context.writeToken(token);
                 context.writeNewLine();
             };
 
-    private static final FormatterCommand noOpCommand =
+    FormatterCommand noOpCommand =
             (token, context) -> {
 
             };
 
-    static {
+    public DefaultFormatterCommandRepository() {
+        commands = new HashMap<>();
 
-        defaultFormatterCommands = Map.of(
-            FormatterState.of(WRITING_STRING_LITERAL), writeTokenCommand
-        );
-
-        initialStateCommands = Map.of(
-                CHAR, indentAndWriteCommand,
-                FOR_LOOP, indentAndWriteCommand,
-                MULTILINE_COMMENT, writeTokenAndNewLineCommand,
-                WHITE_SPACE, noOpCommand,
-                LINE_SEPARATOR, noOpCommand,
-                SEMICOLON, writeTokenAndNewLineCommand,
-
-                OPENING_CURLY_BRACKET, (token, context) -> {
+        commands.putAll(Map.of(
+                Pair.of(INITIAL,CHAR), indentAndWriteCommand,
+                Pair.of(INITIAL,FOR_LOOP), indentAndWriteCommand,
+                Pair.of(INITIAL,MULTILINE_COMMENT), writeTokenAndNewLineCommand,
+                Pair.of(INITIAL,WHITE_SPACE), noOpCommand,
+                Pair.of(INITIAL,LINE_SEPARATOR), noOpCommand,
+                Pair.of(INITIAL,CARRIAGE_RETURN), noOpCommand,
+                Pair.of(INITIAL,SEMICOLON), writeTokenAndNewLineCommand,
+                Pair.of(INITIAL,OPENING_CURLY_BRACKET), (token, context) -> {
                     context.writeToken(token);
                     context.writeNewLine();
                     context.increaseIndentation();
                     context.writeIndent();
                 },
-                CLOSING_CURLY_BRACKET, (token, context) -> {
+                Pair.of(INITIAL,CLOSING_CURLY_BRACKET), (token, context) -> {
                     context.decreaseIndentation();
                     context.writeIndent();
                     context.writeToken(token);
                     context.writeNewLine();
                 }
-            );
+        ));
 
-        writingStringLiteralStateCommands = Map.of();
+        commands.putAll(Map.of(
+                Pair.of(WRITING_LINE, CHAR), writeTokenCommand,
 
-        writingLineStateCommands = Map.of(
-                CHAR, writeTokenCommand,
+                Pair.of(WRITING_LINE,QUOTES), writeTokenCommand,
 
-                QUOTES, writeTokenCommand,
+                Pair.of(WRITING_LINE,FOR_LOOP), writeTokenCommand,
 
-                FOR_LOOP, writeTokenCommand,
+                Pair.of(WRITING_LINE,MULTILINE_COMMENT), writeTokenAndNewLineCommand,
 
-                MULTILINE_COMMENT, writeTokenAndNewLineCommand,
+                Pair.of(WRITING_LINE,WHITE_SPACE), writeTokenCommand,
 
-                WHITE_SPACE, writeTokenCommand,
+                Pair.of(WRITING_LINE,LINE_SEPARATOR), noOpCommand,
 
-                LINE_SEPARATOR, noOpCommand,
+                Pair.of(WRITING_LINE,SEMICOLON), writeTokenAndNewLineCommand,
 
-                SEMICOLON, writeTokenAndNewLineCommand,
-
-                OPENING_CURLY_BRACKET, (token, context) -> {
+                Pair.of(WRITING_LINE,OPENING_CURLY_BRACKET), (token, context) -> {
                     context.writeToken(token);
                     context.writeNewLine();
                     context.increaseIndentation();
                 },
 
-                CLOSING_CURLY_BRACKET, (token, context) -> {
+                Pair.of(WRITING_LINE,CLOSING_CURLY_BRACKET), (token, context) -> {
                     context.decreaseIndentation();
                     context.writeIndent();
                     context.writeToken(token);
                 }
-        );
+        ));
 
-        commandMaps = Map.of(
-                FormatterState.of(INITIAL), initialStateCommands,
-                FormatterState.of(WRITING_LINE), writingLineStateCommands,
-                FormatterState.of(WRITING_STRING_LITERAL), writingStringLiteralStateCommands
-        );
+        commands.putAll(Map.of(
+                Pair.of(WRITING_STRING_LITERAL, null), writeTokenCommand
+        ));
 
-    }
-
-    private Map<String, FormatterCommand> getCommandMapForState(FormatterState state) {
-
-        return commandMaps.get(state);
-    }
-
-    private FormatterCommand getDefaultCommandForState(FormatterState state) {
-
-        return defaultFormatterCommands.get(state);
     }
 
     @Override
@@ -132,8 +117,14 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
             FormatterState formatterState,
             Token token) {
 
-        return getCommandMapForState(formatterState)
-                .getOrDefault(token.getName(), getDefaultCommandForState(formatterState));
-    }
+        FormatterCommand commandToReturn = commands.get(
+                Pair.of(formatterState.getState(), token.getName())
+        );
 
+        if (commandToReturn == null) {
+            commandToReturn = commands.get(Pair.of(formatterState.getState(), null));
+        }
+
+        return commandToReturn;
+    }
 }
