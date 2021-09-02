@@ -5,6 +5,7 @@ public class LexicalConstants {
     public static final String CLOSING_CURLY_BRACKET = "Closing Curly Bracket";
     public static final String SEMICOLON = "Semicolon";
     public static final String LINE_SEPARATOR = "Line separator";
+    public static final String CARRIAGE_RETURN = "Carriage return";
     public static final String CHAR = "Char";
     public static final String QUOTES = "Quotes";
     public static final String STAR = "Star";
@@ -13,5 +14,4 @@ public class LexicalConstants {
     public static final String MULTILINE_COMMENT = "multiline comment";
     public static final String FOR_LOOP = "for";
     public static final String WHITE_SPACE = "Whitespace";
-
 }
