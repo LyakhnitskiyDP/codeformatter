@@ -18,10 +18,12 @@ import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.formatters.FormatterStateTransitions;
 import org.codeformatter.tokens.Token;
 
+@Slf4j
 public class DefaultFormatterStateTransitions implements FormatterStateTransitions {
 
     private final Map<Pair<String, String>, String> transitions;
@@ -64,6 +66,8 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
 
     @Override
     public FormatterState nextState(FormatterState state, Token token) {
+        log.debug("Getting new formatter state for current state: {} and token: {}",
+                  state.getState(), token);
 
         String formatterStateName = transitions.get(
                 Pair.of(state.getState(), token.getName())
@@ -73,6 +77,7 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
             formatterStateName = transitions.get(Pair.of(state.getState(), null));
         }
 
+        log.debug("Returning new sate: {}", formatterStateName);
         return FormatterState.of(formatterStateName);
     }
 }

@@ -27,12 +27,10 @@ public class StateMachineFormatter implements Formatter {
 
             Token token = lexer.readToken();
 
-            log.debug("Formatter State: {} Current token to format: {}", state, token);
             FormatterCommand command = commandRepository.getCommand(state, token);
             command.execute(token, context);
 
             state = transitions.nextState(state, token);
-            log.debug("Formatter state after transition: {}", state);
         }
 
     }
@@ -53,7 +51,7 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void writeToken(Token token) {
 
-            System.out.println("Writing token: " + token);
+            log.trace("Writing token: {}", token);
             for (char ch : token.getLexeme().toCharArray()) {
                 writer.writeChar(ch);
             }
@@ -62,7 +60,7 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void writeNewLine() {
 
-            System.out.println("Writing new line");
+            log.trace("Writing new line");
             for (char ch : System.lineSeparator().toCharArray()) {
                 writer.writeChar(ch);
             }
@@ -71,6 +69,7 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void writeIndent() {
 
+            log.trace("Writing indentation");
             for (int i = 0; i < currentBlockLevel * numberOfSpacesPerTab; i++) {
                 writer.writeChar(' ');
             }
@@ -79,12 +78,14 @@ public class StateMachineFormatter implements Formatter {
         @Override
         public void increaseIndentation() {
 
+            log.trace("Increasing block level");
             currentBlockLevel++;
         }
 
         @Override
         public void decreaseIndentation() {
 
+            log.trace("Decreasing block level");
             currentBlockLevel--;
         }
     }

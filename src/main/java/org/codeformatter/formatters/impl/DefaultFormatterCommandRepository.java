@@ -18,12 +18,13 @@ import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.formatters.FormatterCommand;
 import org.codeformatter.formatters.FormatterCommandRepository;
 import org.codeformatter.tokens.Token;
 
-
+@Slf4j
 public class DefaultFormatterCommandRepository implements FormatterCommandRepository {
 
     //First String Type parameter - current state name
@@ -116,12 +117,15 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
     public FormatterCommand getCommand(
             FormatterState formatterState,
             Token token) {
+        log.debug("Getting new formatter command for state: {} and token: {}",
+                  formatterState.getState(), token.getName());
 
         FormatterCommand commandToReturn = commands.get(
                 Pair.of(formatterState.getState(), token.getName())
         );
 
         if (commandToReturn == null) {
+            log.debug("No special formatter command found, returning default one");
             commandToReturn = commands.get(Pair.of(formatterState.getState(), null));
         }
 
