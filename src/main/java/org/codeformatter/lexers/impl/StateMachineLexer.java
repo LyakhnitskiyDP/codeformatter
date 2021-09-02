@@ -1,6 +1,5 @@
 package org.codeformatter.lexers.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.io.Reader;
 import org.codeformatter.io.Writer;
 import org.codeformatter.io.string.StringBuilderReader;
@@ -8,27 +7,31 @@ import org.codeformatter.io.string.StringWriter;
 import org.codeformatter.lexers.Lexer;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
+import org.codeformatter.lexers.LexerContext;
 import org.codeformatter.lexers.LexerStateTransitions;
-import org.codeformatter.lexers.TokenBuilder;
 import org.codeformatter.tokens.Token;
 
 public class StateMachineLexer implements Lexer {
 
-    private Writer postponeWriter;
-    private Reader postponeReader;
+    private final Reader postponeReader;
 
-    private LexerCommandRepository lexerCommandRepository = new DefaultLexerCommandRepository();
-    private LexerStateTransitions lexerStateTransitions = new DefaultLexerStateTransitions();
-    private org.codeformatter.lexers.LexerContext lexerContext = new LexerLexerContext();
+    private final LexerCommandRepository lexerCommandRepository;
+    private final LexerStateTransitions lexerStateTransitions;
+    private final LexerContext lexerContext;
 
-    private Reader reader;
+    private final Reader reader;
 
     public StateMachineLexer(Reader reader) {
         this.reader = reader;
 
+        lexerCommandRepository = new DefaultLexerCommandRepository();
+        lexerStateTransitions = new DefaultLexerStateTransitions();
+
         StringBuilder postponeBuffer = new StringBuilder();
-        postponeWriter = new StringWriter(postponeBuffer);
+        Writer postponeWriter = new StringWriter(postponeBuffer);
         postponeReader = new StringBuilderReader(postponeBuffer);
+
+        this.lexerContext = new StateMachineLexerContext(postponeWriter);
     }
 
     public Token nextToken() {
@@ -76,36 +79,4 @@ public class StateMachineLexer implements Lexer {
         return nextToken();
     }
 
-    private class LexerLexerContext implements org.codeformatter.lexers.LexerContext {
-
-        private TokenBuilder tokenBuilder = new TokenBuilder();
-
-        @Override
-        public void appendLexeme(char ch) {
-
-            tokenBuilder.appendLexeme(ch);
-        }
-
-        @Override
-        public void appendLexemePostpone(char ch) {
-
-            postponeWriter.writeChar(ch);
-        }
-
-        @Override
-        public void setTokenName(String name) {
-
-            tokenBuilder.setName(name);
-        }
-
-        @Override
-        public Token completeToken() {
-
-            Token tokenToReturn = tokenBuilder.getToken();
-
-            this.tokenBuilder = new TokenBuilder();
-
-            return tokenToReturn;
-        }
-    }
 }
