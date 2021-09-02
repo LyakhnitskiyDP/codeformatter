@@ -10,82 +10,60 @@ import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
 import static org.codeformatter.lexers.impl.LexerState.TERMINATED;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerStateTransitions;
 
 public class DefaultLexerStateTransitions implements LexerStateTransitions {
 
-    private static final Map<LexerState, Map<Character, LexerState>> transitionMaps;
-    private static final Map<Character, LexerState> initialStateTransitions;
+    private final Map<Pair<String, Character>, String> transitions;
 
-    private static final Map<Character, LexerState> forLoop1StateTransitions;
-    private static final Map<Character, LexerState> forLoop2StateTransitions;
-    private static final Map<Character, LexerState> forLoop3StateTransitions;
-    private static final Map<Character, LexerState> forLoopStateTransitions;
+    public DefaultLexerStateTransitions() {
 
-    private static final Map<Character, LexerState> multilineCommentStart1Transitions;
-    private static final Map<Character, LexerState> multilineCommentTransitions;
-    private static final Map<Character, LexerState> multilineCommentEnd1Transitions;
+        transitions = new HashMap<>();
 
-    private static final Map<LexerState, LexerState> defaultStateTransitions;
+        transitions.putAll(Map.of(
+                Pair.of(INITIAL, ' '), TERMINATED,
+                Pair.of(INITIAL, ';'), TERMINATED,
+                Pair.of(INITIAL, '/'), MULTILINE_COMMENT_START1,
+                Pair.of(INITIAL, 'f'), FOR_1,
+                Pair.of(INITIAL, null), TERMINATED
+        ));
 
-    static {
+        transitions.putAll(Map.of(
+                Pair.of(FOR_1, 'o'), FOR_2,
+                Pair.of(FOR_1, null), TERMINATED,
+                Pair.of(FOR_2, 'r'), FOR_3,
+                Pair.of(FOR_2, null), TERMINATED,
+                Pair.of(FOR_3, ' '), FOR,
+                Pair.of(FOR_3, ';'), FOR,
+                Pair.of(FOR_3, null), TERMINATED,
+                Pair.of(FOR, ')'), TERMINATED,
+                Pair.of(FOR, null), FOR
+        ));
 
-        initialStateTransitions = Map.of(
-            ' ', LexerState.of(TERMINATED),
-            ';', LexerState.of(TERMINATED),
-            '/', LexerState.of(MULTILINE_COMMENT_START1),
-            'f', LexerState.of(FOR_1)
-        );
-
-        forLoop1StateTransitions = Map.of('o', LexerState.of(FOR_2));
-        forLoop2StateTransitions = Map.of('r', LexerState.of(FOR_3));
-        forLoop3StateTransitions = Map.of(' ', LexerState.of(FOR));
-        forLoopStateTransitions = Map.of(')', LexerState.of(TERMINATED));
-
-        multilineCommentStart1Transitions = Map.of('*', LexerState.of(MULTILINE_COMMENT));
-        multilineCommentTransitions = Map.of('*', LexerState.of(MULTILINE_COMMENT_END1));
-        multilineCommentEnd1Transitions = Map.of('/', LexerState.of(TERMINATED));
-
-        transitionMaps = Map.of(
-                LexerState.of(INITIAL), initialStateTransitions,
-                LexerState.of(FOR_1), forLoop1StateTransitions,
-                LexerState.of(FOR_2), forLoop2StateTransitions,
-                LexerState.of(FOR_3), forLoop3StateTransitions,
-                LexerState.of(FOR), forLoopStateTransitions,
-                LexerState.of(MULTILINE_COMMENT), multilineCommentTransitions,
-                LexerState.of(MULTILINE_COMMENT_START1), multilineCommentStart1Transitions,
-                LexerState.of(MULTILINE_COMMENT_END1), multilineCommentEnd1Transitions
-        );
-
-        defaultStateTransitions = Map.of(
-                LexerState.of(INITIAL), LexerState.of(TERMINATED),
-                LexerState.of(FOR), LexerState.of(FOR),
-                LexerState.of(FOR_1), LexerState.of(TERMINATED),
-                LexerState.of(FOR_2), LexerState.of(TERMINATED),
-                LexerState.of(FOR_3), LexerState.of(TERMINATED),
-                LexerState.of(MULTILINE_COMMENT), LexerState.of(MULTILINE_COMMENT),
-                LexerState.of(MULTILINE_COMMENT_START1), LexerState.of(INITIAL),
-                LexerState.of(MULTILINE_COMMENT_END1), LexerState.of(MULTILINE_COMMENT)
-        );
-
-    }
-
-    private Map<Character, LexerState> getTransitionsForState(LexerState state) {
-
-        return transitionMaps.get(state);
-    }
-
-    private LexerState getDefaultStateTransitionFor(LexerState state) {
-
-        return defaultStateTransitions.get(state);
+        transitions.putAll(Map.of(
+                Pair.of(MULTILINE_COMMENT_START1, '*'), MULTILINE_COMMENT,
+                Pair.of(MULTILINE_COMMENT_START1, null), INITIAL,
+                Pair.of(MULTILINE_COMMENT, '*'), MULTILINE_COMMENT_END1,
+                Pair.of(MULTILINE_COMMENT, null), MULTILINE_COMMENT,
+                Pair.of(MULTILINE_COMMENT_END1, '/'), TERMINATED,
+                Pair.of(MULTILINE_COMMENT_END1, null), MULTILINE_COMMENT
+        ));
     }
 
     @Override
     public LexerState nextState(LexerState lexerState, char ch) {
 
-        return getTransitionsForState(lexerState)
-                .getOrDefault(ch, getDefaultStateTransitionFor(lexerState));
+        String lexerStateName = transitions.get(Pair.of(lexerState.getState(), ch));
+
+        if (lexerStateName == null) {
+            lexerStateName = transitions.get(Pair.of(lexerState.getState(), null));
+        }
+
+        return LexerState.of(lexerStateName);
     }
 
 }
