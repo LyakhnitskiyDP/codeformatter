@@ -1,4 +1,16 @@
 package org.codeformatter.lexers.impl.commands;
 
-public class WriteSemicolonCommand {
+import org.codeformatter.lexers.LexerCommand;
+import org.codeformatter.lexers.LexerContext;
+
+import static org.codeformatter.tokens.LexicalConstants.SEMICOLON;
+
+public class WriteSemicolonCommand implements LexerCommand {
+
+    @Override
+    public void execute(Character character, LexerContext lexerContext) {
+        lexerContext.appendLexeme(character);
+        lexerContext.setTokenName(SEMICOLON);
+    }
+
 }

@@ -9,88 +9,53 @@ import static org.codeformatter.lexers.impl.LexerState.INITIAL;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
-import static org.codeformatter.tokens.LexicalConstants.CARRIAGE_RETURN;
-import static org.codeformatter.tokens.LexicalConstants.CHAR;
-import static org.codeformatter.tokens.LexicalConstants.CLOSING_CURLY_BRACKET;
-import static org.codeformatter.tokens.LexicalConstants.LINE_SEPARATOR;
-import static org.codeformatter.tokens.LexicalConstants.OPENING_CURLY_BRACKET;
-import static org.codeformatter.tokens.LexicalConstants.QUOTES;
-import static org.codeformatter.tokens.LexicalConstants.SEMICOLON;
-import static org.codeformatter.tokens.LexicalConstants.SLASH;
-import static org.codeformatter.tokens.LexicalConstants.STAR;
-import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
+import org.codeformatter.lexers.impl.commands.WriteCarriageReturnCommand;
+import org.codeformatter.lexers.impl.commands.WriteCharCommand;
+import org.codeformatter.lexers.impl.commands.WriteClosingCurlyBracketCommand;
+import org.codeformatter.lexers.impl.commands.WriteLineSeparatorCommand;
+import org.codeformatter.lexers.impl.commands.WriteMultilineCommandCommand;
+import org.codeformatter.lexers.impl.commands.WriteOpeningCurlyBracketCommand;
+import org.codeformatter.lexers.impl.commands.WriteQuotesCommand;
+import org.codeformatter.lexers.impl.commands.WriteSemicolonCommand;
+import org.codeformatter.lexers.impl.commands.WriteSlashCommand;
+import org.codeformatter.lexers.impl.commands.WriteStarCommand;
+import org.codeformatter.lexers.impl.commands.WriteWhiteSpaceCommand;
 
 
 @Slf4j
 public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
-    private static final String defaultTokenName = CHAR;
-
     private Map<Pair<String, Character>, LexerCommand> commands;
 
-    LexerCommand writeWhiteSpaceCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(WHITE_SPACE);
-    };
+    LexerCommand writeWhiteSpaceCommand = new WriteWhiteSpaceCommand();
 
-    LexerCommand writeClosingCurlyBracketCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(CLOSING_CURLY_BRACKET);
-    };
+    LexerCommand writeClosingCurlyBracketCommand = new WriteClosingCurlyBracketCommand();
 
-    LexerCommand writeOpeningCurlyBracketCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(OPENING_CURLY_BRACKET);
-    };
+    LexerCommand writeOpeningCurlyBracketCommand = new WriteOpeningCurlyBracketCommand();
 
-    LexerCommand writeSemicolonCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(SEMICOLON);
-    };
+    LexerCommand writeSemicolonCommand = new WriteSemicolonCommand();
 
-    LexerCommand writeSlashCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(SLASH);
-    };
+    LexerCommand writeSlashCommand = new WriteSlashCommand();
 
-    LexerCommand writeLineSeparatorCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(LINE_SEPARATOR);
-    };
+    LexerCommand writeLineSeparatorCommand = new WriteLineSeparatorCommand();
 
-    LexerCommand writeCarriageReturnCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(CARRIAGE_RETURN);
-    };
+    LexerCommand writeCarriageReturnCommand = new WriteCarriageReturnCommand();
 
-    LexerCommand writeCharCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(CHAR);
-    };
+    LexerCommand writeCharCommand = new WriteCharCommand();
 
-    LexerCommand writeQuotesCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(QUOTES);
-    };
+    LexerCommand writeQuotesCommand = new WriteQuotesCommand();
 
-    LexerCommand writeStarCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(STAR);
-    };
+    LexerCommand writeStarCommand = new WriteStarCommand();
 
-    LexerCommand writeMultilineCommentCommand = (ch, ctx) -> {
-        ctx.appendLexeme(ch);
-        ctx.setTokenName(MULTILINE_COMMENT);
-    };
+    LexerCommand writeMultilineCommentCommand = new WriteMultilineCommandCommand();
 
 
     public DefaultLexerCommandRepository() {
