@@ -21,7 +21,7 @@ import org.codeformatter.lexers.impl.commands.WriteCarriageReturnCommand;
 import org.codeformatter.lexers.impl.commands.WriteCharCommand;
 import org.codeformatter.lexers.impl.commands.WriteClosingCurlyBracketCommand;
 import org.codeformatter.lexers.impl.commands.WriteLineSeparatorCommand;
-import org.codeformatter.lexers.impl.commands.WriteMultilineCommandCommand;
+import org.codeformatter.lexers.impl.commands.WriteMultilineCommentCommand;
 import org.codeformatter.lexers.impl.commands.WriteOpeningCurlyBracketCommand;
 import org.codeformatter.lexers.impl.commands.WriteQuotesCommand;
 import org.codeformatter.lexers.impl.commands.WriteSemicolonCommand;
@@ -55,7 +55,7 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
     LexerCommand writeStarCommand = new WriteStarCommand();
 
-    LexerCommand writeMultilineCommentCommand = new WriteMultilineCommandCommand();
+    LexerCommand writeMultilineCommentCommand = new WriteMultilineCommentCommand();
 
 
     public DefaultLexerCommandRepository() {

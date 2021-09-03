@@ -7,6 +7,7 @@ import org.codeformatter.io.string.StringReader;
 import org.codeformatter.lexers.impl.StateMachineLexer;
 import org.codeformatter.tokens.Token;
 import org.codeformatter.tokens.impl.DefaultToken;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,45 @@ import org.junit.jupiter.api.Test;
 public class StateMachineLexerTest {
 
     private StateMachineLexer lexer;
+
+    @Test
+    public void should_tokenize_complex_structure() {
+        String complexStructure = "a; b { c; } /* d { } */ s = \"str\";";
+
+        lexer = new StateMachineLexer(new StringReader(complexStructure));
+        Token[] expectedTokens = {
+                new DefaultToken(CHAR, "a"),
+                new DefaultToken(SEMICOLON, ";"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(CHAR, "b"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(OPENING_CURLY_BRACKET, "{"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(CHAR, "c"),
+                new DefaultToken(SEMICOLON, ";"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(CLOSING_CURLY_BRACKET, "}"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(MULTILINE_COMMENT, "/* d { } */"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(CHAR, "s"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(CHAR, "="),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(QUOTES, "\""),
+                new DefaultToken(CHAR, "s"),
+                new DefaultToken(CHAR, "t"),
+                new DefaultToken(CHAR, "r"),
+                new DefaultToken(QUOTES, "\""),
+                new DefaultToken(SEMICOLON, ";")
+        };
+
+        for (Token expectedToken : expectedTokens) {
+            Token actualToken = lexer.nextToken();
+            Assertions.assertEquals(expectedToken, actualToken);
+        }
+
+    }
 
     @Test
     public void should_recognize_whitespace() {

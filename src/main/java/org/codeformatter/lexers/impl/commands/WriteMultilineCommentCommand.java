@@ -5,7 +5,7 @@ import org.codeformatter.lexers.LexerContext;
 
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 
-public class WriteMultilineCommandCommand implements LexerCommand {
+public class WriteMultilineCommentCommand implements LexerCommand {
 
     @Override
     public void execute(Character character, LexerContext lexerContext) {
