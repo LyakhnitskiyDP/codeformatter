@@ -1,6 +1,7 @@
 package org.codeformatter.formatters.impl;
 
 
+import static org.codeformatter.formatters.impl.FormatterState.IGNORING_WHITESPACES;
 import static org.codeformatter.formatters.impl.FormatterState.INITIAL;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_LINE;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_STRING_LITERAL;
@@ -109,6 +110,34 @@ public class DefaultFormatterCommandRepository implements FormatterCommandReposi
 
         commands.putAll(Map.of(
                 Pair.of(WRITING_STRING_LITERAL, null), writeTokenCommand
+        ));
+
+        commands.putAll(Map.of(
+                Pair.of(IGNORING_WHITESPACES, WHITE_SPACE), noOpCommand,
+
+                Pair.of(IGNORING_WHITESPACES,CHAR), writeTokenCommand,
+
+                Pair.of(IGNORING_WHITESPACES,QUOTES), writeTokenCommand,
+
+                Pair.of(IGNORING_WHITESPACES,FOR_LOOP), writeTokenCommand,
+
+                Pair.of(IGNORING_WHITESPACES,MULTILINE_COMMENT), writeTokenAndNewLineCommand,
+
+                Pair.of(IGNORING_WHITESPACES,LINE_SEPARATOR), noOpCommand,
+
+                Pair.of(IGNORING_WHITESPACES,SEMICOLON), writeTokenAndNewLineCommand,
+
+                Pair.of(IGNORING_WHITESPACES,OPENING_CURLY_BRACKET), (token, context) -> {
+                    context.writeToken(token);
+                    context.writeNewLine();
+                    context.increaseIndentation();
+                },
+
+                Pair.of(IGNORING_WHITESPACES,CLOSING_CURLY_BRACKET), (token, context) -> {
+                    context.decreaseIndentation();
+                    context.writeIndent();
+                    context.writeToken(token);
+                }
         ));
 
     }

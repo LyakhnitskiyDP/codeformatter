@@ -37,6 +37,19 @@ public class StateMachineFormatterTest {
     }
 
     @Test
+    public void should_ignore_extra_spaces_between_tokens() {
+
+        String codeToFormat = "a   b;       c            d;";
+
+        String expectedCode = """
+                a b;
+                c d;
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
+    @Test
     public void should_not_add_extra_line_separation() {
 
         String codeToFormat = """

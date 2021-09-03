@@ -7,6 +7,7 @@ public class FormatterState {
 
     public static final String INITIAL = "initial";
     public static final String WRITING_LINE = "writing line";
+    public static final String IGNORING_WHITESPACES = "ignoring whitespaces";
 
     public static final String WRITING_STRING_LITERAL = "writing string literal";
 

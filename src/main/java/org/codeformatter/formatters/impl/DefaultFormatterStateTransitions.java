@@ -1,5 +1,6 @@
 package org.codeformatter.formatters.impl;
 
+import static org.codeformatter.formatters.impl.FormatterState.IGNORING_WHITESPACES;
 import static org.codeformatter.formatters.impl.FormatterState.INITIAL;
 import static org.codeformatter.formatters.impl.FormatterState.MULTILINE_COMMENT_START_1;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_LINE;
@@ -53,6 +54,7 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
                 Pair.of(WRITING_LINE, null), WRITING_LINE,
                 Pair.of(WRITING_LINE, SEMICOLON), INITIAL,
                 Pair.of(WRITING_LINE, OPENING_CURLY_BRACKET), INITIAL,
+                Pair.of(WRITING_LINE, WHITE_SPACE), IGNORING_WHITESPACES,
                 Pair.of(WRITING_LINE, CLOSING_CURLY_BRACKET), INITIAL,
                 Pair.of(WRITING_LINE, QUOTES), WRITING_STRING_LITERAL,
                 Pair.of(WRITING_LINE, SLASH), MULTILINE_COMMENT_START_1
@@ -61,6 +63,16 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
         transitions.putAll(Map.of(
                 Pair.of(WRITING_MULTILINE_COMMENT, null), WRITING_MULTILINE_COMMENT,
                 Pair.of(WRITING_MULTILINE_COMMENT, QUOTES), WRITING_LINE
+        ));
+
+        transitions.putAll(Map.of(
+                Pair.of(IGNORING_WHITESPACES, null), WRITING_LINE,
+                Pair.of(IGNORING_WHITESPACES, SEMICOLON), INITIAL,
+                Pair.of(IGNORING_WHITESPACES, OPENING_CURLY_BRACKET), INITIAL,
+                Pair.of(IGNORING_WHITESPACES, WHITE_SPACE), IGNORING_WHITESPACES,
+                Pair.of(IGNORING_WHITESPACES, CLOSING_CURLY_BRACKET), INITIAL,
+                Pair.of(IGNORING_WHITESPACES, QUOTES), WRITING_STRING_LITERAL,
+                Pair.of(IGNORING_WHITESPACES, SLASH), MULTILINE_COMMENT_START_1
         ));
     }
 
