@@ -67,6 +67,16 @@ public class StateMachineLexerTest {
     }
 
     @Test
+    public void should_recognize_for_loop() {
+
+        Token expectedToken = new DefaultToken(FOR_LOOP, "for (a; b; c;)");
+        Token actualToken = readTokenWithLexer("for (a; b; c;)");
+
+        System.out.println(actualToken);
+
+    }
+
+    @Test
     public void should_recognize_opening_curly_bracket() {
 
 

@@ -6,6 +6,7 @@ import static org.codeformatter.formatters.impl.FormatterState.MULTILINE_COMMENT
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_LINE;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_MULTILINE_COMMENT;
 import static org.codeformatter.formatters.impl.FormatterState.WRITING_STRING_LITERAL;
+import static org.codeformatter.tokens.LexicalConstants.CARRIAGE_RETURN;
 import static org.codeformatter.tokens.LexicalConstants.CHAR;
 import static org.codeformatter.tokens.LexicalConstants.CLOSING_CURLY_BRACKET;
 import static org.codeformatter.tokens.LexicalConstants.LINE_SEPARATOR;
@@ -45,9 +46,11 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
                 Pair.of(INITIAL, QUOTES), WRITING_STRING_LITERAL,
                 Pair.of(INITIAL,SLASH), MULTILINE_COMMENT_START_1
         ));
+        transitions.put(Pair.of(INITIAL, CARRIAGE_RETURN), INITIAL);
 
         transitions.putAll(Map.of(
-                Pair.of(WRITING_STRING_LITERAL, null), WRITING_STRING_LITERAL
+                Pair.of(WRITING_STRING_LITERAL, null), WRITING_STRING_LITERAL,
+                Pair.of(WRITING_STRING_LITERAL, QUOTES), WRITING_LINE
         ));
 
         transitions.putAll(Map.of(
