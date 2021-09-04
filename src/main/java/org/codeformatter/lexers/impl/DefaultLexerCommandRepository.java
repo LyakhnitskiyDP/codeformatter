@@ -1,6 +1,5 @@
 package org.codeformatter.lexers.impl;
 
-import static org.codeformatter.utils.LoggingUtil.printChar;
 import static org.codeformatter.lexers.impl.LexerState.FOR;
 import static org.codeformatter.lexers.impl.LexerState.FOR_1;
 import static org.codeformatter.lexers.impl.LexerState.FOR_2;
@@ -9,10 +8,10 @@ import static org.codeformatter.lexers.impl.LexerState.INITIAL;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
+import static org.codeformatter.utils.LoggingUtil.printChar;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerCommand;
@@ -20,6 +19,7 @@ import org.codeformatter.lexers.LexerCommandRepository;
 import org.codeformatter.lexers.impl.commands.WriteCarriageReturnCommand;
 import org.codeformatter.lexers.impl.commands.WriteCharCommand;
 import org.codeformatter.lexers.impl.commands.WriteClosingCurlyBracketCommand;
+import org.codeformatter.lexers.impl.commands.WriteForLoopCommand;
 import org.codeformatter.lexers.impl.commands.WriteLineSeparatorCommand;
 import org.codeformatter.lexers.impl.commands.WriteMultilineCommentCommand;
 import org.codeformatter.lexers.impl.commands.WriteOpeningCurlyBracketCommand;
@@ -77,7 +77,7 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
         commands.putAll(Map.of(
                 Pair.of(FOR, null), writeCharCommand,
-                Pair.of(FOR, ')'), writeCharCommand,
+                Pair.of(FOR, ')'), new WriteForLoopCommand(),
                 Pair.of(FOR_1, null), writeCharCommand,
                 Pair.of(FOR_1, ';'), writeQuotesCommand,
                 Pair.of(FOR_2, null), writeCharCommand,

@@ -72,8 +72,7 @@ public class StateMachineLexerTest {
         Token expectedToken = new DefaultToken(FOR_LOOP, "for (a; b; c;)");
         Token actualToken = readTokenWithLexer("for (a; b; c;)");
 
-        System.out.println(actualToken);
-
+        assertEquals(expectedToken, actualToken);
     }
 
     @Test

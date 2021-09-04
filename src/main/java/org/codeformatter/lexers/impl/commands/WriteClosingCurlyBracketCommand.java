@@ -1,9 +1,9 @@
 package org.codeformatter.lexers.impl.commands;
 
+import static org.codeformatter.tokens.LexicalConstants.CLOSING_CURLY_BRACKET;
+
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerContext;
-
-import static org.codeformatter.tokens.LexicalConstants.CLOSING_CURLY_BRACKET;
 
 public class WriteClosingCurlyBracketCommand implements LexerCommand {
 

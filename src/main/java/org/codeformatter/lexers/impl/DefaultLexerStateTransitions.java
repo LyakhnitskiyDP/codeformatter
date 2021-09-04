@@ -1,6 +1,5 @@
 package org.codeformatter.lexers.impl;
 
-import static org.codeformatter.utils.LoggingUtil.printChar;
 import static org.codeformatter.lexers.impl.LexerState.FOR;
 import static org.codeformatter.lexers.impl.LexerState.FOR_1;
 import static org.codeformatter.lexers.impl.LexerState.FOR_2;
@@ -10,10 +9,10 @@ import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
 import static org.codeformatter.lexers.impl.LexerState.TERMINATED;
+import static org.codeformatter.utils.LoggingUtil.printChar;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerStateTransitions;

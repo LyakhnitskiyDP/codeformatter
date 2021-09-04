@@ -1,9 +1,9 @@
 package org.codeformatter.lexers.impl.commands;
 
+import static org.codeformatter.tokens.LexicalConstants.QUOTES;
+
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerContext;
-
-import static org.codeformatter.tokens.LexicalConstants.QUOTES;
 
 public class WriteQuotesCommand implements LexerCommand {
 

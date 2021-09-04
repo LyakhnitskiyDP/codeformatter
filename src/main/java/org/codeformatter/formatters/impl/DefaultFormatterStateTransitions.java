@@ -19,7 +19,6 @@ import static org.codeformatter.tokens.LexicalConstants.WHITE_SPACE;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.formatters.FormatterStateTransitions;
@@ -44,7 +43,7 @@ public class DefaultFormatterStateTransitions implements FormatterStateTransitio
                 Pair.of(INITIAL, OPENING_CURLY_BRACKET), INITIAL,
                 Pair.of(INITIAL, CLOSING_CURLY_BRACKET), INITIAL,
                 Pair.of(INITIAL, QUOTES), WRITING_STRING_LITERAL,
-                Pair.of(INITIAL,SLASH), MULTILINE_COMMENT_START_1
+                Pair.of(INITIAL, SLASH), MULTILINE_COMMENT_START_1
         ));
         transitions.put(Pair.of(INITIAL, CARRIAGE_RETURN), INITIAL);
 

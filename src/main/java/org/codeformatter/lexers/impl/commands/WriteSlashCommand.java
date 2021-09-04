@@ -1,9 +1,9 @@
 package org.codeformatter.lexers.impl.commands;
 
+import static org.codeformatter.tokens.LexicalConstants.SLASH;
+
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerContext;
-
-import static org.codeformatter.tokens.LexicalConstants.SLASH;
 
 public class WriteSlashCommand implements LexerCommand {
 

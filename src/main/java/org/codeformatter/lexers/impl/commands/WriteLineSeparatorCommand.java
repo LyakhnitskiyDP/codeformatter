@@ -1,9 +1,9 @@
 package org.codeformatter.lexers.impl.commands;
 
+import static org.codeformatter.tokens.LexicalConstants.LINE_SEPARATOR;
+
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerContext;
-
-import static org.codeformatter.tokens.LexicalConstants.LINE_SEPARATOR;
 
 public class WriteLineSeparatorCommand implements LexerCommand {
     @Override

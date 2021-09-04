@@ -1,9 +1,9 @@
 package org.codeformatter.lexers.impl.commands;
 
+import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
+
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerContext;
-
-import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 
 public class WriteMultilineCommentCommand implements LexerCommand {
 
