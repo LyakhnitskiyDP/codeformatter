@@ -25,6 +25,7 @@ import org.codeformatter.formatters.FormatterCommandRepository;
 import org.codeformatter.tokens.Token;
 
 @Slf4j
+@Deprecated
 public class DefaultFormatterCommandRepository implements FormatterCommandRepository {
 
     //First String Type parameter - current state name

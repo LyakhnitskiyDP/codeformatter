@@ -5,6 +5,8 @@ import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
+import org.codeformatter.lexers.impl.external_representations.LexerCommandOnChar;
+import org.codeformatter.lexers.impl.external_representations.LexerCommandsForState;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -14,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Ref;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.Map;
 import static org.codeformatter.utils.LoggingUtil.printChar;
 
 @Slf4j
-public class ExternalizedCommandRepository implements LexerCommandRepository {
+public class ExternalizedLexerCommandRepository implements LexerCommandRepository {
 
     private static final String COMMAND_PACKAGE = "org.codeformatter.lexers.impl.commands";
 
@@ -30,7 +31,7 @@ public class ExternalizedCommandRepository implements LexerCommandRepository {
 
     private final Yaml yaml;
 
-    public ExternalizedCommandRepository(String pathToCommands) {
+    public ExternalizedLexerCommandRepository(String pathToCommands) {
         this.yaml = new Yaml(new YamlListConstructor<>(LexerCommandsForState.class));
         this.commands = new HashMap<>();
 

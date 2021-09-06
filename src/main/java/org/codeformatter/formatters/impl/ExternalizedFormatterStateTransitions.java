@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.formatters.FormatterStateTransitions;
+import org.codeformatter.formatters.impl.external_representations.FormatterTransitionOnToken;
+import org.codeformatter.formatters.impl.external_representations.FormatterTransitionsForState;
 import org.codeformatter.tokens.Token;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;

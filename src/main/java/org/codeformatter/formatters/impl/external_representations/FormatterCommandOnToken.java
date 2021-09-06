@@ -1,4 +1,4 @@
-package org.codeformatter.lexers.impl;
+package org.codeformatter.formatters.impl.external_representations;
 
 import lombok.Data;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LexerCommandOnChar {
+public class FormatterCommandOnToken {
 
-    String ch;
+    String tokenName;
 
     String commandName;
 

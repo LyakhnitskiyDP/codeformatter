@@ -1,4 +1,4 @@
-package org.codeformatter.formatters.impl;
+package org.codeformatter.lexers.impl.external_representations;
 
 import lombok.Data;
 import lombok.Getter;
@@ -11,10 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FormatterTransitionsForState {
+public class LexerTransitionsForState {
 
     private String state;
 
-    private List<FormatterTransitionOnToken> transitions;
-
+    private List<LexerTransitionOnChar> transitions;
 }

@@ -3,6 +3,8 @@ package org.codeformatter.lexers.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.lexers.impl.external_representations.LexerTransitionOnChar;
+import org.codeformatter.lexers.impl.external_representations.LexerTransitionsForState;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;

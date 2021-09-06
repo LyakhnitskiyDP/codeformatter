@@ -1,4 +1,4 @@
-package org.codeformatter.lexers.impl;
+package org.codeformatter.lexers.impl.external_representations;
 
 import lombok.Data;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import java.util.List;
 @Setter
 public class LexerCommandsForState {
 
-    String state;
+    private String state;
 
-    List<LexerCommandOnChar> commands;
+    private List<LexerCommandOnChar> commands;
 
 }
