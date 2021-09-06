@@ -31,7 +31,8 @@ public class StateMachineFormatterTest {
 
         String expectedCode =
                 """
-                String myString = "it's string { still string }";""";
+                String myString = "it's string { still string }";
+                """;
 
         testFormatter(codeToFormat, expectedCode);
     }

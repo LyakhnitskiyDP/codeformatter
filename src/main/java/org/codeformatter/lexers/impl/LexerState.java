@@ -15,8 +15,8 @@ public class LexerState {
     public static final String MULTILINE_COMMENT_START1 = "multiline comment start 1";
     public static final String MULTILINE_COMMENT_START2 = "multiline comment start 2";
     public static final String MULTILINE_COMMENT = "multiline comment";
-    public static final String MULTILINE_COMMENT_END1 = "multiline comment end 3";
-    public static final String MULTILINE_COMMENT_END2 = "multiline comment end 4";
+    public static final String MULTILINE_COMMENT_END1 = "multiline comment end 1";
+    public static final String MULTILINE_COMMENT_END2 = "multiline comment end 2";
 
     String state;
 
