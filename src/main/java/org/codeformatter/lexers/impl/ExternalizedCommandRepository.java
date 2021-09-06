@@ -1,0 +1,130 @@
+package org.codeformatter.lexers.impl;
+
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.lexers.LexerCommand;
+import org.codeformatter.lexers.LexerCommandRepository;
+import org.codeformatter.utils.YamlListConstructor;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Ref;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.codeformatter.utils.LoggingUtil.printChar;
+
+@Slf4j
+public class ExternalizedCommandRepository implements LexerCommandRepository {
+
+    private static final String COMMAND_PACKAGE = "org.codeformatter.lexers.impl.commands";
+
+    private final Map<Pair<String, Character>, LexerCommand> commands;
+
+    private final Yaml yaml;
+
+    public ExternalizedCommandRepository(String pathToCommands) {
+        this.yaml = new Yaml(new YamlListConstructor<>(LexerCommandsForState.class));
+        this.commands = new HashMap<>();
+
+        initializeCommands(pathToCommands);
+    }
+
+    private void initializeCommands(String pathToCommands) {
+
+        try (
+                InputStream inputStream = new FileInputStream(pathToCommands)
+        ) {
+
+            List<LexerCommandsForState> lexerCommandsForStates = yaml.load(inputStream);
+
+            lexerCommandsForStates.forEach(this::addCommandForState);
+
+        } catch (FileNotFoundException e) {
+            log.error("Unable to find file ({}) with lexer commands", pathToCommands);
+            throw new ExternalizedConfigException("Unable to find file with lexer commands", e);
+        } catch (IOException e) {
+            log.error("Exception while reading file ({}) with lexer commands", pathToCommands);
+            throw new ExternalizedConfigException("Exception while reading file with lexer commands", e);
+        } catch (YAMLException yamlException) {
+            log.error("Unable to parse yaml file with lexer commands");
+            throw new ExternalizedConfigException("Unable to parse yaml file with lexer commands", yamlException);
+        }
+    }
+
+    private void addCommandForState(LexerCommandsForState lexerCommandsForState) {
+
+        String currentState = lexerCommandsForState.getState();
+
+        for (LexerCommandOnChar lexerCommandOnChar : lexerCommandsForState.getCommands()) {
+
+            Character ch = getCharOrNull(lexerCommandOnChar.getCh());
+            LexerCommand lexerCommand = createCommand(lexerCommandOnChar.getCommandName());
+
+            commands.put(Pair.of(currentState, ch), lexerCommand);
+        }
+    }
+
+    private Character getCharOrNull(String str) {
+
+        //TODO: refactor
+        if (str == null) {
+            return null;
+        }
+        if (str.equals("\\n")) {
+            return '\n';
+        }
+
+        if (str.equals("\\r")) {
+            return '\r';
+        }
+
+        return str == null ? null : str.charAt(0);
+    }
+
+    private LexerCommand createCommand(String commandName) {
+
+        String fullCommandName = COMMAND_PACKAGE + "." + commandName;
+
+        try {
+
+            return (LexerCommand) Class.forName(fullCommandName)
+                                       .getDeclaredConstructor()
+                                       .newInstance();
+
+        } catch (InstantiationException |
+                 IllegalAccessException |
+                 InvocationTargetException |
+                 NoSuchMethodException e) {
+            log.error("Unable to reflectively create command with name: {}", (COMMAND_PACKAGE + "." + commandName));
+            throw new ExternalizedConfigException("Unable to reflectively create command", e);
+        } catch (ClassNotFoundException e) {
+            log.error("Command with name {} not found", (COMMAND_PACKAGE + "." + commandName));
+            throw new ExternalizedConfigException("Command not found", e);
+        }
+
+    }
+
+    @Override
+    public LexerCommand getCommand(LexerState lexerState, char ch) {
+        log.debug("Getting lexer command for state: {} and char: {}", lexerState.getState(), printChar(ch));
+
+        String lexerStateName = lexerState.getState();
+
+        LexerCommand lexerCommandToReturn = commands.get(Pair.of(lexerStateName, ch));
+
+        if (lexerCommandToReturn == null) {
+            lexerCommandToReturn = commands.get(Pair.of(lexerStateName, null));
+            log.debug("No special lexer command found, returning default one: {}", lexerCommandToReturn);
+        }
+
+        return lexerCommandToReturn;
+    }
+}

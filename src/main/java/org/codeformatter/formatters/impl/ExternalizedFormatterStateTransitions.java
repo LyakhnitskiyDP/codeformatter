@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.formatters.FormatterStateTransitions;
-import org.codeformatter.lexers.impl.LexerStateTransitions;
-import org.codeformatter.lexers.impl.LexerTransitionOnChar;
 import org.codeformatter.tokens.Token;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
@@ -63,7 +61,6 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
             String tokenName = transitionOnToken.getTokenName();
             String stateToTransitionTo = transitionOnToken.getStateToTransferTo();
 
-            System.out.format("\n putting (%s + %s) => %s", stateToTransitionFrom, tokenName, stateToTransitionTo);
             transitions.put(Pair.of(stateToTransitionFrom, tokenName), stateToTransitionTo);
         }
     }

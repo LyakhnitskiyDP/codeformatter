@@ -1,0 +1,65 @@
+- state: "initial"
+  commands:
+    - ch: null
+      commandName: 'WriteCharCommand'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+    - ch: '{'
+      commandName: 'WriteOpeningCurlyBracketCommand'
+    - ch: '}'
+      commandName: 'WriteClosingCurlyBracketCommand'
+    - ch: ' '
+      commandName: 'WriteWhiteSpaceCommand'
+    - ch: '/'
+      commandName: 'WriteSlashCommand'
+    - ch: '*'
+      commandName: 'WriteStarCommand'
+    - ch: '"'
+      commandName: 'WriteQuotesCommand'
+    - ch: '\n'
+      commandName: 'WriteLineSeparatorCommand'
+    - ch: '\r'
+      commandName: 'WriteCarriageReturnCommand'
+
+- state: "for"
+  commands:
+    - ch: null
+      commandName: 'WriteCharCommand'
+    - ch: ')'
+      commandName: 'WriteForLoopCommand'
+
+- state: "for_1"
+  commands:
+    - ch: null
+      commandName: 'WriteCharCommand'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+
+- state: "for_2"
+  commands:
+    - ch: null
+      commandName: 'WriteCharCommand'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+
+- state: "for_3"
+  commands:
+    - ch: null
+      commandName: 'WriteCharCommand'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+
+- state: 'multiline comment'
+  commands:
+    - ch: null
+      commandName: 'WriteMultilineCommentCommand'
+
+- state: 'multiline comment start 1'
+  commands:
+    - ch: null
+      commandName: 'WriteMultilineCommentCommand'
+
+- state: 'multiline comment end 1'
+  commands:
+    - ch: null
+      commandName: 'WriteMultilineCommentCommand'

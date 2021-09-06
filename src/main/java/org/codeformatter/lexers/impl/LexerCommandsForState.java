@@ -11,9 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LexerStateTransitions {
+public class LexerCommandsForState {
 
-    private String state;
+    String state;
 
-    private List<LexerTransitionOnChar> transitions;
+    List<LexerCommandOnChar> commands;
+
 }

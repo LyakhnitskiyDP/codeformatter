@@ -24,7 +24,7 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
     private final Map<Pair<String, Character>, String> transitions;
 
     public ExternalizedLexerStateTransitions(String pathToStateConfig) {
-        this.yaml = new Yaml(new YamlListConstructor<>(LexerStateTransitions.class));
+        this.yaml = new Yaml(new YamlListConstructor<>(LexerTransitionsForState.class));
         this.transitions = new HashMap<>();
 
         initializeStateTransitions(pathToStateConfig);
@@ -36,9 +36,9 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
                 InputStream inputStream = new FileInputStream(pathToStateConfig)
         ) {
 
-            List<LexerStateTransitions> lexerStateTransitions = yaml.load(inputStream);
+            List<LexerTransitionsForState> lexerTransitionOnStates = yaml.load(inputStream);
 
-            lexerStateTransitions.forEach(this::addStateTransitions);
+            lexerTransitionOnStates.forEach(this::addStateTransitions);
 
         } catch (FileNotFoundException e) {
             log.error("Unable to find file ({}) with lexer state transition rules", pathToStateConfig);
@@ -52,11 +52,11 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
         }
     }
 
-    private void addStateTransitions(LexerStateTransitions lexerStateTransitions) {
+    private void addStateTransitions(LexerTransitionsForState lexerTransitionsForState) {
 
-        String stateToTransitionFrom = lexerStateTransitions.getState();
+        String stateToTransitionFrom = lexerTransitionsForState.getState();
 
-        for (LexerTransitionOnChar transitionOnChar : lexerStateTransitions.getTransitions()) {
+        for (LexerTransitionOnChar transitionOnChar : lexerTransitionsForState.getTransitions()) {
 
             Character ch = getCharOrNull(transitionOnChar.getCh());
             String stateToTransitionTo = transitionOnChar.getStateToTransferTo();

@@ -31,6 +31,7 @@ import org.codeformatter.lexers.impl.commands.WriteWhiteSpaceCommand;
 
 
 @Slf4j
+@Deprecated
 public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
     private Map<Pair<String, Character>, LexerCommand> commands;
