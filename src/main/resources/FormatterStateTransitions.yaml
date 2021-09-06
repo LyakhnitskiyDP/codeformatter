@@ -2,8 +2,6 @@
   transitions:
     - tokenName: null
       stateToTransferTo: 'writing line'
-    - tokenName: 'Char'
-      stateToTransferTo: 'writing line'
     - tokenName: 'Whitespace'
       stateToTransferTo: 'initial'
     - tokenName: 'Line separator'

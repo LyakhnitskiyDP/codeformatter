@@ -8,24 +8,28 @@
       stateToTransferTo: 'multiline comment start 1'
     - ch: 'f'
       stateToTransferTo: 'for_1'
+
 - state: 'for'
   transitions:
     - ch: null
       stateToTransferTo: 'for'
     - ch: ')'
       stateToTransferTo: 'terminated'
+
 - state: 'for_1'
   transitions:
     - ch: null
       stateToTransferTo: 'terminated'
     - ch: 'o'
       stateToTransferTo: 'for_2'
+
 - state: 'for_2'
   transitions:
     - ch: null
       stateToTransferTo: 'terminated'
     - ch: 'r'
       stateToTransferTo: 'for_3'
+
 - state: 'for_3'
   transitions:
     - ch: null
@@ -34,18 +38,21 @@
       stateToTransferTo: 'for'
     - ch: ';'
       stateToTransferTo: 'for'
+
 - state: 'multiline comment start 1'
   transitions:
     - ch: null
       stateToTransferTo: 'initial'
     - ch: '*'
       stateToTransferTo: 'multiline comment'
+
 - state: 'multiline comment'
   transitions:
     - ch: null
       stateToTransferTo: 'multiline comment'
     - ch: '*'
       stateToTransferTo: 'multiline comment end 1'
+
 - state: 'multiline comment end 1'
   transitions:
     - ch: null

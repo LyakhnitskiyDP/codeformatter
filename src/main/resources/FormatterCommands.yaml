@@ -1,17 +1,13 @@
-- state: initial
+- state: 'initial'
   commands:
+    - tokenName: null
+      commandName: 'NoOpCommand'
     - tokenName: 'Char'
       commandName: 'IndentAndWriteCommand'
     - tokenName: 'for'
       commandName: 'IndentAndWriteCommand'
     - tokenName: 'multiline comment'
       commandName: 'WriteTokenAndNewLineCommand'
-    - tokenName: 'Whitespace'
-      commandName: 'NoOpCommand'
-    - tokenName: 'Line separator'
-      commandName: 'NoOpCommand'
-    - tokenName: 'Carriage return'
-      commandName: 'NoOpCommand'
     - tokenName: 'Semicolon'
       commandName: 'WriteTokenAndNewLineCommand'
     - tokenName: 'Opening Curly Bracket'
@@ -19,18 +15,12 @@
     - tokenName: 'Closing Curly Bracket'
       commandName: 'WriteInitialClosingCurlyBracketCommand'
 
-- state: writing line
+- state: 'writing line'
   commands:
-    - tokenName: 'Char'
-      commandName: 'WriteTokenCommand'
-    - tokenName: 'Quotes'
-      commandName: 'WriteTokenCommand'
-    - tokenName: 'for'
+    - tokenName: null
       commandName: 'WriteTokenCommand'
     - tokenName: 'multiline comment'
       commandName: 'WriteTokenAndNewLineCommand'
-    - tokenName: 'Whitespace'
-      commandName: 'WriteTokenCommand'
     - tokenName: 'Line separator'
       commandName: 'NoOpCommand'
     - tokenName: 'Semicolon'
@@ -47,14 +37,10 @@
 
 - state: 'ignoring whitespaces'
   commands:
+    - tokenName: null
+      commandName: 'WriteTokenCommand'
     - tokenName: 'Whitespace'
       commandName: 'NoOpCommand'
-    - tokenName: 'Char'
-      commandName: 'WriteTokenCommand'
-    - tokenName: 'Quotes'
-      commandName: 'WriteTokenCommand'
-    - tokenName: 'for'
-      commandName: 'WriteTokenCommand'
     - tokenName: 'multiline comment'
       commandName: 'WriteTokenAndNewLineCommand'
     - tokenName: 'Line separator'

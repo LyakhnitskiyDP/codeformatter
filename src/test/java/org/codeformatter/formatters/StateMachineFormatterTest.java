@@ -87,6 +87,30 @@ public class StateMachineFormatterTest {
         testFormatter(codeToFormat, expectedCode);
     }
 
+
+    @Test
+    public void should_format_single_line_comments() {
+
+        String codeToFormat =
+                """
+                a b c;
+                //a { b { c } } ;;;
+                a { b; c; }
+                """;
+
+        String expectedCode =
+                """
+                a b c;
+                //a { b { c } } ;;;
+                a {
+                    b;
+                    c;
+                }
+                """;
+
+        testFormatter(codeToFormat, expectedCode);
+    }
+
     @Test
     public void should_format_complex_structure() {
 
