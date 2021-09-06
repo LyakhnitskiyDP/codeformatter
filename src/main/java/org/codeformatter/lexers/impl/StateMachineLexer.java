@@ -25,7 +25,7 @@ public class StateMachineLexer implements Lexer {
         this.reader = reader;
 
         lexerCommandRepository = new DefaultLexerCommandRepository();
-        lexerStateTransitions = new DefaultLexerStateTransitions();
+        lexerStateTransitions = new ExternalizedLexerStateTransitions("src/main/resources/LexerStateTransitions.yaml");
 
         StringBuilder postponeBuffer = new StringBuilder();
         Writer postponeWriter = new StringWriter(postponeBuffer);

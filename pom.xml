@@ -12,6 +12,7 @@
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
 
+        <snakeyaml.version>1.29</snakeyaml.version>
         <lombok.version>1.18.20</lombok.version>
         <logback.version>1.2.3</logback.version>
         <slf4f.version>1.7.30</slf4f.version>
@@ -20,6 +21,13 @@
     </properties>
 
     <dependencies>
+
+        <!-- YAML parser -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
 
         <!-- Lombok -->
         <dependency>

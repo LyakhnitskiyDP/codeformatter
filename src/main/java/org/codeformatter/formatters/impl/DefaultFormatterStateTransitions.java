@@ -25,6 +25,7 @@ import org.codeformatter.formatters.FormatterStateTransitions;
 import org.codeformatter.tokens.Token;
 
 @Slf4j
+@Deprecated
 public class DefaultFormatterStateTransitions implements FormatterStateTransitions {
 
     private final Map<Pair<String, String>, String> transitions;

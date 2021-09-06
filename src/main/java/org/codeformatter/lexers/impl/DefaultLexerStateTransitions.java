@@ -18,6 +18,7 @@ import org.codeformatter.collections.Pair;
 import org.codeformatter.lexers.LexerStateTransitions;
 
 @Slf4j
+@Deprecated
 public class DefaultLexerStateTransitions implements LexerStateTransitions {
 
     private final Map<Pair<String, Character>, String> transitions;

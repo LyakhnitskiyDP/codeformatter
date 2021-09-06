@@ -18,7 +18,8 @@ public class StateMachineFormatter implements Formatter {
     private final FormatterCommandRepository commandRepository;
 
     public StateMachineFormatter() {
-        transitions = new DefaultFormatterStateTransitions();
+        //transitions = new DefaultFormatterStateTransitions();
+        transitions = new ExternalizedFormatterStateTransitions("src/main/resources/FormatterStateTransitions.yaml");
         commandRepository = new DefaultFormatterCommandRepository();
     }
 

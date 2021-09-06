@@ -11,6 +11,7 @@ import org.codeformatter.io.Writer;
 import org.codeformatter.io.file.FileReader;
 import org.codeformatter.io.file.FileWriter;
 import org.codeformatter.lexers.Lexer;
+import org.codeformatter.lexers.impl.ExternalizedLexerStateTransitions;
 import org.codeformatter.lexers.impl.StateMachineLexer;
 
 import java.util.Arrays;
