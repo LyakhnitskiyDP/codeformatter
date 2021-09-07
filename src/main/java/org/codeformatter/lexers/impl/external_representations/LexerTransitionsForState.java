@@ -7,6 +7,17 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class representation for lexer state transitions.
+ *
+ * EXAMPLE:
+ * - state: 'initial'
+ *   transitions:
+ *     - ch: null
+ *       stateToTransferTo: 'terminated'
+ *     - ch: 'f'
+ *       stateToTransferTo: 'for_1'
+ */
 @Data
 @NoArgsConstructor
 @Getter

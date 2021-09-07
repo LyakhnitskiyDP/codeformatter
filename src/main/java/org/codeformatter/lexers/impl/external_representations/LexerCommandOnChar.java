@@ -5,6 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class representation for a lexer command;
+ *
+ * EXAMPLE:
+ * - ch: ';'
+ *   commandName: 'WriteSemicolonCommand'
+ */
 @Data
 @NoArgsConstructor
 @Getter

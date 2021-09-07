@@ -5,6 +5,7 @@ import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.lexers.impl.external_representations.LexerTransitionOnChar;
 import org.codeformatter.lexers.impl.external_representations.LexerTransitionsForState;
+import org.codeformatter.utils.StringUtil;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
+import static org.codeformatter.utils.StringUtil.getFirstCharOrNull;
 
 @Slf4j
 public class ExternalizedLexerStateTransitions implements org.codeformatter.lexers.LexerStateTransitions {
@@ -60,16 +62,11 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
 
         for (LexerTransitionOnChar transitionOnChar : lexerTransitionsForState.getTransitions()) {
 
-            Character ch = getCharOrNull(transitionOnChar.getCh());
+            Character ch = getFirstCharOrNull(transitionOnChar.getCh());
             String stateToTransitionTo = transitionOnChar.getStateToTransferTo();
 
             transitions.put(Pair.of(stateToTransitionFrom, ch), stateToTransitionTo);
         }
-    }
-
-    private Character getCharOrNull(String str) {
-
-        return str == null ? null : str.charAt(0);
     }
 
     @Override

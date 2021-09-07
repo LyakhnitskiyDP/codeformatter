@@ -8,6 +8,7 @@ import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
 import org.codeformatter.lexers.impl.external_representations.LexerCommandOnChar;
 import org.codeformatter.lexers.impl.external_representations.LexerCommandsForState;
+import org.codeformatter.utils.StringUtil;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
+import static org.codeformatter.utils.StringUtil.getFirstCharOrNull;
 
 @Slf4j
 public class ExternalizedLexerCommandRepository implements LexerCommandRepository {
@@ -67,28 +69,11 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
 
         for (LexerCommandOnChar lexerCommandOnChar : lexerCommandsForState.getCommands()) {
 
-            Character ch = getCharOrNull(lexerCommandOnChar.getCh());
+            Character ch = getFirstCharOrNull(lexerCommandOnChar.getCh());
             LexerCommand lexerCommand = createCommand(lexerCommandOnChar.getCommandName());
 
             commands.put(Pair.of(currentState, ch), lexerCommand);
         }
-    }
-
-    private Character getCharOrNull(String str) {
-
-        //TODO: refactor
-        if (str == null) {
-            return null;
-        }
-        if (str.equals("\\n")) {
-            return '\n';
-        }
-
-        if (str.equals("\\r")) {
-            return '\r';
-        }
-
-        return str == null ? null : str.charAt(0);
     }
 
     private LexerCommand createCommand(String commandName) {

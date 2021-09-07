@@ -7,6 +7,17 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class representation for formatter state transitions.
+ *
+ * EXAMPLE:
+ * - state: 'initial'
+ *   transitions:
+ *     - tokenName: null
+ *       stateToTransferTo: 'writing line'
+ *     - tokenName: 'Whitespace'
+ *       stateToTransferTo: 'initial'
+ */
 @Data
 @NoArgsConstructor
 @Getter

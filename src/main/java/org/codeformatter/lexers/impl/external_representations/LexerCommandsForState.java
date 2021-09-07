@@ -7,6 +7,17 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class representation for lexer commands.
+ *
+ * EXAMPLE:
+ * - state: "initial"
+ *   commands:
+ *     - ch: null
+ *       commandName: 'WriteCharCommand'
+ *     - ch: ';'
+ *       commandName: 'WriteSemicolonCommand'
+ */
 @Data
 @NoArgsConstructor
 @Getter

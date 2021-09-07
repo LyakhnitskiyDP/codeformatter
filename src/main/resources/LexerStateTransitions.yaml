@@ -2,8 +2,6 @@
   transitions:
     - ch: null
       stateToTransferTo: 'terminated'
-    - ch: ' '
-      stateToTransferTo: 'terminated'
     - ch: 'f'
       stateToTransferTo: 'for_1'
 

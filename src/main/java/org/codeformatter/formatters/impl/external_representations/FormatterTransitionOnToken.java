@@ -5,6 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class representation for a formatter state transition;
+ *
+ * EXAMPLE:
+ * - tokenName: 'Whitespace'
+ *   stateToTransferTo: 'initial'
+ */
 @Data
 @NoArgsConstructor
 @Setter
