@@ -5,6 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class representation for an external formatter command.
+ *
+ * EXAMPLE:
+ * - tokenName: 'Slash'
+ *   commandName: 'IndentAndWriteCommand'
+ */
 @Data
 @NoArgsConstructor
 @Getter

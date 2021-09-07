@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.codeformatter.utils.LoggingUtil.printChar;
+import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
 
 @Slf4j
 public class ExternalizedLexerStateTransitions implements org.codeformatter.lexers.LexerStateTransitions {
@@ -74,7 +74,6 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
 
     @Override
     public LexerState nextState(LexerState lexerState, char ch) {
-        log.debug("Getting new lexer state, current lexer state: {}, char: {}", lexerState.getState(), printChar(ch));
 
         String lexerStateName = transitions.get(Pair.of(lexerState.getState(), ch));
 
@@ -82,7 +81,8 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
             lexerStateName = transitions.get(Pair.of(lexerState.getState(), null));
         }
 
-        log.debug("Returning new lexer state: {}", lexerStateName);
+        log.debug("[LEXER] For state: {} and char: {} transition to: {}",
+                lexerState.getState(), makeCharPrintable(ch), lexerStateName);
         return LexerState.of(lexerStateName);
     }
 

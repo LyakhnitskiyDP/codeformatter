@@ -8,7 +8,7 @@ import static org.codeformatter.lexers.impl.LexerState.INITIAL;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
-import static org.codeformatter.utils.LoggingUtil.printChar;
+import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,7 +96,7 @@ public class DefaultLexerCommandRepository implements LexerCommandRepository {
 
     @Override
     public LexerCommand getCommand(LexerState lexerState, char ch) {
-        log.debug("Getting lexer command for state: {} and char: {}", lexerState.getState(), printChar(ch));
+        log.debug("Getting lexer command for state: {} and char: {}", lexerState.getState(), makeCharPrintable(ch));
 
         String lexerStateName = lexerState.getState();
 

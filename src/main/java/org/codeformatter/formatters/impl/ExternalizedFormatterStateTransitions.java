@@ -70,8 +70,6 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
 
     @Override
     public FormatterState nextState(FormatterState state, Token token) {
-        log.debug("Getting new formatter state for current state: {} and token: {}",
-                state.getState(), token);
 
         String formatterStateName = transitions.get(
                 Pair.of(state.getState(), token.getName())
@@ -81,7 +79,8 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
             formatterStateName = transitions.get(Pair.of(state.getState(), null));
         }
 
-        log.debug("Returning new sate: {}", formatterStateName);
+        log.debug("[FORMATTER] For state: {} and token type: {} transition to state {}",
+                  state.getState(), token.getName(), formatterStateName);
         return FormatterState.of(formatterStateName);
     }
 }

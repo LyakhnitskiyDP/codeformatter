@@ -7,6 +7,18 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class representation for external commands for a state.
+ *
+ * EXAMPLE:
+ *
+ * - state: 'initial'
+ *   commands:
+ *     - tokenName: null
+ *       commandName: 'NoOpCommand'
+ *     - tokenName: 'Slash'
+ *       commandName: 'IndentAndWriteCommand'
+ */
 @Data
 @NoArgsConstructor
 @Getter

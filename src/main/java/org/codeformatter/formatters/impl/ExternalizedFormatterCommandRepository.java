@@ -2,6 +2,7 @@ package org.codeformatter.formatters.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.CommandNotFoundException;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.formatters.FormatterCommand;
 import org.codeformatter.formatters.FormatterCommandRepository;
@@ -48,14 +49,14 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
             formatterCommandsForStates.forEach(this::addCommandForState);
 
         } catch (FileNotFoundException e) {
-            log.error("Unable to find file ({}) with lexer commands", pathToCommands);
-            throw new ExternalizedConfigException("Unable to find file with lexer commands", e);
+            log.error("Unable to find file ({}) with formatter commands", pathToCommands);
+            throw new ExternalizedConfigException("Unable to find file with formatter commands", e);
         } catch (IOException e) {
-            log.error("Exception while reading file ({}) with lexer commands", pathToCommands);
-            throw new ExternalizedConfigException("Exception while reading file with lexer commands", e);
+            log.error("Exception while reading file ({}) with formatter commands", pathToCommands);
+            throw new ExternalizedConfigException("Exception while reading file with formatter commands", e);
         } catch (YAMLException yamlException) {
-            log.error("Unable to parse yaml file with lexer commands");
-            throw new ExternalizedConfigException("Unable to parse yaml file with lexer commands", yamlException);
+            log.error("Unable to parse yaml file with formatter commands");
+            throw new ExternalizedConfigException("Unable to parse yaml file with formatter commands", yamlException);
         }
     }
 
@@ -74,7 +75,6 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
 
     private FormatterCommand createCommand(String commandName) {
 
-        //TODO: improve name construction
         String fullCommandName = COMMAND_PACKAGE + "." + commandName;
 
         try {
@@ -87,18 +87,20 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
                 IllegalAccessException |
                 InvocationTargetException |
                 NoSuchMethodException e) {
+
             log.error("Unable to reflectively create command with name: {}", fullCommandName);
             throw new ExternalizedConfigException("Unable to reflectively create command", e);
         } catch (ClassNotFoundException e) {
             log.error("Command with name {} not found", fullCommandName);
-            throw new ExternalizedConfigException("Command not found", e);
+            throw new CommandNotFoundException(
+                    String.format("Command %s not found", fullCommandName),
+                    e
+            );
         }
     }
 
     @Override
     public FormatterCommand getCommand(FormatterState formatterState, Token token) {
-        log.debug("Getting new formatter command for state: {} and token: {}",
-                formatterState.getState(), token.getName());
 
         FormatterCommand commandToReturn = commands.get(
                 Pair.of(formatterState.getState(), token.getName())
@@ -108,7 +110,8 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
             commandToReturn = commands.get(Pair.of(formatterState.getState(), null));
         }
 
-        log.debug("Returning command: {}", commandToReturn.getClass().getSimpleName());
+        log.debug("[FORMATTER] For state: {} and token type: {} return command: {}",
+                  formatterState.getState(), token.getName(), commandToReturn.getClass().getSimpleName());
         return commandToReturn;
     }
 

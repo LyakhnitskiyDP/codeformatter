@@ -2,7 +2,7 @@ package org.codeformatter.utils;
 
 public class LoggingUtil {
 
-    public static String printChar(char ch) {
+    public static String makeCharPrintable(char ch) {
 
         return switch (ch) {
             case ('\n') -> "\\n";

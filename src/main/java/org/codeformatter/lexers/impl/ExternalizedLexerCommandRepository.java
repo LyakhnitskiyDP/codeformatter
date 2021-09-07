@@ -2,6 +2,7 @@ package org.codeformatter.lexers.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.CommandNotFoundException;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.codeformatter.utils.LoggingUtil.printChar;
+import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
 
 @Slf4j
 public class ExternalizedLexerCommandRepository implements LexerCommandRepository {
@@ -104,18 +105,17 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
                  IllegalAccessException |
                  InvocationTargetException |
                  NoSuchMethodException e) {
-            log.error("Unable to reflectively create command with name: {}", (COMMAND_PACKAGE + "." + commandName));
-            throw new ExternalizedConfigException("Unable to reflectively create command", e);
+            log.error("Unable to reflectively create lexer command with name: {}", fullCommandName);
+            throw new ExternalizedConfigException("Unable to reflectively create lexer command", e);
         } catch (ClassNotFoundException e) {
-            log.error("Command with name {} not found", (COMMAND_PACKAGE + "." + commandName));
-            throw new ExternalizedConfigException("Command not found", e);
+            log.error("Command with name {} not found", fullCommandName);
+            throw new CommandNotFoundException(String.format("Command %s not found", fullCommandName), e);
         }
 
     }
 
     @Override
     public LexerCommand getCommand(LexerState lexerState, char ch) {
-        log.debug("Getting lexer command for state: {} and char: {}", lexerState.getState(), printChar(ch));
 
         String lexerStateName = lexerState.getState();
 
@@ -123,8 +123,10 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
 
         if (lexerCommandToReturn == null) {
             lexerCommandToReturn = commands.get(Pair.of(lexerStateName, null));
-            log.debug("No special lexer command found, returning default one: {}", lexerCommandToReturn);
         }
+
+        log.debug("[LEXER] For state: {} and char: {} give command: {}",
+                  lexerState.getState(), makeCharPrintable(ch), lexerCommandToReturn.getClass().getSimpleName());
 
         return lexerCommandToReturn;
     }

@@ -9,7 +9,7 @@ import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_END1;
 import static org.codeformatter.lexers.impl.LexerState.MULTILINE_COMMENT_START1;
 import static org.codeformatter.lexers.impl.LexerState.TERMINATED;
-import static org.codeformatter.utils.LoggingUtil.printChar;
+import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +59,7 @@ public class DefaultLexerStateTransitions implements LexerStateTransitions {
 
     @Override
     public LexerState nextState(LexerState lexerState, char ch) {
-        log.debug("Getting new lexer state, current lexer state: {}, char: {}", lexerState.getState(), printChar(ch));
+        log.debug("Getting new lexer state, current lexer state: {}, char: {}", lexerState.getState(), makeCharPrintable(ch));
 
         String lexerStateName = transitions.get(Pair.of(lexerState.getState(), ch));
 
