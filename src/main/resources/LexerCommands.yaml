@@ -48,18 +48,3 @@
       commandName: 'WriteCharCommand'
     - ch: ';'
       commandName: 'WriteSemicolonCommand'
-
-- state: 'multiline comment'
-  commands:
-    - ch: null
-      commandName: 'WriteMultilineCommentCommand'
-
-- state: 'multiline comment start 1'
-  commands:
-    - ch: null
-      commandName: 'WriteMultilineCommentCommand'
-
-- state: 'multiline comment end 1'
-  commands:
-    - ch: null
-      commandName: 'WriteMultilineCommentCommand'

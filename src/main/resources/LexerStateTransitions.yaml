@@ -4,8 +4,6 @@
       stateToTransferTo: 'terminated'
     - ch: ' '
       stateToTransferTo: 'terminated'
-    - ch: '/'
-      stateToTransferTo: 'multiline comment start 1'
     - ch: 'f'
       stateToTransferTo: 'for_1'
 
@@ -38,24 +36,3 @@
       stateToTransferTo: 'for'
     - ch: ';'
       stateToTransferTo: 'for'
-
-- state: 'multiline comment start 1'
-  transitions:
-    - ch: null
-      stateToTransferTo: 'initial'
-    - ch: '*'
-      stateToTransferTo: 'multiline comment'
-
-- state: 'multiline comment'
-  transitions:
-    - ch: null
-      stateToTransferTo: 'multiline comment'
-    - ch: '*'
-      stateToTransferTo: 'multiline comment end 1'
-
-- state: 'multiline comment end 1'
-  transitions:
-    - ch: null
-      stateToTransferTo: 'multiline comment'
-    - ch: '/'
-      stateToTransferTo: 'terminated'

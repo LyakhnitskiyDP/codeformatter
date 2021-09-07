@@ -43,14 +43,14 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
             formatterStateTransitions.forEach(this::addStateTransitions);
 
         } catch (FileNotFoundException e) {
-            log.error("Unable to find file ({}) with lexer state transition rules", pathToStateConfig);
-            throw new ExternalizedConfigException("Unable to find file with lexer state transitions", e);
+            log.error("Unable to find file ({}) with formatter state transition rules", pathToStateConfig);
+            throw new ExternalizedConfigException("Unable to find file with formatter state transitions", e);
         } catch (IOException e) {
-            log.error("Exception while reading file ({}) with lexer state transition rules", pathToStateConfig);
-            throw new ExternalizedConfigException("Exception while reading file with lexer state transition rules", e);
+            log.error("Exception while reading file ({}) with formatter state transition rules", pathToStateConfig);
+            throw new ExternalizedConfigException("Exception while reading file with formatter state transition rules", e);
         } catch (YAMLException yamlException) {
-            log.error("Unable to parse yaml file with lexer state transitions");
-            throw new ExternalizedConfigException("Unable to parse yaml file with lexer state transitions", yamlException);
+            log.error("Unable to parse yaml file with formatter state transitions");
+            throw new ExternalizedConfigException("Unable to parse yaml file with formatter state transitions", yamlException);
         }
     }
 

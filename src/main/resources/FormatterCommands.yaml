@@ -2,6 +2,8 @@
   commands:
     - tokenName: null
       commandName: 'NoOpCommand'
+    - tokenName: 'Slash'
+      commandName: 'IndentAndWriteCommand'
     - tokenName: 'Char'
       commandName: 'IndentAndWriteCommand'
     - tokenName: 'for'
@@ -29,6 +31,32 @@
       commandName: 'WriteOpeningCurlyBracketCommand'
     - tokenName: 'Closing Curly Bracket'
       commandName: 'WriteClosingCurlyBracketCommand'
+
+- state: 'Start of a multiline comment 1'
+  commands:
+    - tokenName: null
+      commandName: 'WriteTokenCommand'
+
+- state: 'multiline comment'
+  commands:
+    - tokenName: null
+      commandName: 'WriteTokenCommand'
+
+- state: 'single line comment'
+  commands:
+    - tokenName: null
+      commandName: 'WriteTokenCommand'
+
+- state: 'End of a multiline comment'
+  commands:
+    - tokenName: null
+      commandName: 'WriteTokenAndNewLineCommand'
+
+- state: 'single line comment'
+  commands:
+    - tokenName: null
+      commandName: 'WriteTokenCommand'
+
 
 - state: 'writing string literal'
   commands:

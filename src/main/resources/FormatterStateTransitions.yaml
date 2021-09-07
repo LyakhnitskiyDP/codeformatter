@@ -21,6 +21,38 @@
     - tokenName: 'Slash'
       stateToTransferTo: 'Start of a multiline comment 1'
 
+- state: 'Start of a multiline comment 1'
+  transitions:
+    - tokenName: null
+      stateToTransferTo: 'writing line'
+    - tokenName: 'Star'
+      stateToTransferTo: 'multiline comment'
+    - tokenName: 'Slash'
+      stateToTransferTo: 'single line comment'
+
+- state: 'single line comment'
+  transitions:
+    - tokenName: null
+      stateToTransferTo: 'single line comment'
+    - tokenName: 'Line separator'
+      stateToTransferTo: 'initial'
+    - tokenName: 'Carriage return'
+      stateToTransferTo: 'initial'
+
+- state: 'multiline comment'
+  transitions:
+    - tokenName: null
+      stateToTransferTo: 'multiline comment'
+    - tokenName: 'Star'
+      stateToTransferTo: 'End of a multiline comment'
+
+- state: 'End of a multiline comment'
+  transitions:
+    - tokenName: null
+      stateToTransferTo: 'multiline comment'
+    - tokenName: 'Slash'
+      stateToTransferTo: 'initial'
+
 - state: 'writing string literal'
   transitions:
     - tokenName: null

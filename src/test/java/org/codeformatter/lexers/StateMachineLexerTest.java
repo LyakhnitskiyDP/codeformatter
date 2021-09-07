@@ -19,7 +19,7 @@ public class StateMachineLexerTest {
 
     @Test
     public void should_tokenize_complex_structure() {
-        String complexStructure = "a; b { c; } /* d { } */ s = \"str\";";
+        String complexStructure = "a; b { c; } /* / s = \"str\";";
 
         lexer = new StateMachineLexer(new StringReader(complexStructure));
         Token[] expectedTokens = {
@@ -35,7 +35,10 @@ public class StateMachineLexerTest {
                 new DefaultToken(WHITE_SPACE, " "),
                 new DefaultToken(CLOSING_CURLY_BRACKET, "}"),
                 new DefaultToken(WHITE_SPACE, " "),
-                new DefaultToken(MULTILINE_COMMENT, "/* d { } */"),
+                new DefaultToken(SLASH, "/"),
+                new DefaultToken(STAR, "*"),
+                new DefaultToken(WHITE_SPACE, " "),
+                new DefaultToken(SLASH, "/"),
                 new DefaultToken(WHITE_SPACE, " "),
                 new DefaultToken(CHAR, "s"),
                 new DefaultToken(WHITE_SPACE, " "),
