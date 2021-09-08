@@ -1,16 +1,5 @@
 package org.codeformatter.formatters.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.codeformatter.collections.Pair;
-import org.codeformatter.exceptions.ExternalizedConfigException;
-import org.codeformatter.formatters.FormatterStateTransitions;
-import org.codeformatter.formatters.impl.external_representations.FormatterTransitionOnToken;
-import org.codeformatter.formatters.impl.external_representations.FormatterTransitionsForState;
-import org.codeformatter.tokens.Token;
-import org.codeformatter.utils.YamlListConstructor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.error.YAMLException;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +7,16 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.formatters.FormatterStateTransitions;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterTransitionOnToken;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterTransitionsForState;
+import org.codeformatter.tokens.Token;
+import org.codeformatter.utils.YamlListConstructor;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 @Slf4j
 public class ExternalizedFormatterStateTransitions implements FormatterStateTransitions {
@@ -47,10 +46,15 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
             throw new ExternalizedConfigException("Unable to find file with formatter state transitions", e);
         } catch (IOException e) {
             log.error("Exception while reading file ({}) with formatter state transition rules", pathToStateConfig);
-            throw new ExternalizedConfigException("Exception while reading file with formatter state transition rules", e);
+            throw new ExternalizedConfigException(
+                    "Exception while reading file with formatter state transition rules", e
+            );
         } catch (YAMLException yamlException) {
             log.error("Unable to parse yaml file with formatter state transitions");
-            throw new ExternalizedConfigException("Unable to parse yaml file with formatter state transitions", yamlException);
+            throw new ExternalizedConfigException(
+                    "Unable to parse yaml file with formatter state transitions",
+                    yamlException
+            );
         }
     }
 

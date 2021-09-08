@@ -1,17 +1,7 @@
 package org.codeformatter.lexers.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.codeformatter.collections.Pair;
-import org.codeformatter.exceptions.CommandNotFoundException;
-import org.codeformatter.exceptions.ExternalizedConfigException;
-import org.codeformatter.lexers.LexerCommand;
-import org.codeformatter.lexers.LexerCommandRepository;
-import org.codeformatter.lexers.impl.external_representations.LexerCommandOnChar;
-import org.codeformatter.lexers.impl.external_representations.LexerCommandsForState;
-import org.codeformatter.utils.StringUtil;
-import org.codeformatter.utils.YamlListConstructor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.error.YAMLException;
+import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
+import static org.codeformatter.utils.StringUtil.getFirstCharOrNull;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,9 +11,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
-import static org.codeformatter.utils.StringUtil.getFirstCharOrNull;
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.CommandNotFoundException;
+import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.lexers.LexerCommand;
+import org.codeformatter.lexers.LexerCommandRepository;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerCommandOnChar;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerCommandsForState;
+import org.codeformatter.utils.YamlListConstructor;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 @Slf4j
 public class ExternalizedLexerCommandRepository implements LexerCommandRepository {
@@ -86,10 +84,10 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
                                        .getDeclaredConstructor()
                                        .newInstance();
 
-        } catch (InstantiationException |
-                 IllegalAccessException |
-                 InvocationTargetException |
-                 NoSuchMethodException e) {
+        } catch (InstantiationException
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException e) {
             log.error("Unable to reflectively create lexer command with name: {}", fullCommandName);
             throw new ExternalizedConfigException("Unable to reflectively create lexer command", e);
         } catch (ClassNotFoundException e) {

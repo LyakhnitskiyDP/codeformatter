@@ -1,18 +1,5 @@
 package org.codeformatter.formatters.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.codeformatter.collections.Pair;
-import org.codeformatter.exceptions.CommandNotFoundException;
-import org.codeformatter.exceptions.ExternalizedConfigException;
-import org.codeformatter.formatters.FormatterCommand;
-import org.codeformatter.formatters.FormatterCommandRepository;
-import org.codeformatter.formatters.impl.external_representations.FormatterCommandOnToken;
-import org.codeformatter.formatters.impl.external_representations.FormatterCommandsForState;
-import org.codeformatter.tokens.Token;
-import org.codeformatter.utils.YamlListConstructor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.error.YAMLException;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +8,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.CommandNotFoundException;
+import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.formatters.FormatterCommand;
+import org.codeformatter.formatters.FormatterCommandRepository;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterCommandOnToken;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterCommandsForState;
+import org.codeformatter.tokens.Token;
+import org.codeformatter.utils.YamlListConstructor;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 @Slf4j
 public class ExternalizedFormatterCommandRepository implements FormatterCommandRepository {
@@ -83,10 +82,10 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
                     .getDeclaredConstructor()
                     .newInstance();
 
-        } catch (InstantiationException |
-                IllegalAccessException |
-                InvocationTargetException |
-                NoSuchMethodException e) {
+        } catch (InstantiationException
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException e) {
 
             log.error("Unable to reflectively create command with name: {}", fullCommandName);
             throw new ExternalizedConfigException("Unable to reflectively create command", e);

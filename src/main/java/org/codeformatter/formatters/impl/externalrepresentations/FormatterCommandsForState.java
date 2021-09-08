@@ -1,17 +1,14 @@
-package org.codeformatter.formatters.impl.external_representations;
+package org.codeformatter.formatters.impl.externalrepresentations;
 
+import java.util.List;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
  * Class representation for external commands for a state.
- *
  * EXAMPLE:
- *
  * - state: 'initial'
  *   commands:
  *     - tokenName: null

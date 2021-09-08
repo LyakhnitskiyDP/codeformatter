@@ -1,4 +1,4 @@
-package org.codeformatter.lexers.impl.external_representations;
+package org.codeformatter.lexers.impl.externalrepresentations;
 
 
 import lombok.Data;
@@ -8,7 +8,6 @@ import lombok.Setter;
 
 /**
  * Class representation for a lexer state transition.
- *
  * EXAMPLE:
  * - ch: 'f'
  *   stateToTransferTo: 'for_1'

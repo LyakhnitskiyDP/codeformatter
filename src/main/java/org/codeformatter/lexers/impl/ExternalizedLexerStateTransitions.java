@@ -1,14 +1,7 @@
 package org.codeformatter.lexers.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.codeformatter.collections.Pair;
-import org.codeformatter.exceptions.ExternalizedConfigException;
-import org.codeformatter.lexers.impl.external_representations.LexerTransitionOnChar;
-import org.codeformatter.lexers.impl.external_representations.LexerTransitionsForState;
-import org.codeformatter.utils.StringUtil;
-import org.codeformatter.utils.YamlListConstructor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.error.YAMLException;
+import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
+import static org.codeformatter.utils.StringUtil.getFirstCharOrNull;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,9 +10,14 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.codeformatter.utils.LoggingUtil.makeCharPrintable;
-import static org.codeformatter.utils.StringUtil.getFirstCharOrNull;
+import lombok.extern.slf4j.Slf4j;
+import org.codeformatter.collections.Pair;
+import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerTransitionOnChar;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerTransitionsForState;
+import org.codeformatter.utils.YamlListConstructor;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 @Slf4j
 public class ExternalizedLexerStateTransitions implements org.codeformatter.lexers.LexerStateTransitions {
@@ -52,7 +50,10 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
             throw new ExternalizedConfigException("Exception while reading file with lexer state transition rules", e);
         } catch (YAMLException yamlException) {
             log.error("Unable to parse yaml file with lexer state transitions");
-            throw new ExternalizedConfigException("Unable to parse yaml file with lexer state transitions", yamlException);
+            throw new ExternalizedConfigException(
+                    "Unable to parse yaml file with lexer state transitions",
+                    yamlException
+            );
         }
     }
 

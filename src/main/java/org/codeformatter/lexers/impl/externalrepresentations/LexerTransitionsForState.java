@@ -1,15 +1,13 @@
-package org.codeformatter.lexers.impl.external_representations;
+package org.codeformatter.lexers.impl.externalrepresentations;
 
+import java.util.List;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
  * Class representation for lexer state transitions.
- *
  * EXAMPLE:
  * - state: 'initial'
  *   transitions:

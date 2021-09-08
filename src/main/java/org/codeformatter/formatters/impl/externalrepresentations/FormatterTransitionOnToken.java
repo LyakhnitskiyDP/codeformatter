@@ -1,4 +1,4 @@
-package org.codeformatter.formatters.impl.external_representations;
+package org.codeformatter.formatters.impl.externalrepresentations;
 
 import lombok.Data;
 import lombok.Getter;
@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Class representation for a formatter state transition;
- *
+ * Class representation for a formatter state transition.
  * EXAMPLE:
  * - tokenName: 'Whitespace'
  *   stateToTransferTo: 'initial'

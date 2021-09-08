@@ -1,4 +1,4 @@
-package org.codeformatter.formatters.impl.external_representations;
+package org.codeformatter.formatters.impl.externalrepresentations;
 
 import lombok.Data;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.Setter;
 
 /**
  * Class representation for an external formatter command.
- *
  * EXAMPLE:
  * - tokenName: 'Slash'
  *   commandName: 'IndentAndWriteCommand'

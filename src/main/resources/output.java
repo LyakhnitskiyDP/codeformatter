@@ -1,6 +1,7 @@
 public UserLoginResponse loginUser(UserLoginRequest request) throws BadRequestException {
     User user = userService.getUserByEmail(request.getEmail());
     String str = "string s { somethign; }";
+    /* COMMENT HERE */
     if (user == null) {
         throw new BadRequestException(ErrorCode.INCORRECT_LOGIN, "login");
     }
