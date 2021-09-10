@@ -25,6 +25,8 @@
       commandName: 'WriteTokenAndNewLineCommand'
     - tokenName: 'Line separator'
       commandName: 'NoOpCommand'
+    - tokenName: 'Carriage return'
+      commandName: 'NoOpCommand'
     - tokenName: 'Semicolon'
       commandName: 'WriteTokenAndNewLineCommand'
     - tokenName: 'Opening Curly Bracket'

@@ -2,9 +2,7 @@ package org.codeformatter.lexers.impl.externalrepresentations;
 
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Class representation for a lexer state transition.
@@ -14,8 +12,6 @@ import lombok.Setter;
  */
 @Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class LexerTransitionOnChar {
 
     private String ch;

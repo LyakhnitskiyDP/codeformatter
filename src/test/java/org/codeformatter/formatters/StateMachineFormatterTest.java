@@ -11,6 +11,8 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -231,7 +233,7 @@ public class StateMachineFormatterTest {
 
         assertThat(
                 result.toString()
-        ).isEqualToNormalizingNewlines(
+        ).isEqualTo(
                 expectedCode
         );
     }

@@ -1,9 +1,7 @@
 package org.codeformatter.lexers.impl.externalrepresentations;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Class representation for a lexer command.
@@ -13,8 +11,6 @@ import lombok.Setter;
  */
 @Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class LexerCommandOnChar {
 
     String ch;

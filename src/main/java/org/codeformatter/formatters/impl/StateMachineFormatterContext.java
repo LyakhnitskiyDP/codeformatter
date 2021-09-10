@@ -29,6 +29,7 @@ class StateMachineFormatterContext implements FormatterContext {
 
         log.trace("Writing new line");
         for (char ch : System.lineSeparator().toCharArray()) {
+            System.out.println("WRITING: " + ((int) ch));
             writer.writeChar(ch);
         }
     }

@@ -2,9 +2,7 @@ package org.codeformatter.lexers.impl.externalrepresentations;
 
 import java.util.List;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Class representation for lexer commands.
@@ -18,8 +16,6 @@ import lombok.Setter;
  */
 @Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class LexerCommandsForState {
 
     private String state;
