@@ -233,7 +233,7 @@ public class StateMachineFormatterTest {
 
         assertThat(
                 result.toString()
-        ).isEqualTo(
+        ).isEqualToNormalizingNewlines(
                 expectedCode
         );
     }

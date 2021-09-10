@@ -17,6 +17,8 @@ import org.codeformatter.exceptions.CommandNotFoundException;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerActionOnChar;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerActionsForState;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerCommandOnChar;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerCommandsForState;
 import org.codeformatter.utils.YamlListConstructor;
@@ -33,7 +35,7 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
     private final Yaml yaml;
 
     public ExternalizedLexerCommandRepository(String pathToCommands) {
-        this.yaml = new Yaml(new YamlListConstructor<>(LexerCommandsForState.class));
+        this.yaml = new Yaml(new YamlListConstructor<>(LexerActionsForState.class));
         this.commands = new HashMap<>();
 
         initializeCommands(pathToCommands);
@@ -45,7 +47,7 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
                 InputStream inputStream = new FileInputStream(pathToCommands)
         ) {
 
-            List<LexerCommandsForState> lexerCommandsForStates = yaml.load(inputStream);
+            List<LexerActionsForState> lexerCommandsForStates = yaml.load(inputStream);
 
             lexerCommandsForStates.forEach(this::addCommandForState);
 
@@ -61,14 +63,14 @@ public class ExternalizedLexerCommandRepository implements LexerCommandRepositor
         }
     }
 
-    private void addCommandForState(LexerCommandsForState lexerCommandsForState) {
+    private void addCommandForState(LexerActionsForState lexerActionssForState) {
 
-        String currentState = lexerCommandsForState.getState();
+        String currentState = lexerActionssForState.getState();
 
-        for (LexerCommandOnChar lexerCommandOnChar : lexerCommandsForState.getCommands()) {
+        for (LexerActionOnChar lexerActionOnChar : lexerActionssForState.getActions()) {
 
-            Character ch = getFirstCharOrNull(lexerCommandOnChar.getCh());
-            LexerCommand lexerCommand = createCommand(lexerCommandOnChar.getCommandName());
+            Character ch = getFirstCharOrNull(lexerActionOnChar.getCh());
+            LexerCommand lexerCommand = createCommand(lexerActionOnChar.getCommandName());
 
             commands.put(Pair.of(currentState, ch), lexerCommand);
         }

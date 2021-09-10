@@ -1,0 +1,87 @@
+- state: "initial"
+  actions:
+    - ch: null
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'terminated'
+    - ch: 'f'
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'for_1'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '{'
+      commandName: 'WriteOpeningCurlyBracketCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '}'
+      commandName: 'WriteClosingCurlyBracketCommand'
+      stateToTransferTo: 'terminated'
+    - ch: ' '
+      commandName: 'WriteWhiteSpaceCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '/'
+      commandName: 'WriteSlashCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '*'
+      commandName: 'WriteStarCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '"'
+      commandName: 'WriteQuotesCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '\n'
+      commandName: 'WriteLineSeparatorCommand'
+      stateToTransferTo: 'terminated'
+    - ch: '\r'
+      commandName: 'WriteCarriageReturnCommand'
+      stateToTransferTo: 'terminated'
+
+- state: "for"
+  actions:
+    - ch: null
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'for'
+    - ch: ')'
+      commandName: 'WriteForLoopCommand'
+      stateToTransferTo: 'terminated'
+
+- state: "for_1"
+  actions:
+    - ch: null
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'terminated'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+      stateToTransferTo: 'terminated'
+    - ch: 'o'
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'for_2'
+
+- state: "for_2"
+  actions:
+    - ch: null
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'terminated'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+      stateToTransferTo: 'terminated'
+    - ch: 'r'
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'for_3'
+
+- state: 'for_3'
+  actions:
+    - ch: null
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'terminated'
+    - ch: ' '
+      commandName: 'WriteCharCommand'
+      stateToTransferTo: 'for'
+    - ch: ';'
+      commandName: 'WriteSemicolonCommand'
+      stateToTransferTo: 'for'
+
+
+
+
+
+
+

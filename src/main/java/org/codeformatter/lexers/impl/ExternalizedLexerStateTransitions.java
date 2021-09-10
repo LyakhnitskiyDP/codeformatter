@@ -13,6 +13,8 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerActionOnChar;
+import org.codeformatter.lexers.impl.externalrepresentations.LexerActionsForState;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerTransitionOnChar;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerTransitionsForState;
 import org.codeformatter.utils.YamlListConstructor;
@@ -26,7 +28,7 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
     private final Map<Pair<String, Character>, String> transitions;
 
     public ExternalizedLexerStateTransitions(String pathToStateConfig) {
-        this.yaml = new Yaml(new YamlListConstructor<>(LexerTransitionsForState.class));
+        this.yaml = new Yaml(new YamlListConstructor<>(LexerActionsForState.class));
         this.transitions = new HashMap<>();
 
         initializeStateTransitions(pathToStateConfig);
@@ -38,9 +40,9 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
                 InputStream inputStream = new FileInputStream(pathToStateConfig)
         ) {
 
-            List<LexerTransitionsForState> lexerTransitionOnStates = yaml.load(inputStream);
+            List<LexerActionsForState> lexerActionsOnStates = yaml.load(inputStream);
 
-            lexerTransitionOnStates.forEach(this::addStateTransitions);
+            lexerActionsOnStates.forEach(this::addStateTransitions);
 
         } catch (FileNotFoundException e) {
             log.error("Unable to find file ({}) with lexer state transition rules", pathToStateConfig);
@@ -57,14 +59,14 @@ public class ExternalizedLexerStateTransitions implements org.codeformatter.lexe
         }
     }
 
-    private void addStateTransitions(LexerTransitionsForState lexerTransitionsForState) {
+    private void addStateTransitions(LexerActionsForState lexerActionsOnChar) {
 
-        String stateToTransitionFrom = lexerTransitionsForState.getState();
+        String stateToTransitionFrom = lexerActionsOnChar.getState();
 
-        for (LexerTransitionOnChar transitionOnChar : lexerTransitionsForState.getTransitions()) {
+        for (LexerActionOnChar actionOnChar : lexerActionsOnChar.getActions()) {
 
-            Character ch = getFirstCharOrNull(transitionOnChar.getCh());
-            String stateToTransitionTo = transitionOnChar.getStateToTransferTo();
+            Character ch = getFirstCharOrNull(actionOnChar.getCh());
+            String stateToTransitionTo = actionOnChar.getStateToTransferTo();
 
             transitions.put(Pair.of(stateToTransitionFrom, ch), stateToTransitionTo);
         }
