@@ -14,8 +14,8 @@ import org.codeformatter.exceptions.CommandNotFoundException;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.formatters.FormatterCommand;
 import org.codeformatter.formatters.FormatterCommandRepository;
-import org.codeformatter.formatters.impl.externalrepresentations.FormatterCommandOnToken;
-import org.codeformatter.formatters.impl.externalrepresentations.FormatterCommandsForState;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterActionOnToken;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterActionsForState;
 import org.codeformatter.tokens.Token;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
@@ -31,7 +31,7 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
     private final Yaml yaml;
 
     public ExternalizedFormatterCommandRepository(String pathToCommands) {
-        this.yaml = new Yaml(new YamlListConstructor<>(FormatterCommandsForState.class));
+        this.yaml = new Yaml(new YamlListConstructor<>(FormatterActionsForState.class));
         this.commands = new HashMap<>();
 
         initializeCommands(pathToCommands);
@@ -43,7 +43,7 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
                 InputStream inputStream = new FileInputStream(pathToCommands)
         ) {
 
-            List<FormatterCommandsForState> formatterCommandsForStates = yaml.load(inputStream);
+            List<FormatterActionsForState> formatterCommandsForStates = yaml.load(inputStream);
 
             formatterCommandsForStates.forEach(this::addCommandForState);
 
@@ -59,14 +59,14 @@ public class ExternalizedFormatterCommandRepository implements FormatterCommandR
         }
     }
 
-    private void addCommandForState(FormatterCommandsForState formatterCommandsForState) {
+    private void addCommandForState(FormatterActionsForState formatterActionsForState) {
 
-        String currentState = formatterCommandsForState.getState();
+        String currentState = formatterActionsForState.getState();
 
-        for (FormatterCommandOnToken formatterCommandOnToken : formatterCommandsForState.getCommands()) {
+        for (FormatterActionOnToken formatterActionOnToken : formatterActionsForState.getActions()) {
 
-            String tokenName = formatterCommandOnToken.getTokenName();
-            FormatterCommand formatterCommand = createCommand(formatterCommandOnToken.getCommandName());
+            String tokenName = formatterActionOnToken.getTokenName();
+            FormatterCommand formatterCommand = createCommand(formatterActionOnToken.getCommandName());
 
             commands.put(Pair.of(currentState, tokenName), formatterCommand);
         }

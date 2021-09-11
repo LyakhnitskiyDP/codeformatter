@@ -1,25 +1,28 @@
 package org.codeformatter.formatters.impl.externalrepresentations;
 
-import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
- * Class representation for formatter state transitions.
+ * Class representation for formatter state actions.
  * EXAMPLE:
  * - state: 'initial'
- *   transitions:
+ *   actions:
  *     - tokenName: null
+ *       commandName: 'NoOpCommand'
  *       stateToTransferTo: 'writing line'
- *     - tokenName: 'Whitespace'
+ *     - tokenName: 'Slash'
+ *       commandName: 'Start of a multiline comment 1'
  *       stateToTransferTo: 'initial'
  */
 @Data
 @NoArgsConstructor
-public class FormatterTransitionsForState {
+public class FormatterActionsForState {
 
     private String state;
 
-    private List<FormatterTransitionOnToken> transitions;
+    private List<FormatterActionOnToken> actions;
 
 }

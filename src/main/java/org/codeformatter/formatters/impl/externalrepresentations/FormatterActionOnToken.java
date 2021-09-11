@@ -4,16 +4,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Class representation for a formatter state transition.
+ * Class representation for a formatter action on a token.
  * EXAMPLE:
- * - tokenName: 'Whitespace'
+ * - tokenName: 'Slash'
+ *   commandName: 'Start of a multiline comment 1'
  *   stateToTransferTo: 'initial'
  */
 @Data
 @NoArgsConstructor
-public class FormatterTransitionOnToken {
+public class FormatterActionOnToken {
 
     private String tokenName;
+
+    private String commandName;
 
     private String stateToTransferTo;
 

@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.formatters.FormatterStateTransitions;
-import org.codeformatter.formatters.impl.externalrepresentations.FormatterTransitionOnToken;
-import org.codeformatter.formatters.impl.externalrepresentations.FormatterTransitionsForState;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterActionOnToken;
+import org.codeformatter.formatters.impl.externalrepresentations.FormatterActionsForState;
 import org.codeformatter.tokens.Token;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
@@ -25,7 +25,7 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
     private final Map<Pair<String, String>, String> transitions;
 
     public ExternalizedFormatterStateTransitions(String pathToStateConfig) {
-        this.yaml = new Yaml(new YamlListConstructor<>(FormatterTransitionsForState.class));
+        this.yaml = new Yaml(new YamlListConstructor<>(FormatterActionsForState.class));
         this.transitions = new HashMap<>();
 
         initializeStateTransitions(pathToStateConfig);
@@ -37,7 +37,7 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
                 InputStream inputStream = new FileInputStream(pathToStateConfig)
         ) {
 
-            List<FormatterTransitionsForState> formatterStateTransitions = yaml.load(inputStream);
+            List<FormatterActionsForState> formatterStateTransitions = yaml.load(inputStream);
 
             formatterStateTransitions.forEach(this::addStateTransitions);
 
@@ -58,11 +58,11 @@ public class ExternalizedFormatterStateTransitions implements FormatterStateTran
         }
     }
 
-    private void addStateTransitions(FormatterTransitionsForState formatterTransitionsForState) {
+    private void addStateTransitions(FormatterActionsForState formatterTransitionsForState) {
 
         String stateToTransitionFrom = formatterTransitionsForState.getState();
 
-        for (FormatterTransitionOnToken transitionOnToken : formatterTransitionsForState.getTransitions()) {
+        for (FormatterActionOnToken transitionOnToken : formatterTransitionsForState.getActions()) {
 
             String tokenName = transitionOnToken.getTokenName();
             String stateToTransitionTo = transitionOnToken.getStateToTransferTo();
