@@ -15,8 +15,6 @@ import org.codeformatter.collections.Pair;
 import org.codeformatter.exceptions.ExternalizedConfigException;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerActionOnChar;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerActionsForState;
-import org.codeformatter.lexers.impl.externalrepresentations.LexerTransitionOnChar;
-import org.codeformatter.lexers.impl.externalrepresentations.LexerTransitionsForState;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;

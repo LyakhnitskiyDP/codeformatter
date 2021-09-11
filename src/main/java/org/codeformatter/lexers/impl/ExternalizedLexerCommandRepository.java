@@ -19,8 +19,6 @@ import org.codeformatter.lexers.LexerCommand;
 import org.codeformatter.lexers.LexerCommandRepository;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerActionOnChar;
 import org.codeformatter.lexers.impl.externalrepresentations.LexerActionsForState;
-import org.codeformatter.lexers.impl.externalrepresentations.LexerCommandOnChar;
-import org.codeformatter.lexers.impl.externalrepresentations.LexerCommandsForState;
 import org.codeformatter.utils.YamlListConstructor;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
